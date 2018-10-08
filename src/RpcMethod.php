@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcCore;
 
-interface MethodInterface {
+interface RpcMethod {
   
   /**
    * Get RPC method description
