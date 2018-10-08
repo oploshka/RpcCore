@@ -1,9 +1,8 @@
 <?php
 
-namespace Rpc\Utils;
+namespace Oploshka\RpcCore;
 
-
-class Handler {
+class Core {
   
   /*
    * Run method
