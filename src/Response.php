@@ -1,10 +1,7 @@
 <?php
 
-namespace Rpc\Utils;
+namespace Oploshka\RpcCore;
 
-/*
- * Клас для ответа
- */
 class Response {
   
   private $error    = 'ERROR_DEFAULT' ;
