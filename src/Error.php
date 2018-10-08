@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ANDREV
- * Date: 24.04.2018
- * Time: 16:01
- */
 
-namespace Rpc\Utils;
+namespace Oploshka\RpcCore;
 
-
-class ErrorHandler {
+class Error {
+  
   private static $errorInfo = [];
   
   /**

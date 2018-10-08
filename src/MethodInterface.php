@@ -1,6 +1,6 @@
 <?php
 
-namespace Rpc\Utils;
+namespace Oploshka\RpcCore;
 
 interface MethodInterface {
   

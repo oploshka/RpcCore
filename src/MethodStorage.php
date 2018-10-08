@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ANDREV
- * Date: 18.04.2018
- * Time: 10:18
- */
 
-namespace Rpc\Utils;
-
+namespace Oploshka\RpcCore;
 
 class MethodStorage {
   
