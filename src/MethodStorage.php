@@ -6,25 +6,29 @@ class MethodStorage {
   
   private $methods = array();
   
+  public function __construct() {
+  }
+  
   /**
    * 
    * @param string $methodName
-   * @param string $methodGroup
    * @param string $methodClass
+   * // TODO: @param string $methodGroup
    * @throws \Exception
    */
-  public function add($methodName, $methodGroup, $methodClass){
+  public function add($methodName, $methodClass){
     
     // Название метода должно быть строкой
     if( !is_string($methodName) ){
       throw new \Exception('RPCMethodStorage: Method name no string');
     }
-    if( !is_string($methodGroup) ){
-      throw new \Exception('RPCMethodStorage: Method group no string');
-    }
     if( !is_string($methodClass) ){
       throw new \Exception('RPCMethodStorage: Method class no string');
     }
+    // TODO:
+    // if( !is_string($methodGroup) ){
+    //   throw new \Exception('RPCMethodStorage: Method group no string');
+    // }
     
     // Запрет переопределения существующего метода
     if( isset($this->methods[$methodName]) ){
@@ -33,8 +37,8 @@ class MethodStorage {
     
     // если все хорошо то добавляем
     $this->methods[$methodName] = [
-      'group' => $methodGroup,
       'class' => $methodClass,
+      // TODO: 'group' => $methodGroup,
     ];
   }
   

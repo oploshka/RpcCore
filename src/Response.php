@@ -16,8 +16,8 @@ class Response {
     if($log != ''){ $this->logs[] = $log; }
   }
   
-  public function error($error_name, $exception = true){
-    $this->error = $error_name;
+  public function error($errorName, $exception = true){
+    $this->error = $errorName;
     if($exception){
       throw new \Exception('');
     }
