@@ -4,7 +4,7 @@ namespace Oploshka\RpcCore;
 
 class MethodStorage {
   
-  private static $methods = array();
+  private $methods = array();
   
   /**
    * 
@@ -13,7 +13,7 @@ class MethodStorage {
    * @param string $methodClass
    * @throws \Exception
    */
-  public static function add($methodName, $methodGroup, $methodClass){
+  public function add($methodName, $methodGroup, $methodClass){
     
     // Название метода должно быть строкой
     if( !is_string($methodName) ){
@@ -27,12 +27,12 @@ class MethodStorage {
     }
     
     // Запрет переопределения существующего метода
-    if( isset(self::$methods[$methodName]) ){
+    if( isset($this->methods[$methodName]) ){
       throw new \Exception('RPCMethodStorage: Add dublicate method >>' . $methodName . '<<');
     }
     
     // если все хорошо то добавляем
-    self::$methods[$methodName] = [
+    $this->methods[$methodName] = [
       'group' => $methodGroup,
       'class' => $methodClass,
     ];
@@ -41,10 +41,10 @@ class MethodStorage {
   /**
    * @return array || false
    */
-  public static function getMethodInfo($methodName) {
-    if( !isset(self::$methods[$methodName]) ){
+  public function getMethodInfo($methodName) {
+    if( !isset($this->methods[$methodName]) ){
       return false;
     }
-    return self::$methods[$methodName];
+    return $this->methods[$methodName];
   }
 }

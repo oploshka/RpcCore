@@ -17,7 +17,7 @@ class Error {
     set_error_handler(
       create_function(
         '$c, $m, $f, $l',
-        'Rpc\Utils\ErrorHandler::ErrorHandler($m, $c, $f, $l);'
+        'Oploshka\RpcCore\Error::ErrorHandler($m, $c, $f, $l);'
       ),
       E_ALL
     );
