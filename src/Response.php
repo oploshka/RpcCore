@@ -1,35 +1,36 @@
 <?php
 
-namespace Oploshka\RpcCore;
+namespace Oploshka\Rpc;
 
 class Response {
   
   private $error    = 'ERROR_DEFAULT' ;
-  private $info     = array();
-  private $logs     = array();
+  private $info     = [];
+  private $logs     = [];
   
   public function infoAdd($key, $value){
-    if($key == 'logs' || $key == 'error' || $key == 'message'){ $this->error('ERROR_INFO_ADD_KEY_'.$key); }
     $this->info[$key] = $value;
   }
-  //
+  
   public function logAdd($log = ''){
     if($log != ''){ $this->logs[] = $log; }
   }
   
-  public function error($error_name, $message = NULL){
-    $this->error = $error_name;
-    if($message !== NULL ){
-      $this->message = $message;
+  public function error($errorName, $exception = true){
+    $this->error = $errorName;
+    if($exception){
+      throw new \Exception('');
     }
-    throw new \Exception('');
   }
   
-  // ответ
   public function getResponse() {
-    $result = $this->info;
-    $result['error'] = $this->error;
-    if($this->logs !== array() )     { $result['logs'] = $this->logs;    }
+    $result = [
+      'error'   => $this->error,
+      'result'  => $this->info,
+    ];
+    if($this->logs !== [] ) {
+      $result['logs'] = $this->logs;
+    }
     return $result;
   }
   
