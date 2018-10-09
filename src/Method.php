@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcCore;
+namespace Oploshka\Rpc;
 
-interface MethodInterface {
+interface Method {
   
   /**
    * Get RPC method description
