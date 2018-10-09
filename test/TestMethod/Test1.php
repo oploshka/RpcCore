@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcCoreTest\TestMethod;
+namespace Oploshka\RpcTest\TestMethod;
 
-class Test1 implements \Oploshka\RpcCore\RpcMethod {
+class Test1 implements \Oploshka\Rpc\Method {
   
   public function description(){
     return <<<DESCRIPTION

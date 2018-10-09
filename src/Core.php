@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcCore;
+namespace Oploshka\Rpc;
 
 use Oploshka\Reform\Reform;
 
@@ -72,7 +72,7 @@ class Core {
     $MethodClass = new $MethodClassName();
   
     // проверим реализует ли класс наш интерфейс
-    if ( !($MethodClass instanceof \Oploshka\RpcCore\RpcMethod) ) {
+    if ( !($MethodClass instanceof \Oploshka\Rpc\Method) ) {
       $response->error('ERROR_NOT_INSTANCEOF_INTERFACE', false);
       $response->logAdd();
       return $response;

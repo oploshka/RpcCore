@@ -1,11 +1,11 @@
 <?php
 
-namespace Oploshka\RpcCore;
+namespace Oploshka\Rpc;
 
 use PHPUnit\Framework\TestCase;
 
 // use Oploshka\Reform\Reform;
-// use Oploshka\RpcCore\MethodStorage;
+// use Oploshka\Rpc\MethodStorage;
 
 class CoreTest extends TestCase {
 
@@ -22,44 +22,44 @@ class CoreTest extends TestCase {
     ]);
   }
   private function getRpcMethodStorage(){
-    $MethodStorage  = new \Oploshka\RpcCore\MethodStorage();
-    $MethodStorage->add('methodTest1', 'Oploshka\\RpcCoreTest\\TestMethod\\Test1');
-    $MethodStorage->add('methodTest2', 'Oploshka\\RpcCoreTest\\TestMethod\\Test2');
+    $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
+    $MethodStorage->add('methodTest1', 'Oploshka\\RpcTest\\TestMethod\\Test1');
+    $MethodStorage->add('methodTest2', 'Oploshka\\RpcTest\\TestMethod\\Test2');
     return $MethodStorage;
   }
-  private function getRpcCore(){
+  private function getRpc(){
     $MethodStorage  = $this->getRpcMethodStorage();
     $Reform         = $this->getRpcReform();
-    $RpcCore        = new \Oploshka\RpcCore\Core($MethodStorage, $Reform);
-    return $RpcCore;
+    $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
+    return $Rpc;
   }
   
   public function testNoMethodName() {
-    $RpcCore = $this->getRpcCore();
+    $Rpc = $this->getRpc();
     
-    $response = $RpcCore->run('', []);
+    $response = $Rpc->run('', []);
     $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NOT', true);
+    $this->assertEquals($response['error'],  'ERROR_NO_METHOD_NAME', true);
     $this->assertTrue( $response['result'] === []);
     $this->assertTrue( !isset($response['logs']));
   }
   
   public function testNoMethod() {
-    $RpcCore = $this->getRpcCore();
+    $Rpc = $this->getRpc();
     
-    $response = $RpcCore->run('test', []);
+    $response = $Rpc->run('test', []);
     $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NOT', true);
+    $this->assertEquals($response['error'],  'ERROR_NO_METHOD_INFO', true);
     $this->assertTrue( $response['result'] === []);
     $this->assertTrue( !isset($response['logs']));
   }
   
   public function testMethodTest1() {
-    $RpcCore = $this->getRpcCore();
+    $Rpc = $this->getRpc();
     
-    $response = $RpcCore->run('methodTest1', []);
+    $response = $Rpc->run('methodTest1', []);
     $response = $response->getResponse();
   
     // TODO: fix oploshka/reform item array

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcCore;
+namespace Oploshka\Rpc;
 
 class Error {
   
@@ -17,7 +17,7 @@ class Error {
     set_error_handler(
       create_function(
         '$c, $m, $f, $l',
-        'Oploshka\RpcCore\Error::ErrorHandler($m, $c, $f, $l);'
+        'Oploshka\Rpc\Error::ErrorHandler($m, $c, $f, $l);'
       ),
       E_ALL
     );

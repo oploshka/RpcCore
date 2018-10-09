@@ -17,12 +17,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Oploshka\\RpcCore\\": "src"
+      "Oploshka\\Rpc\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Oploshka\\RpcCoreTest\\": "test"
+      "Oploshka\\RpcTest\\": "test"
     }
   }
 }

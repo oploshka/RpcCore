@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcCore;
+namespace Oploshka\Rpc;
 
 class MethodStorage {
   
