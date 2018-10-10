@@ -15,8 +15,9 @@ DESCRIPTION;
   }
   
   public function run(&$_RESPONSE, $_DATA = array() ){
-    $_RESPONSE->infoAdd('string', 'test string');
-    $_RESPONSE->infoAdd('int', 1);
+    $_RESPONSE->infoAdd('test1::string', 'test string');
+    $_RESPONSE->infoAdd('test1::int', 1);
+    $_RESPONSE->logAdd('test1::testLog');
     $_RESPONSE->error('ERROR_NOT');
   }
   
