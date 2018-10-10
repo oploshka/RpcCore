@@ -97,7 +97,7 @@ class Core {
     }
   
     // проверим что метод не убил класс ответа
-    if( gettype ( $response ) != 'object' || get_class ( $response ) != 'Rpc\Utils\Response'){
+    if( gettype ( $response ) != 'object' || get_class ( $response ) != 'Oploshka\Rpc\Response'){
       // Класс убил наш ответ, реанимируем его
       $_response = $response;
       $response = new Response();
@@ -108,6 +108,8 @@ class Core {
       }
       $response->error('ERROR_NOT_CORRECT_METHOD_RETURN', false);
     }
+    
+    return $response;
   }
   
 }

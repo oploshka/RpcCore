@@ -19,6 +19,8 @@ class CoreTest extends TestCase {
       'origin'        => 'Oploshka\\ReformItem\\OriginReform'       ,
       'datetime'      => 'Oploshka\\ReformItem\\DateTimeReform'     ,
       'json'          => 'Oploshka\\ReformItem\\JsonReform'         ,
+      'array'         => 'Oploshka\\ReformItem\\ArrayReform'        ,
+      'simpleArray'   => 'Oploshka\\ReformItem\\SimpleArrayReform'  ,
     ]);
   }
   private function getRpcMethodStorage(){
@@ -62,9 +64,12 @@ class CoreTest extends TestCase {
     $response = $Rpc->run('methodTest1', []);
     $response = $response->getResponse();
   
-    // TODO: fix oploshka/reform item array
     $this->assertEquals($response['error'],  'ERROR_NOT', true);
-    $this->assertTrue( $response['result'] !== []);
-    $this->assertTrue( !isset($response['logs']));
+    $this->assertEquals($response['result'],  [
+      'test1::string' => 'test string',
+      'test1::int' => 1,
+    ]);
+    $this->assertTrue( isset($response['logs']));
+    $this->assertEquals($response['logs'],  ['test1::testLog']);
   }
 }
