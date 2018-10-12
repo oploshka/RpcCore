@@ -33,6 +33,7 @@ class CoreTest extends TestCase {
     $MethodStorage  = $this->getRpcMethodStorage();
     $Reform         = $this->getRpcReform();
     $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
+    $Rpc->setHeaderSettings([]); // fix php unit test header send
     return $Rpc;
   }
   
