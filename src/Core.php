@@ -2,100 +2,135 @@
 
 namespace Oploshka\Rpc;
 
-use Oploshka\Reform\Reform;
+use PHPUnit\Runner\Exception;
 
 class Core {
   
   private $MethodStorage;
   private $Reform;
+  private $headerSettings = [
+    'Access-Control-Allow-Origin' => '*',
+  ];
+  private $phpSettings = [
+    'error_reporting'         => E_ALL,
+    'display_errors'          => 1,
+    'display_startup_errors'  => 1,
+    'date.timezone'           => 'UTC',
+  ];
   
   public function __construct($MethodStorage, $Reform) {
-    // TODO fix init
     $this->MethodStorage  = $MethodStorage;
     $this->Reform         = $Reform;
   }
   
+  /**
+   * @param array $settings
+   */
+  public function setHeaderSettings($settings) {
+    $this->headerSettings = $settings;
+  }
+  public function getHeaderSettings() {
+    return $this->headerSettings;
+  }
   
-  /*
-   * Run method
+  /**
+   * @param array $settings
+   */
+  public function setPhpSettings($settings) {
+    $this->phpSettings = $settings;
+  }
+  public function getPhpSettings() {
+    return $this->headerSettings;
+  }
+  
+  /**
+   * Run Rpc method
    *
-   * $_data (type: array):
-   * - method (type: string, desc: run method name)
+   * @param string $methodName string
+   * @param array $methodData array
+   *
+   * @return Response
    *
    */
   public function run($methodName, $methodData) {
   
     ob_start();
-  
-    header('Access-Control-Allow-Origin: *');
-    
-    // выводим все ошибки !!!
-    ini_set('error_reporting'       , E_ALL);
-    ini_set('display_errors'        , 1);
-    ini_set('display_startup_errors', 1);
-    
-    // часовой пояс по умолчанию
-    date_default_timezone_set('UTC');
-    
-    $response = $this->runMethod($methodName, $methodData);
-    
-    // перехвать вывода текста
-    $obText = ob_get_contents();
-    ob_end_clean();
-    if($obText != ''){
-      $response->logAdd( $obText );
+    if ($this->headerSettings !== [] && headers_sent()) {
+      $response  = new Response();
+      $response->error('ERROR_SET_HEADER', false);
+      return $response;
     }
+    
+    foreach ($this->headerSettings as $k => $v){
+      header("{$k}: {$v}");
+    }
+  
+    try{
+      foreach ($this->phpSettings as $k => $v){
+        ini_set($k, $v);
+      }
+    } catch (Exception $e){
+      $response  = new Response();
+      $response->logAdd( $e->getMessage() );
+      $response->error('ERROR_INI_SET', false);
+      return $response;
+    }
+    
+    try{
+      $response = $this->runMethod($methodName, $methodData);
+    } catch (Exception $e){
+      $response  = new Response();
+      $response->logAdd( $e->getMessage() );
+      $response->error('ERROR_METHOD_RUN', false);
+      return $response;
+    }
+  
+    $response->logAdd( ob_get_contents() );
+    ob_end_clean();
     
     return $response;
   }
   
   private function runMethod($methodName, $methodData){
   
-    // начальная инициализация
-    $response  = new Response(); // переменная для данных ответа
+    // Response init
+    $response  = new Response();
   
-    // валидация метода
+    // validate method name
     if( !is_string($methodName) || $methodName == '') {
       $response->error('ERROR_NO_METHOD_NAME', false);
       return $response;
     }
   
-    // получаем описание метода
+    // get method info
     $methodInfo = $this->MethodStorage->getMethodInfo($methodName);
     if(!$methodInfo) {
       $response->error('ERROR_NO_METHOD_INFO', false);
       return $response;
     }
   
-    // Формируем класс метода
-    $MethodClassName = $methodInfo['class'];
-    
     // method class create
+    $MethodClassName = $methodInfo['class'];
     $MethodClass = new $MethodClassName();
   
-    // проверим реализует ли класс наш интерфейс
+    // validate class interface
     if ( !($MethodClass instanceof \Oploshka\Rpc\Method) ) {
       $response->error('ERROR_NOT_INSTANCEOF_INTERFACE', false);
       $response->logAdd();
       return $response;
     }
   
-    // валидация данных
+    // validate method data
     $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass->validate()] );
     if($data === NULL) {
       $response->error('ERROR_NOT_VALIDATE_DATA', false);
       return $response;
     }
   
-    $log = '';
     try {
       $MethodClass->run($response, $data);
     } catch (\Exception $e) {
-      $log = $e->getMessage();
-    }
-    if($log !== ''){
-      $response->logAdd( $log );
-      $log = '';
+      $response->logAdd( $e->getMessage());
     }
   
     // проверим что метод не убил класс ответа
