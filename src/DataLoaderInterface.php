@@ -3,7 +3,7 @@
 namespace Oploshka\Rpc;
 
 // TODO: need optimization
-interface DataLoader {
+interface DataLoaderInterface {
   
   /**
    * start load data data
