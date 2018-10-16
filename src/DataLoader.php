@@ -7,10 +7,10 @@ class DataLoader implements DataLoaderInterface{
   
   /**
    * start load data
-   * and return error code
+   * and return false | error code
    **/
   public function load(&$methodName, &$methodData){
-    return 'ERROR_NOT';
+    return false;
   }
   
 }

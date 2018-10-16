@@ -41,36 +41,32 @@ class CoreTest extends TestCase {
     $Rpc = $this->getRpc();
     
     $response = $Rpc->run('', []);
-    $response = $response->getResponse();
-  
-    $this->assertEquals($response['error'],  'ERROR_NO_METHOD_NAME', true);
-    $this->assertTrue( $response['result'] === []);
-    $this->assertTrue( !isset($response['logs']));
+    
+    $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_NAME');
+    $this->assertEquals( $response->getData() , []);
+    $this->assertEquals( $response->getLog()  , []);
   }
   
   public function testNoMethod() {
     $Rpc = $this->getRpc();
     
     $response = $Rpc->run('test', []);
-    $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NO_METHOD_INFO', true);
-    $this->assertTrue( $response['result'] === []);
-    $this->assertTrue( !isset($response['logs']));
+    $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_INFO');
+    $this->assertEquals( $response->getData() , []);
+    $this->assertEquals( $response->getLog()  , []);
   }
   
   public function testMethodTest1() {
     $Rpc = $this->getRpc();
     
     $response = $Rpc->run('methodTest1', []);
-    $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NOT', true);
-    $this->assertEquals($response['result'],  [
+    $this->assertEquals($response->getError(),  'ERROR_NOT');
+    $this->assertEquals($response->getData(),  [
       'test1::string' => 'test string',
       'test1::int' => 1,
     ]);
-    $this->assertTrue( isset($response['logs']));
-    $this->assertEquals($response['logs'],  ['test1::testLog']);
+    $this->assertEquals( $response->getLog()  , [ ['test1::string' => 'test string'] ] );
   }
 }
