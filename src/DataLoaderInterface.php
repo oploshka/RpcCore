@@ -6,22 +6,9 @@ namespace Oploshka\Rpc;
 interface DataLoaderInterface {
   
   /**
-   * start load data data
-   * and return???
-   *
+   * start load data
+   * and return error code
    **/
-  public function load();
+  public function load(&$methodName, &$methodData);
   
-  /**
-   * Get load data
-   * 
-   * @return load data
-   **/
-  public function get();
-  
-  /**
-   * Return error load
-   */
-  public function error();
-
 }

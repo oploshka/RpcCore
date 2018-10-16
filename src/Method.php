@@ -27,5 +27,12 @@ interface Method {
    * @param array $_DATA
    */
   public function run(&$_RESPONSE, $_DATA = array() );
-
+  
+  /**
+   * Get validation return scheme
+   *
+   * @return array Validation scheme
+   **/
+  // TODO: public function return();
+  
 }
