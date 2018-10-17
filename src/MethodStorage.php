@@ -4,7 +4,7 @@ namespace Oploshka\Rpc;
 
 class MethodStorage {
   
-  private $methods = array();
+  private $methods = [];
   
   public function __construct() {
   }

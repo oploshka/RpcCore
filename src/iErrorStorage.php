@@ -8,11 +8,11 @@ interface iErrorStorage {
   /**
    * Add error
    **/
-  public function add();
+  public function add($name, $data);
 
   /**
    * Get error info
    **/
-  public function get();
+  public function get($name);
 
 }
