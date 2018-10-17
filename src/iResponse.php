@@ -3,7 +3,7 @@
 namespace Oploshka\Rpc;
 
 // TODO
-interface ResponseInterface {
+interface iResponse {
   public function getData();
   public function getLog();
   public function getError();

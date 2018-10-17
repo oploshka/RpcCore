@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTest\TestMethod;
 
-class Test1 implements \Oploshka\Rpc\Method {
+class Test1 implements \Oploshka\Rpc\iMethod {
   
   public function description(){
     return <<<DESCRIPTION
@@ -22,6 +22,10 @@ DESCRIPTION;
     $_RESPONSE->setData('test1::int', 1);
     
     $_RESPONSE->error('ERROR_NOT');
+  }
+  
+  public function return(){
+    return [];
   }
   
 }

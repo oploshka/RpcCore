@@ -3,11 +3,11 @@
 namespace Oploshka\Rpc;
 
 // TODO: need optimization
-interface DataLoaderInterface {
+interface iDataLoader {
   
   /**
    * start load data
-   * and return error code
+   * and return true for success load or error string code
    **/
   public function load(&$methodName, &$methodData);
   

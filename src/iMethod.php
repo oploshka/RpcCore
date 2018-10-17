@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-interface Method {
+interface iMethod {
   
   /**
    * Get RPC method description
@@ -33,6 +33,6 @@ interface Method {
    *
    * @return array Validation scheme
    **/
-  // TODO: public function return();
+  public function return();
   
 }

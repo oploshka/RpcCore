@@ -143,7 +143,7 @@ class Core {
     $MethodClass = new $MethodClassName();
   
     // validate class interface
-    if ( !($MethodClass instanceof \Oploshka\Rpc\Method) ) {
+    if ( !($MethodClass instanceof \Oploshka\Rpc\iMethod) ) {
       $Response->setError('ERROR_NOT_INSTANCEOF_INTERFACE');
       return $Response;
     }

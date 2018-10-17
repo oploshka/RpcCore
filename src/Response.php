@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-class Response implements ResponseInterface {
+class Response implements iResponse {
   
   private $error    = 'ERROR_DEFAULT' ;
   private $data     = [];

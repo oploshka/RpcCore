@@ -3,7 +3,7 @@
 namespace Oploshka\Rpc;
 
 // TODO: need optimization
-interface ErrorStorageInterface {
+interface iErrorStorage {
 
   /**
    * Add error
