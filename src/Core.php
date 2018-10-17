@@ -11,15 +11,6 @@ class Core {
   private $LoadData;
   private $Response;
 
-  private $headerSettings = [
-    'Access-Control-Allow-Origin' => '*',
-  ];
-  private $phpSettings = [
-    'error_reporting'         => E_ALL,
-    'display_errors'          => 1,
-    'display_startup_errors'  => 1,
-    'date.timezone'           => 'UTC',
-  ];
   
   public function __construct($MethodStorage, $Reform) {
     $this->MethodStorage  = $MethodStorage;
@@ -31,23 +22,52 @@ class Core {
   }
   
   /**
-   * @param array $settings
+   * Header control
    */
+  private $headerSettings = [
+    'Access-Control-Allow-Origin' => '*',
+  ];
   public function setHeaderSettings($settings) {
     $this->headerSettings = $settings;
   }
   public function getHeaderSettings() {
     return $this->headerSettings;
   }
+  public function applyHeaderSettings() {
+    if ($this->headerSettings !== [] && headers_sent()) {
+      return false;
+    }
+    foreach ($this->headerSettings as $k => $v){
+      header("{$k}: {$v}");
+    }
+    return true;
+  }
   
   /**
-   * @param array $settings
+   * Php ini control
    */
+  private $phpSettings = [
+    'error_reporting'         => E_ALL,
+    'display_errors'          => 1,
+    'display_startup_errors'  => 1,
+    'date.timezone'           => 'UTC',
+  ];
   public function setPhpSettings($settings) {
     $this->phpSettings = $settings;
   }
   public function getPhpSettings() {
     return $this->headerSettings;
+  }
+  public function applyPhpSettings() {
+    $log = [];
+    foreach ($this->phpSettings as $k => $v){
+      try{
+        ini_set($k, $v);
+      } catch (Exception $e){
+        $log[] = $e->getMessage();
+      }
+    }
+    return $log === [] ? true : $log;
   }
   
   
@@ -75,37 +95,17 @@ class Core {
   public function run($methodName, $methodData) {
   
     ob_start();
-    if ($this->headerSettings !== [] && headers_sent()) {
-      $this->Response->setError('ERROR_SET_HEADER');
-      return $this->Response;
-    }
-    
-    foreach ($this->headerSettings as $k => $v){
-      header("{$k}: {$v}");
-    }
-  
     try{
-      foreach ($this->phpSettings as $k => $v){
-        ini_set($k, $v);
-      }
-    } catch (Exception $e){
-      $this->Response->setLog( 'iniSetError', $e->getMessage() );
-      $this->Response->setError('ERROR_INI_SET');
-      return $this->Response;
-    }
-    
-    try{
-      $response = $this->runMethod($methodName, $methodData);
+      $this->Response = $this->runMethod($methodName, $methodData);
     } catch (Exception $e){
       $this->Response->setLog( 'runMethodError', $e->getMessage() );
       $this->Response->setError('ERROR_METHOD_RUN');
       return $this->Response;
     }
-
     $this->Response->setLog('echo', ob_get_contents() );
     ob_end_clean();
     
-    return $response;
+    return $this->Response;
   }
   
   private function runMethod($methodName, $methodData){
