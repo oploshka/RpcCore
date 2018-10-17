@@ -8,17 +8,10 @@ class Core {
   
   private $MethodStorage;
   private $Reform;
-  private $LoadData;
-  private $Response;
 
-  
   public function __construct($MethodStorage, $Reform) {
     $this->MethodStorage  = $MethodStorage;
     $this->Reform         = $Reform;
-    // TODO fix
-    $this->DataLoader     = new DataLoader();
-    $this->Response       = new Response();
-    // $this->Error          = new Error();
   }
   
   /**
@@ -71,15 +64,16 @@ class Core {
   }
   
   
-  public function autoRun() {
+  public function autoRun($Response, $DataLoader) {
+    // $this->DataLoader     = new DataLoader();
     $methodName = '';
     $methodData = [];
-    $errorCode = $this->DataLoader->load($methodName, $methodData);
+    $errorCode = $DataLoader->load($methodName, $methodData);
     if($errorCode !== false){
-      $this->Response->setError($errorCode);
-      return $this->Response;
+      $Response->setError($errorCode);
+      return $Response;
     }
-    $this->run($methodName, $methodData);
+    $this->run($methodName, $methodData, $Response);
   }
   
   
@@ -88,39 +82,50 @@ class Core {
    *
    * @param string $methodName string
    * @param array $methodData array
+   * @param Response $Response Response
    *
    * @return Response
    *
    */
-  public function run($methodName, $methodData) {
+  public function run($methodName, $methodData, $Response) {
   
     ob_start();
     try{
-      $this->Response = $this->runMethod($methodName, $methodData);
+      $Response = $this->runMethod($methodName, $methodData, $Response);
     } catch (Exception $e){
-      $this->Response->setLog( 'runMethodError', $e->getMessage() );
-      $this->Response->setError('ERROR_METHOD_RUN');
-      return $this->Response;
+      $Response->setLog( 'runMethodError', $e->getMessage() );
+      $Response->setError('ERROR_METHOD_RUN');
+      return $Response;
     }
-    $this->Response->setLog('echo', ob_get_contents() );
+    $Response->setLog('echo', ob_get_contents() );
     ob_end_clean();
     
-    return $this->Response;
+    return $Response;
   }
   
-  private function runMethod($methodName, $methodData){
+  /**
+   * Run Rpc method
+   *
+   * @param string $methodName string
+   * @param array $methodData array
+   * @param Response $Response Response
+   *
+   * @return Response
+   *
+   */
+  private function runMethod($methodName, $methodData, $Response){
 
     // validate method name
     if( !is_string($methodName) || $methodName == '') {
-      $this->Response->setError('ERROR_NO_METHOD_NAME');
-      return $this->Response;
+      $Response->setError('ERROR_NO_METHOD_NAME');
+      return $Response;
     }
   
     // get method info
     $methodInfo = $this->MethodStorage->getMethodInfo($methodName);
     if(!$methodInfo) {
-      $this->Response->setError('ERROR_NO_METHOD_INFO');
-      return $this->Response;
+      $Response->setError('ERROR_NO_METHOD_INFO');
+      return $Response;
     }
   
     // method class create
@@ -129,39 +134,39 @@ class Core {
   
     // validate class interface
     if ( !($MethodClass instanceof \Oploshka\Rpc\Method) ) {
-      $this->Response->setError('ERROR_NOT_INSTANCEOF_INTERFACE', false);
-      return $this->Response;
+      $Response->setError('ERROR_NOT_INSTANCEOF_INTERFACE');
+      return $Response;
     }
   
     // validate method data
     $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass->validate()] );
     if($data === NULL) {
-      $this->Response->setError('ERROR_NOT_VALIDATE_DATA');
-      return $this->Response;
+      $Response->setError('ERROR_NOT_VALIDATE_DATA');
+      return $Response;
     }
 
-    $responseLink = $this->Response;
+    $responseLink = $Response;
     try {
-      $MethodClass->run($this->Response, $data);
+      $MethodClass->run($Response, $data);
     } catch (\Exception $e) {
-      $this->Response->setLog('methodRun', $e->getMessage());
+      $Response->setLog('methodRun', $e->getMessage());
     }
   
-    // $this->Response is Response class?
-    $responseType = gettype ( $this->Response );
-    if( $responseType === 'object' && get_class ( $this->Response ) != 'Oploshka\Rpc\Response'){
+    // $Response is Response class?
+    $responseType = gettype ( $Response );
+    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\Response'){
       
-      $responseLink->setLog( 'responseErrorType', gettype($this->Response) );
-      if( gettype ( $this->Response ) == 'object' ) {
-        $this->Response->setLog( 'responseErrorClass', get_class($this->Response) );
+      $responseLink->setLog( 'responseErrorType', gettype($Response) );
+      if( gettype ( $Response ) == 'object' ) {
+        $Response->setLog( 'responseErrorClass', get_class($Response) );
       }
       
       $responseLink->setError('ERROR_NOT_CORRECT_METHOD_RETURN');
       // reset response
-      $this->Response = $responseLink;
+      $Response = $responseLink;
     }
     
-    return $this->Response;
+    return $Response;
   }
   
 }

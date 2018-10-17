@@ -10,18 +10,7 @@ use PHPUnit\Framework\TestCase;
 class CoreTest extends TestCase {
 
   private function getRpcReform(){
-    return new \Oploshka\Reform\Reform([
-      'string'        => 'Oploshka\\ReformItem\\StringReform'       ,
-      'int'           => 'Oploshka\\ReformItem\\IntReform'          ,
-      'float'         => 'Oploshka\\ReformItem\\FloatReform'        ,
-      'email'         => 'Oploshka\\ReformItem\\EmailReform'        ,
-      'password'      => 'Oploshka\\ReformItem\\PasswordReform'     ,
-      'origin'        => 'Oploshka\\ReformItem\\OriginReform'       ,
-      'datetime'      => 'Oploshka\\ReformItem\\DateTimeReform'     ,
-      'json'          => 'Oploshka\\ReformItem\\JsonReform'         ,
-      'array'         => 'Oploshka\\ReformItem\\ArrayReform'        ,
-      'simpleArray'   => 'Oploshka\\ReformItem\\SimpleArrayReform'  ,
-    ]);
+    return new \Oploshka\Reform\Reform();
   }
   private function getRpcMethodStorage(){
     $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
@@ -33,14 +22,22 @@ class CoreTest extends TestCase {
     $MethodStorage  = $this->getRpcMethodStorage();
     $Reform         = $this->getRpcReform();
     $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
-    $Rpc->setHeaderSettings([]); // fix php unit test header send
+    $Rpc->applyPhpSettings();
     return $Rpc;
   }
   
+  public function testApplyPhpSettings() {
+    $MethodStorage  = $this->getRpcMethodStorage();
+    $Reform         = $this->getRpcReform();
+    $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
+    $logs = $Rpc->applyPhpSettings();
+    $this->assertEquals( $logs, true);
+  }
   public function testNoMethodName() {
     $Rpc = $this->getRpc();
-    
-    $response = $Rpc->run('', []);
+  
+    $response = new Response();
+    $response = $Rpc->run('', [], $response);
     
     $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_NAME');
     $this->assertEquals( $response->getData() , []);
@@ -49,8 +46,9 @@ class CoreTest extends TestCase {
   
   public function testNoMethod() {
     $Rpc = $this->getRpc();
-    
-    $response = $Rpc->run('test', []);
+  
+    $response = new Response();
+    $response = $Rpc->run('test', [], $response);
   
     $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_INFO');
     $this->assertEquals( $response->getData() , []);
@@ -59,8 +57,9 @@ class CoreTest extends TestCase {
   
   public function testMethodTest1() {
     $Rpc = $this->getRpc();
-    
-    $response = $Rpc->run('methodTest1', []);
+  
+    $response = new Response();
+    $response = $Rpc->run('methodTest1', [], $response);
   
     $this->assertEquals($response->getError(),  'ERROR_NOT');
     $this->assertEquals($response->getData(),  [
