@@ -64,16 +64,26 @@ class Core {
   }
   
   
-  public function autoRun($Response, $DataLoader) {
-    // $this->DataLoader     = new DataLoader();
+  public function autoRun($Response, $DataLoader, $Formatter, $ErrorStore) {
+    // TODO: fix this method
     $methodName = '';
     $methodData = [];
+    // data load
     $errorCode = $DataLoader->load($methodName, $methodData);
     if($errorCode !== false){
       $Response->setError($errorCode);
       return $Response;
     }
-    $this->run($methodName, $methodData, $Response);
+    // validate format required field
+    $errorCode = $Formatter->validate($methodName, $methodData);
+    if($errorCode !== false){
+      $Response->setError($errorCode);
+      return $Response;
+    }
+    // run method
+    $Response = $this->run($methodName, $methodData, $Response);
+    
+    return $Formatter->format($methodName, $methodData, $ErrorStore);
   }
   
   
