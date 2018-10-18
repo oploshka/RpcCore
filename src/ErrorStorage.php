@@ -16,12 +16,12 @@ class ErrorStorage implements iErrorStorage {
    * - message    -> error message,
    * - code       -> error code
    * - httpCode   -> https://ru.wikipedia.org/wiki/Список_кодов_состояния_HTTP
-   * -
+   * - ...
    *
    * @throws \Exception
    */
   public function add($name, $data){
-    // если все хорошо то добавляем
+    // todo: add validate
     $this->error[$name] = $data;
   }
   

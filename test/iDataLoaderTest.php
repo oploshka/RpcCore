@@ -11,7 +11,7 @@ class iDataLoaderTest extends TestCase {
     $methodName = '';
     $methodData = [];
     $result = $DataLoader->load($methodName, $methodData);
-    $this->assertEquals( $result, true);
+    $this->assertEquals( $result, 'ERROR_NOT');
     $this->assertEquals( $methodName, 'testMethod');
     $this->assertEquals( $methodData,  ['data1' => 'test']);
   }

@@ -63,27 +63,34 @@ class Core {
     return $log === [] ? true : $log;
   }
   
-  
+  /**
+   * @param Response $Response
+   * @param iDataLoader $DataLoader
+   * @param iReturnFormatter $Formatter
+   * @param iErrorStorage $ErrorStore
+   *
+   * @return Response
+   */
   public function autoRun($Response, $DataLoader, $Formatter, $ErrorStore) {
     // TODO: fix this method
     $methodName = '';
     $methodData = [];
     // data load
-    $errorCode = $DataLoader->load($methodName, $methodData);
-    if($errorCode !== false){
-      $Response->setError($errorCode);
+    $loadStatus = $DataLoader->load($methodName, $methodData);
+    if($loadStatus !== 'ERROR_NOT'){
+      $Response->setError($loadStatus);
       return $Response;
     }
     // validate format required field
-    $errorCode = $Formatter->validate($methodName, $methodData);
-    if($errorCode !== false){
-      $Response->setError($errorCode);
+    $validateStatus = $Formatter->validate($methodName, $methodData);
+    if($validateStatus !== 'ERROR_NOT'){
+      $Response->setError($validateStatus);
       return $Response;
     }
     // run method
     $Response = $this->run($methodName, $methodData, $Response);
     
-    return $Formatter->format($methodName, $methodData, $ErrorStore);
+    return $Formatter->format($methodName, $methodData, $Response, $ErrorStore);
   }
   
   
