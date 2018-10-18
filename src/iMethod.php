@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-interface Method {
+interface iMethod {
   
   /**
    * Get RPC method description
@@ -27,5 +27,12 @@ interface Method {
    * @param array $_DATA
    */
   public function run(&$_RESPONSE, $_DATA = array() );
-
+  
+  /**
+   * Get validation return scheme
+   *
+   * @return array Validation scheme
+   **/
+  public function return();
+  
 }

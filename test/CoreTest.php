@@ -10,18 +10,7 @@ use PHPUnit\Framework\TestCase;
 class CoreTest extends TestCase {
 
   private function getRpcReform(){
-    return new \Oploshka\Reform\Reform([
-      'string'        => 'Oploshka\\ReformItem\\StringReform'       ,
-      'int'           => 'Oploshka\\ReformItem\\IntReform'          ,
-      'float'         => 'Oploshka\\ReformItem\\FloatReform'        ,
-      'email'         => 'Oploshka\\ReformItem\\EmailReform'        ,
-      'password'      => 'Oploshka\\ReformItem\\PasswordReform'     ,
-      'origin'        => 'Oploshka\\ReformItem\\OriginReform'       ,
-      'datetime'      => 'Oploshka\\ReformItem\\DateTimeReform'     ,
-      'json'          => 'Oploshka\\ReformItem\\JsonReform'         ,
-      'array'         => 'Oploshka\\ReformItem\\ArrayReform'        ,
-      'simpleArray'   => 'Oploshka\\ReformItem\\SimpleArrayReform'  ,
-    ]);
+    return new \Oploshka\Reform\Reform();
   }
   private function getRpcMethodStorage(){
     $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
@@ -33,44 +22,50 @@ class CoreTest extends TestCase {
     $MethodStorage  = $this->getRpcMethodStorage();
     $Reform         = $this->getRpcReform();
     $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
-    $Rpc->setHeaderSettings([]); // fix php unit test header send
+    $Rpc->applyPhpSettings();
     return $Rpc;
   }
   
+  public function testApplyPhpSettings() {
+    $MethodStorage  = $this->getRpcMethodStorage();
+    $Reform         = $this->getRpcReform();
+    $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
+    $logs = $Rpc->applyPhpSettings();
+    $this->assertEquals( $logs, true);
+  }
   public function testNoMethodName() {
     $Rpc = $this->getRpc();
-    
-    $response = $Rpc->run('', []);
-    $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NO_METHOD_NAME', true);
-    $this->assertTrue( $response['result'] === []);
-    $this->assertTrue( !isset($response['logs']));
+    $response = new Response();
+    $response = $Rpc->run('', [], $response);
+    
+    $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_NAME');
+    $this->assertEquals( $response->getData() , []);
+    $this->assertEquals( $response->getLog()  , []);
   }
   
   public function testNoMethod() {
     $Rpc = $this->getRpc();
-    
-    $response = $Rpc->run('test', []);
-    $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NO_METHOD_INFO', true);
-    $this->assertTrue( $response['result'] === []);
-    $this->assertTrue( !isset($response['logs']));
+    $response = new Response();
+    $response = $Rpc->run('test', [], $response);
+  
+    $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_INFO');
+    $this->assertEquals( $response->getData() , []);
+    $this->assertEquals( $response->getLog()  , []);
   }
   
   public function testMethodTest1() {
     $Rpc = $this->getRpc();
-    
-    $response = $Rpc->run('methodTest1', []);
-    $response = $response->getResponse();
   
-    $this->assertEquals($response['error'],  'ERROR_NOT', true);
-    $this->assertEquals($response['result'],  [
+    $response = new Response();
+    $response = $Rpc->run('methodTest1', [], $response);
+  
+    $this->assertEquals($response->getError(),  'ERROR_NOT');
+    $this->assertEquals($response->getData(),  [
       'test1::string' => 'test string',
       'test1::int' => 1,
     ]);
-    $this->assertTrue( isset($response['logs']));
-    $this->assertEquals($response['logs'],  ['test1::testLog']);
+    $this->assertEquals( $response->getLog()  , [ ['test1::string' => 'test string'] ] );
   }
 }

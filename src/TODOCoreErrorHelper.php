@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-class Error {
+class CoreErrorHelper {
   
   private static $errorInfo = [];
   
