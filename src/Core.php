@@ -8,44 +8,116 @@ class Core {
   
   private $MethodStorage;
   private $Reform;
-  private $LoadData;
-  private $Response;
 
-  private $headerSettings = [
-    'Access-Control-Allow-Origin' => '*',
-  ];
-  private $phpSettings = [
-    'error_reporting'         => E_ALL,
-    'display_errors'          => 1,
-    'display_startup_errors'  => 1,
-    'date.timezone'           => 'UTC',
-  ];
-  
   public function __construct($MethodStorage, $Reform) {
     $this->MethodStorage  = $MethodStorage;
     $this->Reform         = $Reform;
-    $this->LoadData       = [];
-    $this->Response       = new Response();
   }
   
   /**
-   * @param array $settings
+   * Header control
    */
+  private $headerSettings = [
+    'Access-Control-Allow-Origin' => '*',
+  ];
   public function setHeaderSettings($settings) {
     $this->headerSettings = $settings;
   }
   public function getHeaderSettings() {
     return $this->headerSettings;
   }
+  public function applyHeaderSettings() {
+    if ($this->headerSettings !== [] && headers_sent()) {
+      return false;
+    }
+    foreach ($this->headerSettings as $k => $v){
+      header("{$k}: {$v}");
+    }
+    return true;
+  }
   
   /**
-   * @param array $settings
+   * Php ini control
    */
+  private $phpSettings = [
+    'error_reporting'         => E_ALL,
+    'display_errors'          => 1,
+    'display_startup_errors'  => 1,
+    'date.timezone'           => 'UTC',
+  ];
   public function setPhpSettings($settings) {
     $this->phpSettings = $settings;
   }
   public function getPhpSettings() {
     return $this->headerSettings;
+  }
+  public function applyPhpSettings() {
+    $log = [];
+    foreach ($this->phpSettings as $k => $v){
+      try{
+        ini_set($k, $v);
+      } catch (Exception $e){
+        $log[] = $e->getMessage();
+      }
+    }
+    return $log === [] ? true : $log;
+  }
+  
+  /**
+   * @param Response $Response
+   * @param iDataLoader $DataLoader
+   * @param iReturnFormatter $Formatter
+   * @param iErrorStorage $ErrorStore
+   *
+   * @return Response
+   */
+  public function autoRun($Response, $DataLoader, $Formatter, $ErrorStore) {
+    // TODO: fix this method
+    $methodName = '';
+    $methodData = [];
+    // data load
+    $loadStatus = $DataLoader->load($methodName, $methodData);
+    if($loadStatus !== 'ERROR_NOT'){
+      $Response->setError($loadStatus);
+      return $Response;
+    }
+    // validate format required field
+    $validateStatus = $Formatter->validate($methodName, $methodData);
+    if($validateStatus !== 'ERROR_NOT'){
+      $Response->setError($validateStatus);
+      return $Response;
+    }
+    // run method
+    $Response = $this->run($methodName, $methodData, $Response);
+    
+    return $Formatter->format($methodName, $methodData, $Response, $ErrorStore);
+  }
+  
+  
+  /**
+   * Run Rpc method
+   *
+   * @param string $methodName string
+   * @param array $methodData array
+   * @param Response $Response Response
+   *
+   * @return Response
+   *
+   */
+  public function run($methodName, $methodData, $Response) {
+  
+    ob_start();
+    try{
+      $Response = $this->runMethod($methodName, $methodData, $Response);
+    } catch (Exception $e){
+      $Response->setLog( 'runMethodError', $e->getMessage() );
+      $Response->setError('ERROR_METHOD_RUN');
+      return $Response;
+    }
+    $Response->setLog('echo', ob_get_contents() );
+    ob_end_clean();
+    
+    return $Response;
   }
   
   /**
@@ -53,59 +125,24 @@ class Core {
    *
    * @param string $methodName string
    * @param array $methodData array
+   * @param Response $Response Response
    *
    * @return Response
    *
    */
-  public function run($methodName, $methodData) {
-  
-    ob_start();
-    if ($this->headerSettings !== [] && headers_sent()) {
-      $this->Response->error('ERROR_SET_HEADER', false);
-      return $this->Response;
-    }
-    
-    foreach ($this->headerSettings as $k => $v){
-      header("{$k}: {$v}");
-    }
-  
-    try{
-      foreach ($this->phpSettings as $k => $v){
-        ini_set($k, $v);
-      }
-    } catch (Exception $e){
-      $this->Response->logAdd( $e->getMessage() );
-      $this->Response->error('ERROR_INI_SET', false);
-      return $this->Response;
-    }
-    
-    try{
-      $response = $this->runMethod($methodName, $methodData);
-    } catch (Exception $e){
-      $this->Response->logAdd( $e->getMessage() );
-      $this->Response->error('ERROR_METHOD_RUN', false);
-      return $this->Response;
-    }
-
-    $this->Response->logAdd( ob_get_contents() );
-    ob_end_clean();
-    
-    return $response;
-  }
-  
-  private function runMethod($methodName, $methodData){
+  private function runMethod($methodName, $methodData, $Response){
 
     // validate method name
     if( !is_string($methodName) || $methodName == '') {
-      $this->Response->error('ERROR_NO_METHOD_NAME', false);
-      return $this->Response;
+      $Response->setError('ERROR_NO_METHOD_NAME');
+      return $Response;
     }
   
     // get method info
     $methodInfo = $this->MethodStorage->getMethodInfo($methodName);
     if(!$methodInfo) {
-      $this->Response->error('ERROR_NO_METHOD_INFO', false);
-      return $this->Response;
+      $Response->setError('ERROR_NO_METHOD_INFO');
+      return $Response;
     }
   
     // method class create
@@ -113,40 +150,40 @@ class Core {
     $MethodClass = new $MethodClassName();
   
     // validate class interface
-    if ( !($MethodClass instanceof \Oploshka\Rpc\Method) ) {
-      $this->Response->error('ERROR_NOT_INSTANCEOF_INTERFACE', false);
-      $this->Response->logAdd();
-      return $this->Response;
+    if ( !($MethodClass instanceof \Oploshka\Rpc\iMethod) ) {
+      $Response->setError('ERROR_NOT_INSTANCEOF_INTERFACE');
+      return $Response;
     }
   
     // validate method data
     $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass->validate()] );
     if($data === NULL) {
-      $this->Response->error('ERROR_NOT_VALIDATE_DATA', false);
-      return $this->Response;
+      $Response->setError('ERROR_NOT_VALIDATE_DATA');
+      return $Response;
     }
 
-    $responseLink = $this->Response;
+    $responseLink = $Response;
     try {
-      $MethodClass->run($this->Response, $data);
+      $MethodClass->run($Response, $data);
     } catch (\Exception $e) {
-      $this->Response->logAdd( $e->getMessage());
+      $Response->setLog('methodRun', $e->getMessage());
     }
   
-    // проверим что метод не убил класс ответа
-    if( gettype ( $this->Response ) != 'object' || get_class ( $this->Response ) != 'Oploshka\Rpc\Response'){
-      // Класс убил наш ответ, реанимируем его
-      $responseError = $this->Response;
-      $this->Response = $responseLink;
-      // запишем инфу в логи для дебага
-      $this->Response->logAdd( 'gettype = ('   . gettype( $responseError )   . ');' );
-      if( gettype ( $this->Response ) == 'object' ) {
-        $this->Response->logAdd( 'get_class = (' . get_class( $responseError ) . ');' );
+    // $Response is Response class?
+    $responseType = gettype ( $Response );
+    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\Response'){
+      
+      $responseLink->setLog( 'responseErrorType', gettype($Response) );
+      if( gettype ( $Response ) == 'object' ) {
+        $Response->setLog( 'responseErrorClass', get_class($Response) );
       }
-      $this->Response->error('ERROR_NOT_CORRECT_METHOD_RETURN', false);
+      
+      $responseLink->setError('ERROR_NOT_CORRECT_METHOD_RETURN');
+      // reset response
+      $Response = $responseLink;
     }
     
-    return $this->Response;
+    return $Response;
   }
   
 }
