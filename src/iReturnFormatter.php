@@ -13,7 +13,7 @@ interface iReturnFormatter {
    *
    * @return string
    **/
-  public function validate($methodName, $methodData);
+  public function prepare($loadData, &$methodName, &$methodData);
   
   /**
    *

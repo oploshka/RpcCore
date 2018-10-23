@@ -75,14 +75,15 @@ class Core {
     // TODO: fix this method
     $methodName = '';
     $methodData = [];
+    $loadData = [];
     // data load
-    $loadStatus = $DataLoader->load($methodName, $methodData);
+    $loadStatus = $DataLoader->load($loadData);
     if($loadStatus !== 'ERROR_NOT'){
       $Response->setError($loadStatus);
       return $Response;
     }
     // validate format required field
-    $validateStatus = $Formatter->validate($methodName, $methodData);
+    $validateStatus = $Formatter->prepare($loadData, $methodName, $methodData);
     if($validateStatus !== 'ERROR_NOT'){
       $Response->setError($validateStatus);
       return $Response;
