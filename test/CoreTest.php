@@ -12,6 +12,12 @@ class CoreTest extends TestCase {
   private function getRpcReform(){
     return new \Oploshka\Reform\Reform();
   }
+  private function getDataLoader(){
+    return new \Oploshka\RpcTest\TestDataLoader\DataLoaderSuccess();
+  }
+  private function getReturnFormatter(){
+    return new \Oploshka\RpcTest\TestReturnFormatter\ReturnFormatterSuccess();;
+  }
   private function getRpcMethodStorage(){
     $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
     $MethodStorage->add('methodTest1', 'Oploshka\\RpcTest\\TestMethod\\Test1');
@@ -19,25 +25,31 @@ class CoreTest extends TestCase {
     return $MethodStorage;
   }
   private function getRpc(){
-    $MethodStorage  = $this->getRpcMethodStorage();
-    $Reform         = $this->getRpcReform();
-    $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
+    $MethodStorage    = $this->getRpcMethodStorage();
+    $Reform           = $this->getRpcReform();
+    $DataLoader       = $this->getDataLoader();
+    $ReturnFormatter  = $this->getReturnFormatter();
+    $ResponseClass = new \Oploshka\Rpc\Response();
+    $Rpc = new \Oploshka\Rpc\Core($MethodStorage, $Reform, $DataLoader, $ReturnFormatter, $ResponseClass);
     $Rpc->applyPhpSettings();
     return $Rpc;
   }
   
   public function testApplyPhpSettings() {
-    $MethodStorage  = $this->getRpcMethodStorage();
-    $Reform         = $this->getRpcReform();
-    $Rpc        = new \Oploshka\Rpc\Core($MethodStorage, $Reform);
+    $MethodStorage    = $this->getRpcMethodStorage();
+    $Reform           = $this->getRpcReform();
+    $DataLoader       = $this->getDataLoader();
+    $ReturnFormatter  = $this->getReturnFormatter();
+    $ResponseClass = new \Oploshka\Rpc\Response();
+    $Rpc = new \Oploshka\Rpc\Core($MethodStorage, $Reform, $DataLoader, $ReturnFormatter, $ResponseClass);
+
     $logs = $Rpc->applyPhpSettings();
     $this->assertEquals( $logs, true);
   }
   public function testNoMethodName() {
     $Rpc = $this->getRpc();
-  
-    $response = new Response();
-    $response = $Rpc->run('', [], $response);
+
+    $response = $Rpc->runMethod('', []);
     
     $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_NAME');
     $this->assertEquals( $response->getData() , []);
@@ -46,9 +58,8 @@ class CoreTest extends TestCase {
   
   public function testNoMethod() {
     $Rpc = $this->getRpc();
-  
-    $response = new Response();
-    $response = $Rpc->run('test', [], $response);
+
+    $response = $Rpc->runMethod('test', []);
   
     $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_INFO');
     $this->assertEquals( $response->getData() , []);
@@ -59,7 +70,7 @@ class CoreTest extends TestCase {
     $Rpc = $this->getRpc();
   
     $response = new Response();
-    $response = $Rpc->run('methodTest1', [], $response);
+    $response = $Rpc->runMethod('methodTest1', [], $response);
   
     $this->assertEquals($response->getError(),  'ERROR_NOT');
     $this->assertEquals($response->getData(),  [
