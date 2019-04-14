@@ -7,7 +7,7 @@ class Core {
   private $MethodStorage;   // храним данные по методам
   private $Reform;          // валидация данных
   private $DataLoader;      // загрузка данных
-  // private $ErrorStorage;    // данные по ошибкам // TODO: передавать в $ReturnFormatter
+  private $ErrorStorage;    // данные по ошибкам // TODO: передавать в $ReturnFormatter
   private $ReturnFormatter; // в каком формате отдавать данные
   private $ResponseClass;   // именно класс, а не обьект Класса
 
@@ -28,6 +28,7 @@ class Core {
     $this->DataLoader       = $DataLoader;
     $this->ReturnFormatter  = $ReturnFormatter;
     $this->ResponseClass    = $ResponseClass; // TODO: \Oploshka\Rpc\Response;
+    $this->ErrorStorage     = new \Oploshka\Rpc\ErrorStorage(); // TODO: delete;
   }
   
   /**
@@ -108,7 +109,7 @@ class Core {
     // run method
     $Response = $this->runMethod($methodName, $methodData);
     
-    return $this->ReturnFormatter->format($methodName, $methodData, $Response);
+    return $this->ReturnFormatter->format($methodName, $methodData, $Response, $this->ErrorStorage);
   }
   
   
