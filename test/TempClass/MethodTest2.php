@@ -14,13 +14,12 @@ DESCRIPTION;
     return [];
   }
   
-  public function run(&$_RESPONSE, $_DATA = array() ){
+  public function run(){
     $this->Response->infoAdd('string', 'test string');
     $this->Response->infoAdd('int', 1);
     $this->Response->error('ERROR_NOT');
   }
-  
-  
+
   public function return(){
     return [];
   }

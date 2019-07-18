@@ -4,17 +4,16 @@ namespace Oploshka\Rpc;
 
 use PHPUnit\Framework\TestCase;
 
-class CoreTest extends TestCase {
+class CoreStartProcessingMethodTest extends TestCase {
 
-  public function testApplyPhpSettings() {
-    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
-    $logs = $Rpc->applyPhpSettings();
-    $this->assertEquals( $logs, true);
-  }
+  //public function testApplyPhpSettings() {
+  //  $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+  //  $logs = $Rpc->applyPhpSettings();
+  //  $this->assertEquals( $logs, true);
+  //}
 
   public function testNoMethodName() {
     $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
-    $Rpc->applyPhpSettings();
 
     $response = $Rpc->startProcessingMethod('', []);
 
@@ -25,7 +24,6 @@ class CoreTest extends TestCase {
   
   public function testNoMethod() {
     $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
-    $Rpc->applyPhpSettings();
 
     $response = $Rpc->startProcessingMethod('test', []);
   
@@ -36,7 +34,6 @@ class CoreTest extends TestCase {
   
   public function testMethodTest1() {
     $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
-    $Rpc->applyPhpSettings();
 
     $response = new Response();
     $response = $Rpc->startProcessingMethod('methodTest1', [], $response);

@@ -89,11 +89,6 @@ class Core implements \Oploshka\RpcInterface\Core {
   }
 
   /**
-   * @param Response $Response
-   * @param iDataLoader $DataLoader
-   * @param iReturnFormatter $Formatter
-   * @param iErrorStorage $ErrorStore
-   *
    * @return Response
    */
   public function startProcessingRequest() {
@@ -128,7 +123,6 @@ class Core implements \Oploshka\RpcInterface\Core {
    * @param array $methodData array
    *
    * @return Response
-   *
    */
   public function startProcessingMethod($methodName, $methodData ) {
 
@@ -137,7 +131,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     try{
       $Response = $this->runMethod($methodName, $methodData, $Response);
     } catch (Exception $e){
-      $Response->setLog( 'runMethodError', $e->getMessage() );
+      // TODO // $Response->setLog( 'runMethodError', $e->getMessage() );
       $Response->setError('ERROR_METHOD_RUN');
       return $Response;
     }

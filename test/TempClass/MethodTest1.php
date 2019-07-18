@@ -15,9 +15,7 @@ DESCRIPTION;
   }
   
   public function run(){
-    
-    // $_RESPONSE->setLog('test1::string', 'test string');
-    
+
     $this->Response->setData('test1::string', 'test string');
     $this->Response->setData('test1::int', 1);
 
