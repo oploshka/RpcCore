@@ -4,8 +4,8 @@ namespace Oploshka\RpcTest\TempClass;
 
 class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
 
-  public function prepare($loadData, &$methodName, &$methodData) {
-
+  public function prepare($loadData, &$methodList) {
+    $methodList = [];
     /*
     [
       'specification'         => 'multipart-json-rpc',
@@ -20,8 +20,10 @@ class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
 
     if(!isset( $loadData['method'], $loadData['params'] ) ){ return 'ERROR_NOT_CORRECT_DATA'; }
 
-    $methodName = $loadData['method'];
-    $methodData = $loadData['params'];
+    $methodList[] = [
+      'method' => $loadData['method'],
+      'params'=> $loadData['params']
+    ];
 
     return 'ERROR_NOT';
   }

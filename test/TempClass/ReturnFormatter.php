@@ -3,9 +3,7 @@
 namespace Oploshka\RpcTest\TempClass;
 
 class ReturnFormatter implements \Oploshka\RpcInterface\ReturnFormatter{
-  public function format($methodName, $methodData, $Response, $ErrorStore) {
-    return [
-      $methodName, $methodData, $Response, $ErrorStore
-    ];
+  public function format($responseList) {
+    return $responseList;
   }
 }

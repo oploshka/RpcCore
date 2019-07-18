@@ -36,7 +36,7 @@ class CoreStartProcessingMethodTest extends TestCase {
     $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
 
     $response = new Response();
-    $response = $Rpc->startProcessingMethod('methodTest1', [], $response);
+    $response = $Rpc->startProcessingMethod('MethodTest1', [], $response);
   
     $this->assertEquals($response->getError(),  'ERROR_NOT');
     $this->assertEquals($response->getData(),  [

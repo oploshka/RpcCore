@@ -37,8 +37,8 @@ class RpcInit {
   }
   public static function getRpcMethodStorage(){
     $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
-    $MethodStorage->add('methodTest1', 'Oploshka\\RpcTest\\TempClass\\MethodTest1');
-    $MethodStorage->add('methodTest2', 'Oploshka\\RpcTest\\TempClass\\MethodTest2');
+    $MethodStorage->add('MethodTest1', 'Oploshka\\RpcTest\\TempClass\\MethodTest1');
+    $MethodStorage->add('MethodTest2', 'Oploshka\\RpcTest\\TempClass\\MethodTest2');
     return $MethodStorage;
   }
   public static function getResponseClass(){
