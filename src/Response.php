@@ -2,20 +2,20 @@
 
 namespace Oploshka\Rpc;
 
-class Response implements iResponse {
+class Response implements \Oploshka\RpcInterface\Response {
   
   private $error    = 'ERROR_DEFAULT' ;
   private $data     = [];
-  private $log      = [];
-  
+
+  public function getData(){
+    return $this->data;
+  }
   public function setData($key, $value){
     $this->data[$key] = $value;
   }
-  public function setLog($key, $value = ''){
-    if($value === ''){
-      return;
-    }
-    $this->log[] = [$key => $value];
+
+  public function getError(){
+    return $this->error;
   }
   public function setError($name){
     $this->error = $name;
@@ -24,16 +24,4 @@ class Response implements iResponse {
     $this->setError($name);
     throw new \Exception('');
   }
-  
-  
-  public function getData(){
-    return $this->data;
-  }
-  public function getLog(){
-    return $this->log;
-  }
-  public function getError(){
-    return $this->error;
-  }
-  
 }

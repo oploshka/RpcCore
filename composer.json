@@ -9,11 +9,11 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0"
+    "php": ">=7.2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6",
-    "oploshka/reform": "^0"
+    "phpunit/phpunit": "^8",
+    "oploshka/reform": "0.3.0"
   },
   "autoload": {
     "psr-4": {

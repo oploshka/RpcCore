@@ -1,10 +1,10 @@
 <?php
 
-namespace Oploshka\RpcTest\TestReturnFormatter;
+namespace Oploshka\RpcTest\TempClass;
 
-class ReturnFormatterSuccess implements \Oploshka\Rpc\iReturnFormatter{
+class ReturnFormatterError implements \Oploshka\RpcInterface\ReturnFormatter{
   public function prepare($loadData, &$methodName, &$methodData) {
-    return 'ERROR_NOT';
+    return 'ERROR_RETURN_FORMATTER_VALIDATE';
   }
   public function format($methodName, $methodData, $Response, $ErrorStore) {
     return '';

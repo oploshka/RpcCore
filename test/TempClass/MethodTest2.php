@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTest\TestMethod;
 
-class Test1 implements \Oploshka\Rpc\iMethod {
+class MethodTest2 extends \Oploshka\Rpc\Method {
   
   public function description(){
     return <<<DESCRIPTION
@@ -15,14 +15,11 @@ DESCRIPTION;
   }
   
   public function run(&$_RESPONSE, $_DATA = array() ){
-    
-    $_RESPONSE->setLog('test1::string', 'test string');
-    
-    $_RESPONSE->setData('test1::string', 'test string');
-    $_RESPONSE->setData('test1::int', 1);
-    
-    $_RESPONSE->error('ERROR_NOT');
+    $this->Response->infoAdd('string', 'test string');
+    $this->Response->infoAdd('int', 1);
+    $this->Response->error('ERROR_NOT');
   }
+  
   
   public function return(){
     return [];

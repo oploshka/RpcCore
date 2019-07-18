@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcTest\TestDataLoader;
+namespace Oploshka\RpcTest\TempClass;
 
-class DataLoaderSuccess implements \Oploshka\Rpc\iDataLoader {
+class DataLoaderSuccess implements \Oploshka\RpcInterface\DataLoader {
   
   public function load(&$loadData){
     $loadData['method'] = 'testMethod';
