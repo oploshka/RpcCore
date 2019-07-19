@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcDataFormatterTest;
+namespace Oploshka\RpcHelperTest\DataFormatter;
 
 class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
 

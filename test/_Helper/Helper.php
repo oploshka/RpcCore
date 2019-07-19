@@ -48,18 +48,18 @@ class Helper {
     return new \Oploshka\Reform\Reform();
   }
   public static function getDataLoader(){
-    return new \Oploshka\RpcDataLoaderTest\DataLoader();
+    return new \Oploshka\RpcHelperTest\DataLoader\DataLoader();
   }
   public static function getDataFormatter(){
-    return new \Oploshka\RpcDataFormatterTest\DataFormatter();
+    return new \Oploshka\RpcHelperTest\DataFormatter\DataFormatter();
   }
   public static function getReturnFormatter(){
-    return new \Oploshka\RpcReturnFormatterTest\ReturnFormatter();
+    return new \Oploshka\RpcHelperTest\ReturnFormatter\ReturnFormatter();
   }
   public static function getRpcMethodStorage(){
     $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
-    $MethodStorage->add('MethodTest1', 'Oploshka\\RpcMethodTest\\MethodTest1');
-    $MethodStorage->add('MethodTest2', 'Oploshka\\RpcMethodTest\\MethodTest2');
+    $MethodStorage->add('MethodTest1', 'Oploshka\\RpcHelperTest\\Method\\MethodTest1');
+    $MethodStorage->add('MethodTest2', 'Oploshka\\RpcHelperTest\\Method\\MethodTest2');
     return $MethodStorage;
   }
   public static function getResponseClass(){

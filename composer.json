@@ -17,21 +17,17 @@
   },
   "autoload": {
     "psr-4": {
-      "Oploshka\\RpcInterface\\"        : "src/interface",
-      "Oploshka\\Rpc\\"                 : "src/code/core",
-      "Oploshka\\RpcDataFormatter\\"    : "src/code/dataFormatter",
-      "Oploshka\\RpcDataLoader\\"       : "src/code/dataLoader",
-      "Oploshka\\RpcReturnFormatter\\"  : "src/code/returnFormatter"
+      "Oploshka\\RpcInterface\\"        : "src/Interface",
+      "Oploshka\\Rpc\\"                 : "src/Code/Core",
+      "Oploshka\\RpcDataFormatter\\"    : "src/Code/DataFormatter",
+      "Oploshka\\RpcDataLoader\\"       : "src/Code/DataLoader",
+      "Oploshka\\RpcReturnFormatter\\"  : "src/Code/ReturnFormatter"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Oploshka\\RpcTest\\"                 : "test/core",
-      "Oploshka\\RpcHelperTest\\"           : "test/helper",
-      "Oploshka\\RpcMethodTest\\"           : "test/helper/method",
-      "Oploshka\\RpcDataFormatterTest\\"    : "test/helper/dataFormatter",
-      "Oploshka\\RpcDataLoaderTest\\"       : "test/helper/dataLoader",
-      "Oploshka\\RpcReturnFormatterTest\\"  : "test/helper/returnFormatter"
+      "Oploshka\\RpcTest\\"                 : "test/Core",
+      "Oploshka\\RpcHelperTest\\"           : "test/_Helper"
     }
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcDataLoaderTest;
+namespace Oploshka\RpcHelperTest\DataLoader;
 
 class DataLoader implements \Oploshka\RpcInterface\DataLoader {
   

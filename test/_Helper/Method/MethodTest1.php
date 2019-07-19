@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcMethodTest;
+namespace Oploshka\RpcHelperTest\Method;
 
 class MethodTest1 extends \Oploshka\Rpc\Method {
   
