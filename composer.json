@@ -17,8 +17,11 @@
   },
   "autoload": {
     "psr-4": {
-      "Oploshka\\Rpc\\"         : "src/code",
-      "Oploshka\\RpcInterface\\": "src/interface"
+      "Oploshka\\RpcInterface\\"    : "src/interface",
+      "Oploshka\\Rpc\\"             : "src/code/core",
+      "Oploshka\\DataFormatter\\"   : "src/code/DataFormatter",
+      "Oploshka\\RpcDataLoader\\"   : "src/code/RpcDataLoader",
+      "Oploshka\\ReturnFormatter\\" : "src/code/ReturnFormatter",
     }
   },
   "autoload-dev": {
