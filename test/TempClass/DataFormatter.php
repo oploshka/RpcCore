@@ -20,10 +20,20 @@ class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
 
     if(!isset( $loadData['method'], $loadData['params'] ) ){ return 'ERROR_NOT_CORRECT_DATA'; }
 
-    $methodList[] = [
-      'method' => $loadData['method'],
-      'params'=> $loadData['params']
-    ];
+    if( $loadData['method'] !== 'multiple' ){
+      $methodList[] = [
+        'method' => $loadData['method'],
+        'params'=> $loadData['params']
+      ];
+      return 'ERROR_NOT';
+    }
+
+    foreach ($loadData['params'] as $param){
+      $methodList[] = [
+        'method' => isset($param['method']) ? $param['method'] : '',
+        'params' => isset($param['params']) ? $param['params'] : [],
+      ];
+    }
 
     return 'ERROR_NOT';
   }

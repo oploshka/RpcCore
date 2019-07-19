@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcTest\TestMethod;
+namespace Oploshka\RpcTest\TempClass;
 
 class MethodTest2 extends \Oploshka\Rpc\Method {
   
@@ -15,9 +15,8 @@ DESCRIPTION;
   }
   
   public function run(){
-    $this->Response->infoAdd('string', 'test string');
-    $this->Response->infoAdd('int', 1);
-    $this->Response->error('ERROR_NOT');
+    $this->Response->setData('methodName', 'MethodTest2');
+    $this->Response->setError('ERROR_NOT');
   }
 
   public function return(){

@@ -41,4 +41,16 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( $response->getData(), ['test1::string' => 'test string', 'test1::int' => 1]);
   }
 
+  public function testBasicMultipleMethodRun() {
+    $_POST = [ 'data' => \Oploshka\RpcTest\TempClass\RpcInit::getRpcMultipleData() ];
+    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+    $responseList = $Rpc->startProcessingRequest();
+    $this->assertEquals( count($responseList), 2);
+    $response = $responseList[0];
+    $this->assertEquals( $response->getError(), 'ERROR_NOT');
+    $this->assertEquals( $response->getData(), ['test1::string' => 'test string', 'test1::int' => 1]);
+    $response = $responseList[1];
+    $this->assertEquals( $response->getError(), 'ERROR_NOT');
+    $this->assertEquals( $response->getData(), ['methodName' => 'MethodTest2']);
+  }
 }

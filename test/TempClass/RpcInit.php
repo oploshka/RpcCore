@@ -4,20 +4,41 @@ namespace Oploshka\RpcTest\TempClass;
 
 class RpcInit {
 
+  public static function getRpcTestDataParams(){
+    return [
+      'string'  => 'string',
+      'int'     => 123456,
+      'float'   => 1.2345,
+      'array'   => [
+        'array->string'  => 'array->string',
+        'array->int'     => 654321,
+        'array->float'   => 6.5432,
+      ],
+    ];
+  }
   public static function getRpcTestData(){
     return [
       'specification'         => 'multipart-json-rpc',
       'specificationVersion'  => '0.1',
       'language'              => 'ru',
       'method'                => 'MethodTest1',
+      'params'                => self::getRpcTestDataParams(),
+    ];
+  }
+  public static function getRpcMultipleData(){
+    return [
+      'specification'         => 'multipart-json-rpc',
+      'specificationVersion'  => '0.1',
+      'language'              => 'ru',
+      'method'                => 'multiple',
       'params'                => [
-        'string'  => 'string',
-        'int'     => 123456,
-        'float'   => 1.2345,
-        'array'   => [
-          'array->string'  => 'array->string',
-          'array->int'     => 654321,
-          'array->float'   => 6.5432,
+        [
+          'method'                => 'MethodTest1',
+          'params'                => self::getRpcTestDataParams(),
+        ],
+        [
+          'method'                => 'MethodTest2',
+          'params'                => self::getRpcTestDataParams(),
         ],
       ],
     ];
