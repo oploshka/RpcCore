@@ -12,7 +12,7 @@ interface DataFormatter {
    *
    * @return string
    **/
-  public function prepare($loadData, &$methodList);
+  public function prepare($loadData, &$methodList, &$requestType);
   
 }
 

@@ -4,7 +4,7 @@ namespace Oploshka\RpcTest\TempClass;
 
 class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
 
-  public function prepare($loadData, &$methodList) {
+  public function prepare($loadData, &$methodList, &$requestType) {
     $methodList = [];
     /*
     [
@@ -28,6 +28,7 @@ class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
       return 'ERROR_NOT';
     }
 
+    $requestType = 'multiple';
     foreach ($loadData['params'] as $param){
       $methodList[] = [
         'method' => isset($param['method']) ? $param['method'] : '',

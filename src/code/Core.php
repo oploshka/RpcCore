@@ -93,21 +93,32 @@ class Core implements \Oploshka\RpcInterface\Core {
    */
   public function startProcessingRequest() {
     // data load
+    $requestType = 'single';
     $loadData = [];
     $loadStatus = $this->DataLoader->load($loadData);
     if($loadStatus !== 'ERROR_NOT'){
       $Response = new $this->ResponseClass();
       $Response->setError($loadStatus);
-      return $this->ReturnFormatter->format([ $Response ]);
+      return $this->ReturnFormatter->format([
+        'requestType'   => $requestType,
+        'responseList' => [ $Response ],
+        // 'loadData'     => [],
+        // 'methodList'   => [],
+      ]);
     }
 
     // validate format required field
     $methodList = [];
-    $validateStatus = $this->DataFormatter->prepare($loadData, $methodList);
+    $validateStatus = $this->DataFormatter->prepare($loadData, $methodList, $requestType);
     if($validateStatus !== 'ERROR_NOT'){
       $Response = new $this->ResponseClass();
       $Response->setError($validateStatus);
-      return $this->ReturnFormatter->format([ $Response ]);
+      return $this->ReturnFormatter->format([
+        'requestType'   => $requestType,
+        'responseList' => [ $Response ],
+        // 'loadData'     => [],
+        // 'methodList'   => [],
+      ]);
     }
 
     // run method
