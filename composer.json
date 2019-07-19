@@ -17,7 +17,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Oploshka\\Rpc\\": "src"
+      "Oploshka\\Rpc\\"         : "src/code",
+      "Oploshka\\RpcInterface\\": "src/interface"
     }
   },
   "autoload-dev": {

@@ -117,7 +117,11 @@ class Core implements \Oploshka\RpcInterface\Core {
       $responseList[] = $this->startProcessingMethod($methodItem['method'], $methodItem['params']);
     }
     
-    return $this->ReturnFormatter->format($responseList);
+    return $this->ReturnFormatter->format( [
+      'loadData'     => $loadData,
+      'methodList'   => $methodList,
+      'responseList' => $responseList,
+    ]);
 
   }
   
