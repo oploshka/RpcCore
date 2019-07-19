@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
@@ -8,7 +8,7 @@ class CoreStartProcessingRequestTest extends TestCase {
 
   public function testEmptyRequest() {
     $_POST = [];
-    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+    $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
     $returnObj = $Rpc->startProcessingRequest();
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
@@ -18,7 +18,7 @@ class CoreStartProcessingRequestTest extends TestCase {
 
   public function testNotCorrectData() {
     $_POST = [ 'data' => 'string'];
-    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+    $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
     $returnObj = $Rpc->startProcessingRequest();
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
@@ -26,7 +26,7 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( $response->getError(), 'ERROR_NOT_CORRECT_DATA');
 
     $_POST = [ 'data' => [] ];
-    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+    $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
     $returnObj = $Rpc->startProcessingRequest();
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
@@ -35,8 +35,8 @@ class CoreStartProcessingRequestTest extends TestCase {
   }
 
   public function testBasicMethodRun() {
-    $_POST = [ 'data' => \Oploshka\RpcTest\TempClass\RpcInit::getRpcTestData() ];
-    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+    $_POST = [ 'data' => \Oploshka\RpcHelperTest\Helper::getRpcTestData() ];
+    $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
     $returnObj = $Rpc->startProcessingRequest();
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
@@ -46,8 +46,8 @@ class CoreStartProcessingRequestTest extends TestCase {
   }
 
   public function testBasicMultipleMethodRun() {
-    $_POST = [ 'data' => \Oploshka\RpcTest\TempClass\RpcInit::getRpcMultipleData() ];
-    $Rpc = \Oploshka\RpcTest\TempClass\RpcInit::getRpc();
+    $_POST = [ 'data' => \Oploshka\RpcHelperTest\Helper::getRpcMultipleData() ];
+    $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
     $returnObj = $Rpc->startProcessingRequest();
     $this->assertEquals( $returnObj['requestType'], 'multiple');
     $this->assertEquals( count($returnObj['responseList']), 2);

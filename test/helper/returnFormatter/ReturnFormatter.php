@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcTest\TempClass;
+namespace Oploshka\RpcReturnFormatterTest;
 
 class ReturnFormatter implements \Oploshka\RpcInterface\ReturnFormatter{
   public function format($obj) {

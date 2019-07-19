@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcTest\TempClass;
+namespace Oploshka\RpcHelperTest;
 
-class RpcInit {
+class Helper {
 
   public static function getRpcTestDataParams(){
     return [
@@ -48,18 +48,18 @@ class RpcInit {
     return new \Oploshka\Reform\Reform();
   }
   public static function getDataLoader(){
-    return new \Oploshka\RpcTest\TempClass\DataLoader();
+    return new \Oploshka\RpcDataLoaderTest\DataLoader();
   }
   public static function getDataFormatter(){
-    return new \Oploshka\RpcTest\TempClass\DataFormatter();
+    return new \Oploshka\RpcDataFormatterTest\DataFormatter();
   }
   public static function getReturnFormatter(){
-    return new \Oploshka\RpcTest\TempClass\ReturnFormatter();
+    return new \Oploshka\RpcReturnFormatterTest\ReturnFormatter();
   }
   public static function getRpcMethodStorage(){
     $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
-    $MethodStorage->add('MethodTest1', 'Oploshka\\RpcTest\\TempClass\\MethodTest1');
-    $MethodStorage->add('MethodTest2', 'Oploshka\\RpcTest\\TempClass\\MethodTest2');
+    $MethodStorage->add('MethodTest1', 'Oploshka\\RpcMethodTest\\MethodTest1');
+    $MethodStorage->add('MethodTest2', 'Oploshka\\RpcMethodTest\\MethodTest2');
     return $MethodStorage;
   }
   public static function getResponseClass(){
