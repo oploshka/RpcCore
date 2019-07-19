@@ -129,6 +129,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     }
     
     return $this->ReturnFormatter->format( [
+      'requestType'  => $requestType,
       'loadData'     => $loadData,
       'methodList'   => $methodList,
       'responseList' => $responseList,
