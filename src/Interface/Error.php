@@ -1,9 +1,9 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\RpcInterface;
 
 // TODO: need optimization
-interface iErrorStorage {
+interface Error {
 
   /**
    * Add error

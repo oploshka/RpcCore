@@ -9,20 +9,25 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0"
+    "php": ">=7.2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6",
-    "oploshka/reform": "^0"
+    "phpunit/phpunit": "^8",
+    "oploshka/reform": "0.3.0"
   },
   "autoload": {
     "psr-4": {
-      "Oploshka\\Rpc\\": "src"
+      "Oploshka\\RpcInterface\\"        : "src/Interface",
+      "Oploshka\\Rpc\\"                 : "src/Code/Core",
+      "Oploshka\\RpcDataFormatter\\"    : "src/Code/DataFormatter",
+      "Oploshka\\RpcDataLoader\\"       : "src/Code/DataLoader",
+      "Oploshka\\RpcReturnFormatter\\"  : "src/Code/ReturnFormatter"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Oploshka\\RpcTest\\": "test"
+      "Oploshka\\RpcTest\\"                 : "test/Core",
+      "Oploshka\\RpcHelperTest\\"           : "test/_Helper"
     }
   }
 }

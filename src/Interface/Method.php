@@ -1,9 +1,15 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\RpcInterface;
 
-interface iMethod {
-  
+interface Method {
+
+  // protected $Response;
+  // protected $Data;
+  // protected $Logger;
+
+  public function __construct($obj);
+
   /**
    * Get RPC method description
    * 
@@ -21,12 +27,10 @@ interface iMethod {
   /**
    * Main RPC method 
    * 
-   * not return! run $_RESPONSE->error('ERROR_NOT')
-   * 
-   * @param Response $_RESPONSE
-   * @param array $_DATA
+   * not return! run $this->Response->error('ERROR_NOT')
+   *
    */
-  public function run(&$_RESPONSE, $_DATA = array() );
+  public function run();
   
   /**
    * Get validation return scheme

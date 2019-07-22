@@ -2,12 +2,9 @@
 
 namespace Oploshka\Rpc;
 
-class MethodStorage {
+class MethodStorage implements \Oploshka\RpcInterface\MethodStorage {
   
   private $methods = [];
-  
-  public function __construct() {
-  }
   
   /**
    * 
@@ -16,7 +13,7 @@ class MethodStorage {
    * // TODO: @param string $methodGroup
    * @throws \Exception
    */
-  public function add($methodName, $methodClass){
+  public function add($methodName, $methodClass, $methodGroup = 'default'){
     
     // Название метода должно быть строкой
     if( !is_string($methodName) ){
@@ -25,10 +22,9 @@ class MethodStorage {
     if( !is_string($methodClass) ){
       throw new \Exception('RPCMethodStorage: Method class no string');
     }
-    // TODO:
-    // if( !is_string($methodGroup) ){
-    //   throw new \Exception('RPCMethodStorage: Method group no string');
-    // }
+     if( !is_string($methodGroup) ){
+       throw new \Exception('RPCMethodStorage: Method group no string');
+     }
     
     // Запрет переопределения существующего метода
     if( isset($this->methods[$methodName]) ){
@@ -37,8 +33,9 @@ class MethodStorage {
     
     // если все хорошо то добавляем
     $this->methods[$methodName] = [
+      'name'  => $methodName,
       'class' => $methodClass,
-      // TODO: 'group' => $methodGroup,
+      'group' => $methodGroup,
     ];
   }
   

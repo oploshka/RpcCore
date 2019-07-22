@@ -1,9 +1,8 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\RpcInterface;
 
-// TODO: need optimization
-interface iDataLoader {
+interface DataLoader {
   
   /**
    * start load data
