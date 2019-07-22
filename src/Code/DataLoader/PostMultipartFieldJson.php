@@ -16,7 +16,7 @@ class PostMultipartFieldJson implements \Oploshka\RpcInterface\DataLoader {
   public function load(&$loadData){
   
     // Request method is post
-    if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+    if(!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST'){
       return 'ERROR_REQUEST_METHOD_TYPE';
     }
     // Post is empty

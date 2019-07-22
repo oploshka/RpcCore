@@ -9,24 +9,7 @@ class JsonRpc_v2_0 implements \Oploshka\RpcInterface\ReturnFormatter {
   function  __construct(){
     $this->Reform = new \Oploshka\Reform\Reform([]);
   }
-  
-  public function prepare($loadData, &$methodName, &$methodData) {
-  
-    if( !isset($loadData['method']) ) {
-      return 'ERROR_NO_METHOD_NAME';
-    }
-    if( !isset($loadData['params']) ) {
-      return 'ERROR_NO_METHOD_PARAMS';
-    }
-  
-    // // todo: id, jsonrpc
-    
-    $methodName = $loadData['method'];
-    $methodData = $loadData['params'];
-    
-    return 'ERROR_NOT';
-    
-  }
+
   public function format($methodName, $methodData, $Response, $ErrorStore) {
     
     $returnObj = [
