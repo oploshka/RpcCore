@@ -18,28 +18,55 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
       // 'methodList'   => [],
     ]*/
 
+    /*
+   {
+     "specification": "multipart-json-rpc",
+     "specificationVersion" : "0.1.0",
+
+     "version": "1",
+     "language": "en",
+
+    "response": {
+      "requestId"   : "9423234",
+      "error": {
+        "code": "ERROR_NO"
+      },
+      "data": [ "user": USER_CLASS ]
+    }
+   }
+   */
+
+
     $Response = $obj['responseList'][0];
 
-    $returnObj = [
-      'specification'         => 'multipart-json-rpc',
-      'specificationVersion'  => '0.1',
-      "id"                    => null
-      'language'              => 'ru',
-      "error"   => $Response->getError(), // todo: {"code": -32700, "message": "Parse error"},
-      'result'  => $Response->getData(),
+    $responseObj = [
+      'specification'         => 'multipart-json-rpc',  // TODO
+      'specificationVersion'  => '0.1.0',               // TODO
+      'version'               => '1.0.0',               // TODO
+      'language'              => 'en',                  // TODO
+
+      'response'              => [
+        'requestId' => null,
+        'error'     => [ 'code' => $Response->getError() ],
+        'data'      => $Response->getData(),
+      ],
     ];
 
-    $returnJson = $this->Reform->item($returnObj, ['type' => 'objToJson']);
+    $returnJson = $this->Reform->item($responseObj, ['type' => 'objToJson']);
     if($returnJson === NULL){
-      $returnObj = [
-        'specification'         => 'multipart-json-rpc',
-        'specificationVersion'  => '0.1',
-        'language'              => 'ru',
-        "error"   => 'ERROR_CONVERT_RESPONSE_TO_JSON', // todo: {"code": -32700, "message": "Parse error"},
-        'result'  => [],
-        "id"      => null
+      $responseObj = [
+        'specification'         => 'multipart-json-rpc',  // TODO
+        'specificationVersion'  => '0.1.0',               // TODO
+        'version'               => '1.0.0',               // TODO
+        'language'              => 'en',                  // TODO
+
+        'response'              => [
+          'requestId' => null,
+          'error'     => [ 'code' => 'ERROR_CONVERT_RESPONSE_TO_JSON' ],
+          'data'      => [],
+        ],
       ];
-      $returnJson = $this->Reform->item($returnObj, ['type' => 'objToJson']);
+      $returnJson = $this->Reform->item($responseObj, ['type' => 'objToJson']);
     }
     return $returnJson;
   }

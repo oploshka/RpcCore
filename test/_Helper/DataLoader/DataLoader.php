@@ -20,7 +20,7 @@ class DataLoader implements \Oploshka\RpcInterface\DataLoader {
     ];
     */
 
-    return 'ERROR_NOT';
+    return 'ERROR_NO';
   }
   
 }

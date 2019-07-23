@@ -16,7 +16,7 @@ DESCRIPTION;
   
   public function run(){
     $this->Response->setData('methodName', 'MethodTest2');
-    $this->Response->setError('ERROR_NOT');
+    $this->Response->setError('ERROR_NO');
   }
 
   public function return(){

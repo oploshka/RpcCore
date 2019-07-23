@@ -25,7 +25,7 @@ class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
         'method' => $loadData['method'],
         'params'=> $loadData['params']
       ];
-      return 'ERROR_NOT';
+      return 'ERROR_NO';
     }
 
     $requestType = 'multiple';
@@ -36,7 +36,7 @@ class DataFormatter implements \Oploshka\RpcInterface\DataFormatter {
       ];
     }
 
-    return 'ERROR_NOT';
+    return 'ERROR_NO';
   }
   
 }

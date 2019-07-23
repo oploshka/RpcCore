@@ -19,7 +19,7 @@ DESCRIPTION;
     $this->Response->setData('test1::string', 'test string');
     $this->Response->setData('test1::int', 1);
 
-    $this->Response->error('ERROR_NOT');
+    $this->Response->error('ERROR_NO');
   }
   
   public function return(){

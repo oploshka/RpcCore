@@ -24,19 +24,26 @@ class CoreCreateTest extends TestCase {
     $_POST = [
       'data' => '{
         "specification": "multipart-json-rpc",
-        "specificationVersion": "0.1",
-        "language": "ru",
-        "method": "MethodTest1",
-        "params": {
-          "data1": "test"
+        "specificationVersion" : "0.1.0",
+        
+        "version": "1",
+        "language": "en",
+        
+        "request" : {
+          "name" : "MethodTest1",
+          "data" : []
         }
       }',
     ];
 
-    $returnObj = $Rpc->startProcessingRequest();
-    $this->assertEquals( $returnObj, 'single');
-    $response = $returnObj['responseList'][0];
-    $this->assertEquals( $response->getError(), 'ERROR_POST_DATA_NULL');
+    $returnJson = $Rpc->startProcessingRequest();
+    $returnObj = (array) json_decode($returnJson, true);
+
+    $this->assertEquals( $returnObj['specification']        , 'multipart-json-rpc');
+    $this->assertEquals( $returnObj['specificationVersion'] , '0.1.0');
+    $this->assertEquals( $returnObj['version']              , '1.0.0');
+    $this->assertEquals( $returnObj['language']             , 'en');
+    $this->assertEquals( $returnObj['response']['error']['code'], 'ERROR_NO');
   }
 
 }

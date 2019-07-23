@@ -34,7 +34,7 @@ class PostMultipartFieldJson implements \Oploshka\RpcInterface\DataLoader {
     }
     
     $loadData = $data;
-    return 'ERROR_NOT';
+    return 'ERROR_NO';
   }
   
 }

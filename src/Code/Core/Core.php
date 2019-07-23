@@ -96,7 +96,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     $requestType = 'single';
     $loadData = [];
     $loadStatus = $this->DataLoader->load($loadData);
-    if($loadStatus !== 'ERROR_NOT'){
+    if($loadStatus !== 'ERROR_NO'){
       $Response = new $this->ResponseClass();
       $Response->setError($loadStatus);
       return $this->ReturnFormatter->format([
@@ -110,7 +110,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     // validate format required field
     $methodList = [];
     $validateStatus = $this->DataFormatter->prepare($loadData, $methodList, $requestType);
-    if($validateStatus !== 'ERROR_NOT'){
+    if($validateStatus !== 'ERROR_NO'){
       $Response = new $this->ResponseClass();
       $Response->setError($validateStatus);
       return $this->ReturnFormatter->format([

@@ -27,7 +27,7 @@ interface Method {
   /**
    * Main RPC method 
    * 
-   * not return! run $this->Response->error('ERROR_NOT')
+   * not return! run $this->Response->error('ERROR_NO')
    *
    */
   public function run();
