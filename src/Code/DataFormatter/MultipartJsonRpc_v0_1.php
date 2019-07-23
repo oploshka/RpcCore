@@ -62,16 +62,28 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\DataFormatter {
       return 'ERROR_NO';
     }
 
-    return 'ERROR_NOT_SUPPORT_MULTIPLE';
+    // return 'ERROR_NOT_SUPPORT_MULTIPLE';
+    $requestType = 'multiple';
 
-    //$requestType = 'multiple';
-    //foreach ($loadData['params'] as $param){
-    //  $methodList[] = [
-    //    'method' => isset($param['method']) ? $param['method'] : '',
-    //    'params' => isset($param['params']) ? $param['params'] : [],
-    //  ];
-    //}
-    //return 'ERROR_NO';
+    if(
+      !isset($loadData['request']['data']['multiple'])
+      || !is_array($loadData['request']['data'])
+      || count($requestInfo['request']['data']['multiple']) === 0
+    ) {
+      return 'ERROR_EMPTY_MULTIPLE_REQUEST';
+    }
+
+    $len = 0;
+    foreach ($requestInfo['request']['data']['multiple'] as $key => $request){
+      if($len !== $key) { return 'ERROR_NOT_CORRECT_MULTIPLE_ARRAY';}
+      $len++;
+      // TODO: add validate and error
+      $methodList[] = [
+        'method' => isset($request['name']) ? $request['name'] : null,
+        'params' => isset($request['data']) ? $request['data'] : [],
+      ];
+    }
+    return 'ERROR_NO';
   }
 
 }

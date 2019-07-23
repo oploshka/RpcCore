@@ -38,6 +38,33 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
     return $responseObj;
   }
 
+  public function formatMultiple($obj) {
+
+    $ResponseList = $obj['responseList'];
+    $loadData = $obj['loadData'] ?? null;
+
+    $result  = [];
+    $len = -1;
+    foreach ($ResponseList as $Response){
+      $len++;
+
+      $responseObj = self::getDefaultRequest();
+      if(isset($loadData['request']['data']['multiple'][$len]['id'])){
+        $responseObj['response']['requestId'] = $loadData['request']['data']['multiple'][$len]['id'];
+      }
+      $responseObj['response']['error']['code'] = $Response->getError();
+      $responseObj['response']['data'] = $Response->getData();
+
+      $result[] = $responseObj['response'];
+    }
+
+    $responseObj = self::getDefaultRequest();
+    $responseObj['response']['requestId'] = isset($loadData['request']['id']) ? $loadData['request']['id'] : null;
+    $responseObj['response']['error']['code'] = 'ERROR_NO';
+    $responseObj['response']['data']['multiple'] = $result;
+
+    return $responseObj;
+  }
 
   public function format($obj) {
     /*[
@@ -49,7 +76,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
 
 
     if($obj['requestType'] === 'multiple'){
-      $responseObj = [];
+      $responseObj = $this->formatMultiple($obj);
     } else {
       $responseObj = $this->formatSingle($obj);
     }

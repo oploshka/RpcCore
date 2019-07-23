@@ -30,7 +30,7 @@ class CoreCreateTest extends TestCase {
         "language": "en",
         
         "request" : {
-          "id"   : "testRequestId",
+          "id"   : "basicRequestId",
           "name" : "MethodTest1",
           "data" : []
         }
@@ -45,7 +45,7 @@ class CoreCreateTest extends TestCase {
     $this->assertEquals( $returnObj['version']              , '1.0.0');
     $this->assertEquals( $returnObj['language']             , 'en');
     $this->assertEquals( $returnObj['response']['error']['code'], 'ERROR_NO');
-    $this->assertEquals( $returnObj['response']['requestId'], 'testRequestId');
+    $this->assertEquals( $returnObj['response']['requestId'], 'basicRequestId');
     $this->assertEquals( $returnObj['response']['data']     , ['test1::string' => 'test string', 'test1::int' => 1]);
   }
 
@@ -74,12 +74,14 @@ class CoreCreateTest extends TestCase {
         "language": "en",
         
         "request" : {
-          "id"   : "testRequestId",
+          "id"   : "multipleRequestId",
           "name" : "multiple",
-          "data" : [
-            { "id"   : "testRequestId_2", "name" : "MethodTest1", "data" : [] },
-            { "id"   : "testRequestId_1", "name" : "MethodTest1", "data" : [] }
-          ]
+          "data" : {
+            "multiple": [
+              { "id"   : "testRequestId_2", "name" : "MethodTest1", "data" : [] },
+              { "id"   : "testRequestId_1", "name" : "MethodTest2", "data" : [] }
+            ]
+          }
         }
       }',
     ];
@@ -92,7 +94,18 @@ class CoreCreateTest extends TestCase {
     $this->assertEquals( $returnObj['version']              , '1.0.0');
     $this->assertEquals( $returnObj['language']             , 'en');
     $this->assertEquals( $returnObj['response']['error']['code'], 'ERROR_NO');
-    $this->assertEquals( $returnObj['response']['requestId'], 'asd');
-    $this->assertEquals( $returnObj['response']['data']     , ['test1::string' => 'test string', 'test1::int' => 1]);
+    $this->assertEquals( $returnObj['response']['requestId'], 'multipleRequestId');
+    $this->assertEquals( $returnObj['response']['data']     , ['multiple' => [
+      [
+        'requestId' => 'testRequestId_2',
+        'error' => ['code' => 'ERROR_NO'],
+        'data'  => ['test1::string' => 'test string', 'test1::int' => 1]
+      ],
+      [
+        'requestId' => 'testRequestId_1',
+        'error' => ['code' => 'ERROR_NO'],
+        'data'  => ['methodName' => 'MethodTest2']
+      ]
+    ] ]);
   }
 }
