@@ -4,7 +4,7 @@ namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
-class CoreCreateTest extends TestCase {
+class MultipartJsonRpcSpecificationTest extends TestCase {
 
   public function test_MultipartJsonRpc_v0_1__BasicRequest() {
 
