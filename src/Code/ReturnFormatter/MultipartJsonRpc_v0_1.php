@@ -19,7 +19,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
 
       'response'              => [
         'requestId' => null,
-        'error'     => [ 'code' => 'ERROR_DEFAULT_REQUEST' ],
+        'error'     => [ 'code' => 'ERROR_DEFAULT_REQUEST', 'message' => '', 'data' => [] ],
         'data'      => [],
       ],
     ];
@@ -29,12 +29,14 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
 
     $Response = $obj['responseList'][0];
     $loadData = $obj['loadData'] ?? null;
+    $Logger   = $obj['logger'];
 
     $responseObj = self::getDefaultRequest();
     $responseObj['response']['requestId'] = isset($loadData['request']['id']) ? $loadData['request']['id'] : null;
-    $responseObj['response']['error']['code'] = $Response->getError();
-    $responseObj['response']['data'] = $Response->getData();
+    $responseObj['response']['error'] = $Response->getError();
+    $responseObj['response']['data']  = $Response->getData();
 
+    $responseObj['log'] = $Logger->getLog();
     return $responseObj;
   }
 
@@ -42,6 +44,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
 
     $ResponseList = $obj['responseList'];
     $loadData = $obj['loadData'] ?? null;
+    $Logger   = $obj['logger'];
 
     $result  = [];
     $len = -1;
@@ -52,7 +55,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
       if(isset($loadData['request']['data']['multiple'][$len]['id'])){
         $responseObj['response']['requestId'] = $loadData['request']['data']['multiple'][$len]['id'];
       }
-      $responseObj['response']['error']['code'] = $Response->getError();
+      $responseObj['response']['error'] = $Response->getError();
       $responseObj['response']['data'] = $Response->getData();
 
       $result[] = $responseObj['response'];
@@ -62,6 +65,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
     $responseObj['response']['requestId'] = isset($loadData['request']['id']) ? $loadData['request']['id'] : null;
     $responseObj['response']['error']['code'] = 'ERROR_NO';
     $responseObj['response']['data']['multiple'] = $result;
+    $responseObj['log'] = $Logger->getLog();
 
     return $responseObj;
   }

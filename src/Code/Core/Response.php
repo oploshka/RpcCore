@@ -4,7 +4,11 @@ namespace Oploshka\Rpc;
 
 class Response implements \Oploshka\RpcInterface\Response {
   
-  private $error    = 'ERROR_DEFAULT' ;
+  private $errorObj    = [
+    'code'    => 'ERROR_DEFAULT',
+    'message' => '',
+    'data'    => [],
+  ];
   private $data     = [];
 
   public function getData(){
@@ -15,13 +19,21 @@ class Response implements \Oploshka\RpcInterface\Response {
   }
 
   public function getError(){
-    return $this->error;
+    return $this->errorObj;
   }
-  public function setError($name){
-    $this->error = $name;
+
+  public function getErrorCode(){
+    return $this->errorObj['code'];
   }
-  public function error($name){
-    $this->setError($name);
+
+  public function setError($name, $message = '', $data = []){
+    $this->errorObj['code']     = $name;
+    $this->errorObj['message']  = $message;
+    $this->errorObj['data']     = $data;
+  }
+
+  public function error($name, $message = '', $data = []){
+    $this->setError($name, $message, $data);
     throw new \Exception('');
   }
 }

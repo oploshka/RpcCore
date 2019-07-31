@@ -17,7 +17,7 @@ class CoreStartProcessingMethodTest extends TestCase {
 
     $response = $Rpc->startProcessingMethod('', []);
 
-    $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_NAME');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO_METHOD_NAME');
     $this->assertEquals( $response->getData() , []);
     // $this->assertEquals( $response->getLog()  , []);
   }
@@ -27,7 +27,7 @@ class CoreStartProcessingMethodTest extends TestCase {
 
     $response = $Rpc->startProcessingMethod('test', []);
   
-    $this->assertEquals( $response->getError(), 'ERROR_NO_METHOD_INFO');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO_METHOD_INFO');
     $this->assertEquals( $response->getData() , []);
     // $this->assertEquals( $response->getLog()  , []);
   }
@@ -38,7 +38,7 @@ class CoreStartProcessingMethodTest extends TestCase {
     $response = new \Oploshka\Rpc\Response();
     $response = $Rpc->startProcessingMethod('MethodTest1', [], $response);
   
-    $this->assertEquals($response->getError(),  'ERROR_NO');
+    $this->assertEquals($response->getErrorCode(),  'ERROR_NO');
     $this->assertEquals($response->getData(),  [
       'test1::string' => 'test string',
       'test1::int' => 1,

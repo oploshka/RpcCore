@@ -104,6 +104,7 @@ class Core implements \Oploshka\RpcInterface\Core {
         'responseList' => [ $Response ],
         // 'loadData'     => [],
         // 'methodList'   => [],
+        'logger'       => $this->Logger,
       ]);
     }
 
@@ -118,6 +119,7 @@ class Core implements \Oploshka\RpcInterface\Core {
         'responseList' => [ $Response ],
         // 'loadData'     => [],
         // 'methodList'   => [],
+        'logger'       => $this->Logger,
       ]);
     }
 
@@ -133,6 +135,7 @@ class Core implements \Oploshka\RpcInterface\Core {
       'loadData'     => $loadData,
       'methodList'   => $methodList,
       'responseList' => $responseList,
+      'logger'       => $this->Logger,
     ]);
 
   }

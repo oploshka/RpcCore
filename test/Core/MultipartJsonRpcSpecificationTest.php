@@ -98,12 +98,12 @@ class MultipartJsonRpcSpecificationTest extends TestCase {
     $this->assertEquals( $returnObj['response']['data']     , ['multiple' => [
       [
         'requestId' => 'testRequestId_2',
-        'error' => ['code' => 'ERROR_NO'],
+        'error' => ['code' => 'ERROR_NO', 'message' => '', 'data' => [] ],
         'data'  => ['test1::string' => 'test string', 'test1::int' => 1]
       ],
       [
         'requestId' => 'testRequestId_1',
-        'error' => ['code' => 'ERROR_NO'],
+        'error' => ['code' => 'ERROR_NO', 'message' => '', 'data' => []],
         'data'  => ['methodName' => 'MethodTest2']
       ]
     ] ]);

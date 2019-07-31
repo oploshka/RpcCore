@@ -13,7 +13,7 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
     $response = $returnObj['responseList'][0];
-    $this->assertEquals( $response->getError(), 'ERROR_POST_DATA_NULL');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_POST_DATA_NULL');
   }
 
   public function testNotCorrectData() {
@@ -23,7 +23,7 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
     $response = $returnObj['responseList'][0];
-    $this->assertEquals( $response->getError(), 'ERROR_NOT_CORRECT_DATA');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NOT_CORRECT_DATA');
 
     $_POST = [ 'data' => [] ];
     $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
@@ -31,7 +31,7 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
     $response = $returnObj['responseList'][0];
-    $this->assertEquals( $response->getError(), 'ERROR_NOT_CORRECT_DATA');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NOT_CORRECT_DATA');
   }
 
   public function testBasicMethodRun() {
@@ -41,7 +41,7 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( $returnObj['requestType'], 'single');
     $this->assertEquals( count($returnObj['responseList']), 1);
     $response = $returnObj['responseList'][0];
-    $this->assertEquals( $response->getError(), 'ERROR_NO');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO');
     $this->assertEquals( $response->getData(), ['test1::string' => 'test string', 'test1::int' => 1]);
   }
 
@@ -53,11 +53,11 @@ class CoreStartProcessingRequestTest extends TestCase {
     $this->assertEquals( count($returnObj['responseList']), 2);
 
     $response = $returnObj['responseList'][0];
-    $this->assertEquals( $response->getError(), 'ERROR_NO');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO');
     $this->assertEquals( $response->getData(), ['test1::string' => 'test string', 'test1::int' => 1]);
 
     $response = $returnObj['responseList'][1];
-    $this->assertEquals( $response->getError(), 'ERROR_NO');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO');
     $this->assertEquals( $response->getData(), ['methodName' => 'MethodTest2']);
   }
 }
