@@ -11,7 +11,7 @@ class Core implements \Oploshka\RpcInterface\Core {
   private $ReturnFormatter; // в каком формате отдавать данные
   private $ResponseClass;   // именно класс, а не обьект Класса
 
-  // TODO // private $Logger;          // храним данные по методам
+  private $Logger;          // храним данные по методам
   // TODO // private $ErrorStorage;    // данные по ошибкам // TODO: передавать в $ReturnFormatter
 
   /**
@@ -35,7 +35,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     $this->ReturnFormatter  = $obj['returnFormatter'];
     $this->ResponseClass    = $obj['responseClass']; // TODO: \Oploshka\Rpc\Response;
 
-    // TODO // $this->Logger           = $obj['logger']; // не должен быть статичным!!!
+    $this->Logger           = isset($obj['logger']) ? $obj['logger'] : new Logger();
     // TODO // $this->ErrorStorage     = new \Oploshka\Rpc\ErrorStorage(); // TODO: delete;
   }
   
@@ -153,11 +153,16 @@ class Core implements \Oploshka\RpcInterface\Core {
     try{
       $Response = $this->runMethod($methodName, $methodData, $Response);
     } catch (Exception $e){
-      // TODO // $Response->setLog( 'runMethodError', $e->getMessage() );
+      $this->Logger->error('runMethodError', $e->getMessage() );
       $Response->setError('ERROR_METHOD_RUN');
       return $Response;
     }
-    // TODO // $Response->setLog('echo', ob_get_contents() );
+
+    $echo = ob_get_contents();
+    if($echo !== ''){
+      $this->Logger->warning('echo', $echo );
+    }
+
     ob_end_clean();
     
     return $Response;
@@ -192,7 +197,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     }
 
     // validate method data
-    $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass->validate()] );
+    $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass::validate()] );
     if($data === null) {
       $Response->setError('ERROR_NOT_VALIDATE_DATA');
       return $Response;
@@ -206,16 +211,16 @@ class Core implements \Oploshka\RpcInterface\Core {
       ] );
       $MethodClass->run();
     } catch (\Exception $e) {
-      // TODO // $Response->setLog('methodRun', $e->getMessage());
+      $this->Logger->error('methodRun', ['message' => $e->getMessage()] );
     }
 
     // $Response is Response class?
     $responseType = gettype ( $Response );
     if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\Response'){
 
-      $responseLink->setLog( 'responseErrorType', gettype($Response) );
+      $this->Logger->error('responseErrorType', ['gettype' => gettype($Response)] );
       if( gettype ( $Response ) == 'object' ) {
-        $Response->setLog( 'responseErrorClass', get_class($Response) );
+        $this->Logger->error('responseErrorClass',  ['get_class' => get_class($Response)] );
       }
 
       $responseLink->setError('ERROR_NOT_CORRECT_METHOD_RETURN');

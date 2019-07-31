@@ -4,13 +4,13 @@ namespace Oploshka\RpcHelperTest\Method;
 
 class MethodTest2 extends \Oploshka\Rpc\Method {
   
-  public function description(){
+  public static function description(){
     return <<<DESCRIPTION
 Test description
 DESCRIPTION;
   }
   
-  public function validate(){
+  public static function validate(){
     return [];
   }
   
@@ -19,7 +19,7 @@ DESCRIPTION;
     $this->Response->setError('ERROR_NO');
   }
 
-  public function return(){
+  public static function return(){
     return [];
   }
   

@@ -15,14 +15,14 @@ interface Method {
    * 
    * @return string
    **/
-  public function description();
+  public static function description();
   
   /**
    * Get validation scheme
    * 
    * @return array Validation scheme
    **/
-  public function validate();
+  public static function validate();
   
   /**
    * Main RPC method 
@@ -37,6 +37,6 @@ interface Method {
    *
    * @return array Validation scheme
    **/
-  public function return();
+  public static function return();
   
 }
