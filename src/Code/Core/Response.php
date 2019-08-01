@@ -34,6 +34,6 @@ class Response implements \Oploshka\RpcInterface\Response {
 
   public function error($name, $message = '', $data = []){
     $this->setError($name, $message, $data);
-    throw new \Exception('');
+    throw new MethodEndException();
   }
 }

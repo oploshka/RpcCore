@@ -209,7 +209,7 @@ class Core implements \Oploshka\RpcInterface\Core {
       return $Response;
     }
 
-    $responseLink = $Response;
+    $responseLink = clone $Response;
     try {
       $MethodClass = new $MethodClassName( [
         'response'  => $Response,
@@ -217,12 +217,16 @@ class Core implements \Oploshka\RpcInterface\Core {
         'logger'    => $this->Logger,
       ] );
       $MethodClass->run();
-    } catch (\Exception $e) {
-      // TODO use custom Exception
-      $errorMessage = $e->getMessage();
-      if($errorMessage != ''){
-        $this->Logger->error('methodRun', ['message' => $e->getMessage()] );
-      }
+    } catch (MethodEndException $e) {
+
+    } catch (\Throwable $e ){
+      $responseLink->setError('ERROR_METHOD', $e->getMessage(), [
+        'methodName' => $methodName,
+        'methodData' => $methodData,
+        'code' => $e->getCode(),
+        'line' => $e->getLine(),
+      ]);
+      return $responseLink;
     }
 
     // $Response is Response class?
