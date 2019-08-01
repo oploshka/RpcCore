@@ -7,12 +7,12 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
 
   protected $Response;
   protected $Data;
-  // TODO // protected $Logger;
+  protected $Logger;
 
   public function __construct($obj){
     $this->Response = $obj['response'];
     $this->Data     = $obj['data'];
-    // TODO // $this->Logger   = $obj['logger'];
+    $this->Logger   = $obj['logger'];
   }
 
 }

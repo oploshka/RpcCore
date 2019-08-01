@@ -61,6 +61,7 @@ class Helper {
     $MethodStorage->add('MethodTest1', 'Oploshka\\RpcHelperTest\\Method\\MethodTest1');
     $MethodStorage->add('MethodTest2', 'Oploshka\\RpcHelperTest\\Method\\MethodTest2');
     $MethodStorage->add('MethodTestData', 'Oploshka\\RpcHelperTest\\Method\\MethodTestData');
+    $MethodStorage->add('MethodTestLogger', 'Oploshka\\RpcHelperTest\\Method\\MethodTestLogger');
     return $MethodStorage;
   }
   public static function getResponseClass(){

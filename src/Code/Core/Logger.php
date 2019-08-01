@@ -12,18 +12,19 @@ use Psr\Log\LoggerInterface;
 class Logger extends AbstractLogger implements LoggerInterface
 {
 
-  private $log = [];
+  private $logInfo = [];
   public function getLog(){
-    return $this->log;
+    return $this->logInfo;
   }
 
   /**
    * @inheritdoc
    */
   public function log($level, $message, array $context = []) {
-    if( !isset( $this->log[$level] ) ){
-      $this->log[$level] = [];
+    if
+    if( !isset( $this->logInfo[$level] ) ){
+      $this->logInfo[$level] = [];
     }
-    $this->log[$level][] = ['code' => $message, 'data' => $context];
+    $this->logInfo[$level][] = ['code' => $message, 'data' => $context];
   }
 }

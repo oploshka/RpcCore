@@ -36,7 +36,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
     $responseObj['response']['error'] = $Response->getError();
     $responseObj['response']['data']  = $Response->getData();
 
-    $responseObj['log'] = $Logger->getLog();
+    $responseObj['logger'] = $Logger->getLog();
     return $responseObj;
   }
 
@@ -65,7 +65,7 @@ class MultipartJsonRpc_v0_1 implements \Oploshka\RpcInterface\ReturnFormatter{
     $responseObj['response']['requestId'] = isset($loadData['request']['id']) ? $loadData['request']['id'] : null;
     $responseObj['response']['error']['code'] = 'ERROR_NO';
     $responseObj['response']['data']['multiple'] = $result;
-    $responseObj['log'] = $Logger->getLog();
+    $responseObj['logger'] = $Logger->getLog();
 
     return $responseObj;
   }

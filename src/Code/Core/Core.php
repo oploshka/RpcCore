@@ -191,6 +191,7 @@ class Core implements \Oploshka\RpcInterface\Core {
     $MethodClass = new $MethodClassName( [
       'response'  => false,
       'data'      => false,
+      'logger'    => false,
     ] );
 
     // validate class interface
@@ -211,10 +212,15 @@ class Core implements \Oploshka\RpcInterface\Core {
       $MethodClass = new $MethodClassName( [
         'response'  => $Response,
         'data'      => $data,
+        'logger'    => $this->Logger,
       ] );
       $MethodClass->run();
     } catch (\Exception $e) {
-      $this->Logger->error('methodRun', ['message' => $e->getMessage()] );
+      // TODO use custom Exception
+      $errorMessage = $e->getMessage();
+      if($errorMessage != ''){
+        $this->Logger->error('methodRun', ['message' => $e->getMessage()] );
+      }
     }
 
     // $Response is Response class?
