@@ -38,7 +38,8 @@ class MultipartJsonRpcErrorHandlerTest extends TestCase {
     ];
 
     $returnJson = $Rpc->startProcessingRequest();
-    $this->assertEquals( $returnJson      , 'TODO');
+    $returnObj = (array)json_decode($returnJson, true);
+    $this->assertEquals( $returnObj['response']['error']['code'], 'ERROR_METHOD');
   }
 
 }
