@@ -153,12 +153,13 @@ class Core implements \Oploshka\RpcInterface\Core {
 
     $Response = new $this->ResponseClass();
     ob_start();
+    ErrorHandler::add();
     try{
       $Response = $this->runMethod($methodName, $methodData, $Response);
     } catch (Exception $e){
       $this->Logger->error('runMethodError', $e->getMessage() );
       $Response->setError('ERROR_METHOD_RUN');
-      return $Response;
+      // return $Response;
     }
 
     $echo = ob_get_contents();
@@ -166,6 +167,7 @@ class Core implements \Oploshka\RpcInterface\Core {
       $this->Logger->warning('echo', $echo );
     }
 
+    ErrorHandler::remove();
     ob_end_clean();
     
     return $Response;

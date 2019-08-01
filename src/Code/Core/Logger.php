@@ -10,8 +10,7 @@ use Psr\Log\LogLevel;
 /**
  * Class Logger
  */
-class Logger extends AbstractLogger implements LoggerInterface
-{
+class Logger extends AbstractLogger implements LoggerInterface {
 
   private $logLevel = [
     LogLevel::EMERGENCY => true,
