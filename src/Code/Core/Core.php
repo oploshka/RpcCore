@@ -2,6 +2,8 @@
 
 namespace Oploshka\Rpc;
 
+use Oploshka\Reform\ReformDebug;
+
 class Core implements \Oploshka\RpcInterface\Core {
 
   private $MethodStorage;   // храним данные по методам
@@ -29,7 +31,7 @@ class Core implements \Oploshka\RpcInterface\Core {
    */
   public function __construct($obj) {
     $this->MethodStorage    = $obj['methodStorage'];
-    $this->Reform           = $obj['reform'];
+    $this->Reform           = $obj['reform'] ?? new ReformDebug();
     $this->DataLoader       = $obj['dataLoader'];
     $this->DataFormatter    = $obj['dataFormatter'];
     $this->ReturnFormatter  = $obj['returnFormatter'];
@@ -205,7 +207,12 @@ class Core implements \Oploshka\RpcInterface\Core {
     // validate method data
     $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass::validate()] );
     if($data === null) {
-      $Response->setError('ERROR_NOT_VALIDATE_DATA');
+      $field = [];
+      $errorObjList = $this->Reform->getError();
+      foreach ($errorObjList as $errorObj){
+        $field[] = $errorObj['data'];
+      }
+      $Response->setError('ERROR_NOT_VALIDATE_DATA', '', ['field' => $field]);
       return $Response;
     }
 
