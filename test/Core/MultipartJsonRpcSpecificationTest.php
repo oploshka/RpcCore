@@ -201,7 +201,7 @@ class MultipartJsonRpcSpecificationTest extends TestCase {
         ],
         'data'      => [],
       ],
-      'logger' => [
+      'debug' => [
         'info' => [
           [
             'code' => 'testLog',
