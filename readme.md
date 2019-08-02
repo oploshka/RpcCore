@@ -1,7 +1,5 @@
-Reform
+RpcCore
 =================
-
-A very lightweight PHP class ... (TODO).
 
 * [1.Installation](#block1)
 * [2. Features](#block2)
