@@ -5,7 +5,7 @@ namespace Oploshka\Rpc;
 use Oploshka\RpcException\RpcException;
 use Oploshka\RpcInterface\MethodStorage;
 
-class RpcAutodoc {
+class RpcAutoDoc {
   
   /**
    * @param MethodStorage $MethodStorage
