@@ -4,6 +4,9 @@ namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
+/*
+ * Тестирование основных ошибок
+ **/
 class CoreStartProcessingMethodTest extends TestCase {
 
   //public function testApplyPhpSettings() {
@@ -13,15 +16,19 @@ class CoreStartProcessingMethodTest extends TestCase {
   //}
 
   public function testNoMethodName() {
-    $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
+    $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
 
-    $response = $Rpc->startProcessingMethod('', []);
+    
+    $response = $Rpc->runMethodProcessing( new \Oploshka\Rpc\RpcMethodInfo([
+      'methodName' => 'notCreatedMethodName'
+    ]) );
 
-    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO_METHOD_NAME');
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_NO_METHOD');
     $this->assertEquals( $response->getData() , []);
     // $this->assertEquals( $response->getLog()  , []);
   }
   
+  /*
   public function testNoMethod() {
     $Rpc = \Oploshka\RpcHelperTest\Helper::getRpc();
 
@@ -45,4 +52,5 @@ class CoreStartProcessingMethodTest extends TestCase {
     ]);
     // $this->assertEquals( $response->getLog()  , [ ['test1::string' => 'test string'] ] );
   }
+  */
 }

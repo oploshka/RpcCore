@@ -35,7 +35,7 @@ DESCRIPTION;
       || !is_array($loadData['request']['data'])
       || count($requestInfo['request']['data']['multiple']) === 0
     ) {
-      // TODO: use throw new Exception();
+      // TODO: use throw new \Exception();
       return 'ERROR_EMPTY_MULTIPLE_REQUEST';
     }
   

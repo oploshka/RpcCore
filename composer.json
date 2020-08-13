@@ -20,17 +20,20 @@
     "psr-4": {
       "Oploshka\\Rpc\\"                 : "src/",
       "Oploshka\\RpcInterface\\"        : "src/Interface",
+      "Oploshka\\RpcAbstract\\"         : "src/Abstract",
       "Oploshka\\RpcException\\"        : "src/Exception",
-      
-      "Oploshka\\RpcDataFormatter\\"    : "src/Plugin/DataFormatter",
-      "Oploshka\\RpcDataLoader\\"       : "src/Plugin/DataLoader",
-      "Oploshka\\RpcReturnFormatter\\"  : "src/Plugin/ReturnFormatter"
+
+      "Oploshka\\RpcMethods\\"          : "src/Methods",
+
+      "Oploshka\\RpcRequestLoad\\"      : "src/Plugin/RpcRequestLoad",
+      "Oploshka\\RpcFormatter\\"        : "src/Plugin/RpcFormatter",
+      "Oploshka\\RpcStructure\\"        : "src/Plugin/RpcStructure"
     }
   },
   "autoload-dev": {
     "psr-4": {
       "Oploshka\\RpcTest\\"                 : "test/Core",
-      "Oploshka\\RpcHelperTest\\"           : "test/_Helper"
+      "Oploshka\\RpcTestHelper\\"           : "test/_Helper"
     }
   }
 }

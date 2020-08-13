@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcLoaderFormatter;
+namespace Oploshka\RpcFormatter;
 
 class Json {
   
@@ -8,7 +8,7 @@ class Json {
     $Reform = new \Oploshka\Reform\Reform([]);
     $data = $Reform->item($str, ['type' => 'json']);
     if ($data === NULL){
-      throw new Exception(); // TODO: add exception name
+      throw new \Exception(); // TODO: add exception name
     }
     
     return $data;

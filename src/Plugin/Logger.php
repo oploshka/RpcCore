@@ -34,7 +34,7 @@ class Logger extends AbstractLogger implements LoggerInterface {
   public function log($level, $message, array $context = []) {
 
     if( !isset($this->logLevel[$level]) ){
-      throw new Exception('ERROR_NOT_CORRECT_LOG_LEVEL');
+      throw new \Exception('ERROR_NOT_CORRECT_LOG_LEVEL');
     }
 
     if( !isset( $this->logInfo[$level] ) ){

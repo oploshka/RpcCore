@@ -16,16 +16,16 @@ class RpcMethodInfo {
   
     if(!isset($arr['methodName']) || !is_string($arr['methodName']) || $arr['methodName'] == ''){
       // TODO fix
-      throw new Exception();
+      throw new \Exception();
     }
     
-    $arr['requestId']  && $this->requestId  = $arr['requestId'];
+    isset($arr['requestId'])  && $this->requestId  = $arr['requestId'];
     // TODO: require
-    $arr['methodName'] && $this->methodName = $arr['methodName'];
+    isset($arr['methodName']) && $this->methodName = $arr['methodName'];
     //
-    $arr['data']       && $this->data       = $arr['data'];
-    $arr['language']   && $this->language   = $arr['language'];
-    $arr['version']    && $this->version    = $arr['version'];
+    isset($arr['data']      ) && $this->data       = $arr['data'];
+    isset($arr['language']  ) && $this->language   = $arr['language'];
+    isset($arr['version']   ) && $this->version    = $arr['version'];
   }
   
   public function getRequestId() {

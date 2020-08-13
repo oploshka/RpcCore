@@ -4,7 +4,7 @@ namespace Oploshka\Rpc;
 
 use Oploshka\Reform\ReformDebug;
 
-class Rpc implements \Oploshka\RpcInterface\Core {
+class Rpc {
   
   // валидация данных
   private $Reform;
@@ -13,11 +13,11 @@ class Rpc implements \Oploshka\RpcInterface\Core {
   //
   private $RpcMethodStorage;
   // обработка данных запроса/ответа
-  private $RpcRequestLoader;
-  private $RpcRequestLoaderFormatter;
-  private $RpcRequestLoaderStructure;
-  private $RpcResponseLoaderFormatter;
-  private $RpcResponseLoaderStructure;
+  private $RpcRequestLoad;
+  private $RpcRequestFormatter;
+  private $RpcRequestStructure;
+  private $RpcResponseFormatter;
+  private $RpcResponseStructure;
   // TODO: что это?
   private $ResponseClass;   // именно класс, а не обьект Класса
 
@@ -36,19 +36,22 @@ class Rpc implements \Oploshka\RpcInterface\Core {
    *  - ResponseClass
    *  - DataFormatter
    */
-  public function __construct($obj) {
+  public function __construct($obj = []) {
   
     $this->Reform                       = $obj['Reform']        ?? new ReformDebug();
-    // логер
-    $this->Logger                       = $obj['Logger']        ?? new Logger();
+    // TODO: логер
+    // $this->Logger                       = $obj['Logger']        ?? new Logger();
     //
     $this->RpcMethodStorage             = $obj['RpcMethodStorage'] ?? new RpcMethodStorage();
     // обработка данных запроса/ответа
-    $this->RpcRequestLoader             = $obj['RpcRequestLoader'          ] ?? new \Oploshka\RpcLoaderFormatter\Post_MultipartFormData_Field();
-    $this->RpcRequestLoaderFormatter    = $obj['RpcRequestLoaderFormatter' ] ?? new \Oploshka\RpcLoaderFormatter\Json();
-    $this->RpcRequestLoaderStructure    = $obj['RpcRequestLoaderStructure' ] ?? new \Oploshka\RpcLoaderStructure\MultipartJsonRpc_v0_1();
-    $this->RpcResponseLoaderFormatter   = $obj['RpcResponseLoaderFormatter'] ?? new \Oploshka\RpcLoaderFormatter\Json();
-    $this->RpcResponseLoaderStructure   = $obj['RpcResponseLoaderStructure'] ?? new \Oploshka\RpcLoaderStructure\MultipartJsonRpc_v0_1();
+    $this->RpcRequestLoad       = $obj['RpcRequestLoad']       ?? new \Oploshka\RpcRequestLoad\Post_MultipartFormData_Field();
+    $this->RpcRequestFormatter  = $obj['RpcRequestFormatter' ] ?? new \Oploshka\RpcFormatter\Json();
+    $this->RpcRequestStructure  = $obj['RpcRequestStructure' ] ?? new \Oploshka\RpcStructure\MultipartJsonRpc_v0_1();
+    $this->RpcResponseFormatter = $obj['RpcResponseFormatter'] ?? new \Oploshka\RpcFormatter\Json();
+    $this->RpcResponseStructure = $obj['RpcResponseStructure'] ?? new \Oploshka\RpcStructure\MultipartJsonRpc_v0_1();
+  
+    // TODO
+    $this->ResponseClass = '\Oploshka\Rpc\RpcMethodResponse';
   }
   
   // TODO: add get and set method for private var
@@ -111,20 +114,20 @@ class Rpc implements \Oploshka\RpcInterface\Core {
   
     try {
       // получим данные
-      $loadStr = $this->RpcRequestLoader->load();
+      $loadStr = $this->RpcRequestLoad->load();
       // расшифруем
-      $loadData = $this->RpcRequestLoaderFormatter->decode($loadStr);
+      $loadData = $this->RpcRequestFormatter->decode($loadStr);
       // считываем структуру
-      $RpcMethodInfoObj = $this->RpcRequestLoaderStructure->decode($loadData);
+      $RpcMethodInfoObj = $this->RpcRequestStructure->decode($loadData);
       // запустим метод
       $RpcMethodResponseObj = $this->runMethod($RpcMethodInfoObj); // TODO: подумать по названиям
       //
       // создаем структуру
-      $RpcRequestObj = $this->RpcResponseLoaderStructure->encode($loadData);
+      $RpcRequestObj = $this->RpcResponseStructure->encode($loadData);
       
       // TODO: опционально вернуть обьект или выводить содержимое
       // отдаем ответ
-      $this->RpcResponseLoaderFormatter->printResponse($loadStr);
+      $this->RpcResponseFormatter->printResponse($loadStr);
       
     } catch (\Throwable $e) {
       // TODO: fix
@@ -169,8 +172,10 @@ class Rpc implements \Oploshka\RpcInterface\Core {
    *
    * @return \Oploshka\Rpc\RpcMethodResponse
    **/
-  private function runMethodProcessing($RpcMethodInfoObj, $Response) {
+  public function runMethodProcessing($RpcMethodInfoObj, $Response = false) {
   
+    $Response = $Response ? $Response : new $this->ResponseClass();
+    
     $methodName = $RpcMethodInfoObj->getMethodName();
     $methodData = $RpcMethodInfoObj->getData();
     
@@ -235,9 +240,9 @@ class Rpc implements \Oploshka\RpcInterface\Core {
   public function getMethodClassNameForMethodName($methodName){
   
     // get method info
-    $methodInfo = $this->MethodStorage->getMethodInfo($methodName);
+    $methodInfo = $this->RpcMethodStorage->getMethodInfo($methodName);
     if(!$methodInfo) {
-      throw new Exception('ERROR_NO_METHOD_INFO');
+      throw new \Exception('ERROR_NO_METHOD');
     }
     
     // method class create
@@ -255,13 +260,13 @@ class Rpc implements \Oploshka\RpcInterface\Core {
     ///#   'logger'    => false,
     ///# ] );
     ///# if ( !($MethodClass instanceof \Oploshka\RpcInterface\Method) ) {
-    ///#   throw new Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
+    ///#   throw new \Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
     ///# }
   
     $interfaces = class_implements( $MethodClassName );
     if ( !isset( $interfaces['Oploshka\RpcInterface\Method'] ) ) {
       // var_dump($interfaces);
-      throw new Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
+      throw new \Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
     }
     
     return $MethodClassName;
