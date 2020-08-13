@@ -2,7 +2,9 @@
 
 namespace Oploshka\Rpc;
 
-class RpcRequest {
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
+
+class RpcMethodInfo {
   
   private $requestId  = null;
   private $methodName = '';
@@ -11,8 +13,16 @@ class RpcRequest {
   private $version    = '0.1.0';
   
   public function __construct($arr) {
+  
+    if(!isset($arr['methodName']) || !is_string($arr['methodName']) || $arr['methodName'] == ''){
+      // TODO fix
+      throw new Exception();
+    }
+    
     $arr['requestId']  && $this->requestId  = $arr['requestId'];
+    // TODO: require
     $arr['methodName'] && $this->methodName = $arr['methodName'];
+    //
     $arr['data']       && $this->data       = $arr['data'];
     $arr['language']   && $this->language   = $arr['language'];
     $arr['version']    && $this->version    = $arr['version'];

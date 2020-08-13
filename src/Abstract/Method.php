@@ -14,5 +14,12 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
     $this->Data     = $obj['data'];
     $this->Logger   = $obj['logger'];
   }
+  
+  public static function description() { return ''; }
+  
+  // public static function requestSchema() { return []; }
+  // public static function responseSchema() { return []; }
+  
+  abstract public function run();
 
 }

@@ -51,6 +51,59 @@ DESCRIPTION;
     }
     */
     
+    /*
+    
+    // data load
+    $requestType = 'single';
+    $loadData = [];
+    $loadStatus = $this->DataLoader->load($loadData);
+    if($loadStatus !== 'ERROR_NO'){
+      $Response = new $this->ResponseClass();
+      $Response->setError($loadStatus);
+      return $this->ReturnFormatter->format([
+        'requestType'   => $requestType,
+        'responseList' => [ $Response ],
+        // 'loadData'     => [],
+        // 'methodList'   => [],
+        'logger'       => $this->Logger,
+      ]);
+    }
+
+    // validate format required field
+    $methodList = [];
+    $validateStatus = $this->DataFormatter->prepare($loadData, $methodList, $requestType);
+    if($validateStatus !== 'ERROR_NO'){
+      $Response = new $this->ResponseClass();
+      $Response->setError($validateStatus);
+      return $this->ReturnFormatter->format([
+        'requestType'   => $requestType,
+        'responseList' => [ $Response ],
+        // 'loadData'     => [],
+        // 'methodList'   => [],
+        'logger'       => $this->Logger,
+      ]);
+    }
+
+    // run method
+    // validate format required field
+    $responseList = [];
+    foreach ($methodList as $methodItem){
+      $responseList[] = $this->startProcessingMethod($methodItem['method'], $methodItem['params']);
+    }
+    
+    return $this->ReturnFormatter->format( [
+      'requestType'  => $requestType,
+      'loadData'     => $loadData,
+      'methodList'   => $methodList,
+      'responseList' => $responseList,
+      'logger'       => $this->Logger,
+    ]);
+
+     *
+     * */
+    
+    
+    
     $this->Response->error('ERROR_NO');
   }
 

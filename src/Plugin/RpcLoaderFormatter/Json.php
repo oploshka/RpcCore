@@ -4,11 +4,11 @@ namespace Oploshka\RpcLoaderFormatter;
 
 class Json {
   
-  public function decode(&$loadData){
+  public function decode($str){
     $Reform = new \Oploshka\Reform\Reform([]);
-    $data = $Reform->item($_POST[$this->filed], ['type' => 'json']);
+    $data = $Reform->item($str, ['type' => 'json']);
     if ($data === NULL){
-      // TODO: throw new Exception();
+      throw new Exception(); // TODO: add exception name
     }
     
     return $data;
@@ -19,15 +19,22 @@ class Json {
     $Reform = new \Oploshka\Reform\Reform([]);
     $returnJson = $Reform->item($returnObj, ['type' => 'objToJson']);
     if($returnJson === NULL){
-      $returnObj = [
-        "jsonrpc" => "2.0",
-        "error"   => 'ERROR_CONVERT_RESPONSE_TO_JSON', // todo: {"code": -32700, "message": "Parse error"},
-        'result'  => [],
-        "id"      => null
-      ];
-      $returnJson = $this->Reform->item($returnObj, ['type' => 'objToJson']);
+      // TODO: fix
+      // $returnObj = [
+      //   "jsonrpc" => "2.0",
+      //   "error"   => 'ERROR_CONVERT_RESPONSE_TO_JSON', // todo: {"code": -32700, "message": "Parse error"},
+      //   'result'  => [],
+      //   "id"      => null
+      // ];
+      // $returnJson = $this->Reform->item($returnObj, ['type' => 'objToJson']);
     }
     return $returnJson;
   }
+  
+  public function print($returnObj){
+    // TODO: add header and test
+    echo $this->encode($returnObj);
+  }
+  
   
 }
