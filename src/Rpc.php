@@ -3,6 +3,7 @@
 namespace Oploshka\Rpc;
 
 use Oploshka\Reform\ReformDebug;
+use Oploshka\RpcException\RpcException;
 
 class Rpc {
   
@@ -20,8 +21,23 @@ class Rpc {
   private $RpcResponseStructure;
   // TODO: что это?
   private $ResponseClass;   // именно класс, а не обьект Класса
-
   // TODO // private $ErrorStorage;    // данные по ошибкам // TODO: передавать в $ReturnFormatter
+  
+  // getters
+  
+  /*
+   * @return \Oploshka\Rpc\RpcMethodStorage
+   **/
+  public function getRpcMethodStorage()     { return $this->RpcMethodStorage;     }
+  //
+  public function getRpcRequestLoad()       { return $this->RpcRequestLoad;       }
+  public function getRpcRequestFormatter()  { return $this->RpcRequestFormatter;  }
+  public function getRpcRequestStructure()  { return $this->RpcRequestStructure;  }
+  public function getRpcResponseFormatter() { return $this->RpcResponseFormatter; }
+  public function getRpcResponseStructure() { return $this->RpcResponseStructure; }
+  
+  // setters
+  // TODO: add setters
 
   /**
    * Core constructor.
@@ -135,105 +151,126 @@ class Rpc {
     
   }
   
+  /**
+   * Run Rpc method
+   *
+   * @param RpcMethodInfo     $RpcMethodInfoObj
+   *
+   * @return RpcMethodResponse
+   **/
+  public function runMethod($RpcMethodInfoObj) {
+    ob_start();
+    // ErrorHandler::add();
+    
+    // это нужно для корректного закрытия ob_start
+    $Response = $this->runMethodProcessing($RpcMethodInfoObj);
+  
+    // проверим что в ответе не шляпа а RpcMethodResponse
+    if( !$this->isResponse($Response)) {
+      $responseLink = $Response;
+    
+      /** @var RpcMethodResponse  */
+      $Response = new $this->ResponseClass();
+    
+      $errorData = [
+        'gettype' => gettype($responseLink)
+      ];
+      if( gettype ( $responseLink ) == 'object' ) {
+        $errorData['get_class'] = get_class($responseLink);
+      }
+    
+      $Response->setError(
+        new Error([
+          'code'    => 'ERROR_NOT_CORRECT_METHOD_RETURN',
+          'data'    => $errorData
+        ])
+      );
+    }
+    
+    $echo = ob_get_contents();
+    if($echo !== ''){
+      // TODO: fix
+      $this->Logger->warning('echo', $echo );
+    }
+  
+    // ErrorHandler::remove();
+    ob_end_clean();
+    return $Response;
+  }
 
   /**
    * Run Rpc method
    *
-   * @param string $methodName string
-   * @param array $methodData array
+   * @param RpcMethodInfo     $RpcMethodInfoObj
    *
    * @return RpcMethodResponse
-   */
-  public function runMethod($RpcMethodInfoObj ) {
-
-    $Response = new $this->ResponseClass();
-    ob_start();
-    // ErrorHandler::add();
-    try{
-      $Response = $this->runMethodProcessing($RpcMethodInfoObj, $Response);
-    } catch (Throwable $e){
-      $this->Logger->error('runMethodError', $e->getMessage() );
-      $Response->setError('ERROR_METHOD_RUN');
-      // return $Response;
-    }
-
-    $echo = ob_get_contents();
-    if($echo !== ''){
-      $this->Logger->warning('echo', $echo );
-    }
-
-    // ErrorHandler::remove();
-    ob_end_clean();
-    
-    return $Response;
-  }
-
-  /*
-   *
-   * @return \Oploshka\Rpc\RpcMethodResponse
    **/
-  public function runMethodProcessing($RpcMethodInfoObj, $Response = false) {
+  private function runMethodProcessing($RpcMethodInfoObj) {
   
-    $Response = $Response ? $Response : new $this->ResponseClass();
-    
-    $methodName = $RpcMethodInfoObj->getMethodName();
-    $methodData = $RpcMethodInfoObj->getData();
-    
-    // TODO: use function getMethodClass
+  
     try {
+      /** @var RpcMethodResponse $Response  */
+      $Response = new $this->ResponseClass();
+      //
+      $methodName = $RpcMethodInfoObj->getMethodName();
+      $methodData = $RpcMethodInfoObj->getData();
+      
       $MethodClassName = $this->getMethodClassNameForMethodName($methodName);
-    } catch (\Throwable $e ) {
-      $Response->setError( $e->getMessage() );
-      return $Response;
-    }
-    
-    // validate method data
-    $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClassName::requestSchema()] );
-    if($data === null) {
-      $field = [];
-      $errorObjList = $this->Reform->getError();
-      foreach ($errorObjList as $errorObj){
-        $field[] = $errorObj['data'];
+  
+      // validate method data
+      $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClassName::requestSchema()] );
+      if($data === null) {
+        $field = [];
+        $errorObjList = $this->Reform->getError();
+        foreach ($errorObjList as $errorObj){
+          $field[] = $errorObj['data'];
+        }
+        $Response->setError('ERROR_NOT_VALIDATE_DATA', '', ['field' => $field]);
+        return $Response;
       }
-      $Response->setError('ERROR_NOT_VALIDATE_DATA', '', ['field' => $field]);
-      return $Response;
-    }
-
-    $responseLink = clone $Response;
-    try {
+  
       $MethodClass = new $MethodClassName( [
         'response'  => $Response,
         'data'      => $data,
         'logger'    => $this->Logger,
       ] );
-      $MethodClass->run();
-    } catch (MethodEndException $e) {
+      $returnResponse = $MethodClass->run();
+      if( $returnResponse !== null && $this->isResponse($returnResponse)) {
+        $Response = $returnResponse;
+      }
+      
+    } catch (\Oploshka\RpcException\MethodEndException $e) {
       // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
-    } catch ( \Throwable $e ){
-      $responseLink->setError('ERROR_METHOD', $e->getMessage(), [
-        'methodName' => $methodName,
-        'methodData' => $methodData,
-        'code' => $e->getCode(),
-        'line' => $e->getLine(),
-      ]);
-      return $responseLink;
+    } catch (RpcException $e) {
+      $Response->setErrorCode($e->getMessage());
+      return $Response;
     }
-
-    // $Response is Response class?
+    catch (\Throwable $e ) {
+      $Response = new $this->ResponseClass();
+      $Response->setError(
+        new Error([
+          'code'    => 'ERROR_METHOD_RUN',
+          'message' => $e->getMessage(),
+          'data'    => [
+            'methodName' => $methodName,
+            'methodData' => $methodData,
+            'code' => $e->getCode(),
+            'line' => $e->getLine(),
+          ]
+        ])
+      );
+    }
+  
+    return $Response;
+  }
+  
+  // $Response is Response class?
+  public function isResponse($Response) {
     $responseType = gettype ( $Response );
     if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\RpcMethodResponse'){
-
-      $this->Logger->error('responseErrorType', ['gettype' => gettype($Response)] );
-      if( gettype ( $Response ) == 'object' ) {
-        $this->Logger->error('responseErrorClass',  ['get_class' => get_class($Response)] );
-      }
-
-      $responseLink->setError('ERROR_NOT_CORRECT_METHOD_RETURN');
-      // reset response
-      $Response = $responseLink;
+      return false;
     }
-
-    return $Response;
+    return true;
   }
   
   
@@ -242,7 +279,7 @@ class Rpc {
     // get method info
     $methodInfo = $this->RpcMethodStorage->getMethodInfo($methodName);
     if(!$methodInfo) {
-      throw new \Exception('ERROR_NO_METHOD');
+      throw new RpcException('ERROR_NO_METHOD');
     }
     
     // method class create
@@ -266,7 +303,7 @@ class Rpc {
     $interfaces = class_implements( $MethodClassName );
     if ( !isset( $interfaces['Oploshka\RpcInterface\Method'] ) ) {
       // var_dump($interfaces);
-      throw new \Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
+      throw new \RpcException('ERROR_NOT_INSTANCEOF_INTERFACE');
     }
     
     return $MethodClassName;

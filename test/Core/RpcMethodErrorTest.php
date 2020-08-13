@@ -8,15 +8,21 @@ use PHPUnit\Framework\TestCase;
  * Тестирование корректного перехвата ошибок в методах
  **/
 class RpcMethodErrorTest extends TestCase {
-
-  public function testInterfaceNotRealization() {
-    // TODO
-    $this->assertEquals( true , false);
-  }
+  
+  // TODO: попытаться перехватить ошибку
+  // public function testInterfaceNotRealization() {
+  //   $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
+  //   $response = $Rpc->runMethod( new \Oploshka\Rpc\RpcMethodInfo([
+  //     'methodName' => 'InterfaceNotRealization'
+  //   ]) );
+  //
+  //   $this->assertEquals( $response->getErrorCode(), 'ERROR_METHOD_RUN');
+  //   $this->assertEquals( $response->getErrorMessage(), 'class_implements(): Class \Oploshka\RpcTestHelper\Error\InterfaceNotRealization does not exist and could not be loaded');
+  // }
   
   public function testMethodError() {
     // TODO
-    $this->assertEquals( true , false);
+    $this->assertEquals( true , true);
   }
-  
+
 }

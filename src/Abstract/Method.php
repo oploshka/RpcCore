@@ -4,7 +4,10 @@ namespace Oploshka\RpcAbstract;
 
 
 abstract class Method implements \Oploshka\RpcInterface\Method {
-
+  
+  /**
+   * @var \Oploshka\Rpc\RpcMethodResponse
+   */
   protected $Response;
   protected $Data;
   protected $Logger;

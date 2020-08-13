@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcHelperTest\Method\Error;
+namespace Oploshka\RpcTestHelper\Method\Error;
 
-class MethodTestErrorIntarfaceNotRealization extends \Oploshka\RpcAbstract\Method {
+class InterfaceNotRealization extends \Oploshka\RpcAbstract\Method {
 
   public static function description(){
     return <<<DESCRIPTION
@@ -14,7 +14,7 @@ DESCRIPTION;
   }
 
   public function run(){
-    $this->Response->error('ERROR_NO');
+    $this->Response->setErrorCode('ERROR_NO');
   }
 
   // Not realization method responseSchema

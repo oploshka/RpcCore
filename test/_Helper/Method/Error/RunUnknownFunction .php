@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcHelperTest\Method;
+namespace Oploshka\RpcTestHelper\Method\Error;
 
-class MethodTestErrorRunMethod extends \Oploshka\RpcAbstract\Method {
+class RunUnknownFunction extends \Oploshka\RpcAbstract\Method {
 
   public static function description(){
     return <<<DESCRIPTION
@@ -16,7 +16,7 @@ DESCRIPTION;
   public function run(){
     // попытка запустить что то не существующее
     ololo(123);
-    $this->Response->error('ERROR_NO');
+    $this->Response->setErrorCode('ERROR_NO');
   }
 
   public static function responseSchema(){

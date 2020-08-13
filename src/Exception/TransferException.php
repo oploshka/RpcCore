@@ -1,5 +1,5 @@
 <?php
 
-namespace Rpc\Exception;
+namespace Oploshka\RpcException;
 
 class TransferException extends \RuntimeException {}
