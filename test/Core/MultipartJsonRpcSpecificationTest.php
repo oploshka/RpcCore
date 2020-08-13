@@ -17,7 +17,7 @@ class MultipartJsonRpcSpecificationTest extends TestCase {
       'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,
       'responseClass'   => \Oploshka\RpcHelperTest\Helper::getResponseClass()       ,
     ];
-    $Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+    $Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
     $Rpc->applyPhpSettings();
 
     $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -61,7 +61,7 @@ class MultipartJsonRpcSpecificationTest extends TestCase {
       'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,
       'responseClass'   => \Oploshka\RpcHelperTest\Helper::getResponseClass()       ,
     ];
-    $Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+    $Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
     $Rpc->applyPhpSettings();
 
     $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -120,7 +120,7 @@ class MultipartJsonRpcSpecificationTest extends TestCase {
       'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1(),
       'responseClass' => \Oploshka\RpcHelperTest\Helper::getResponseClass(),
     ];
-    $Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+    $Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
     $Rpc->applyPhpSettings();
 
     $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -162,7 +162,7 @@ class MultipartJsonRpcSpecificationTest extends TestCase {
       'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1(),
       'responseClass' => \Oploshka\RpcHelperTest\Helper::getResponseClass(),
     ];
-    $Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+    $Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
     $Rpc->applyPhpSettings();
 
     $_SERVER['REQUEST_METHOD'] = 'POST';

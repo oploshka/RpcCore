@@ -4,7 +4,7 @@ namespace Oploshka\Rpc;
 
 use Oploshka\Reform\ReformDebug;
 
-class Core implements \Oploshka\RpcInterface\Core {
+class Rpc implements \Oploshka\RpcInterface\Core {
 
   private $MethodStorage;   // храним данные по методам
   private $Reform;          // валидация данных
@@ -91,7 +91,7 @@ class Core implements \Oploshka\RpcInterface\Core {
   }
 
   /**
-   * @return RpcResponse
+   * @return RpcMethodResponse
    */
   public function startProcessingRequest() {
     // data load
@@ -149,7 +149,7 @@ class Core implements \Oploshka\RpcInterface\Core {
    * @param string $methodName string
    * @param array $methodData array
    *
-   * @return RpcResponse
+   * @return RpcMethodResponse
    */
   public function startProcessingMethod($methodName, $methodData ) {
 
@@ -230,7 +230,7 @@ class Core implements \Oploshka\RpcInterface\Core {
 
     // $Response is Response class?
     $responseType = gettype ( $Response );
-    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\RpcResponse'){
+    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\RpcMethodResponse'){
 
       $this->Logger->error('responseErrorType', ['gettype' => gettype($Response)] );
       if( gettype ( $Response ) == 'object' ) {

@@ -67,7 +67,7 @@ class Helper {
     return $MethodStorage;
   }
   public static function getResponseClass(){
-    return  new \Oploshka\Rpc\RpcResponse();
+    return  new \Oploshka\Rpc\RpcMethodResponse();
   }
 
   public static function getRpc(){
@@ -81,7 +81,7 @@ class Helper {
       'responseClass'   => self::getResponseClass()     ,
     ];
 
-    $Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+    $Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
     $Rpc->applyPhpSettings();
     return $Rpc;
   }

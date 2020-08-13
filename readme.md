@@ -45,9 +45,9 @@ $rpcInitData = [
   'dataLoader'      => new \Oploshka\RpcDataLoader\PostMultipartFieldJson()     ,
   'dataFormatter'   => new \Oploshka\RpcDataFormatter\MultipartJsonRpc_v0_1()   ,
   'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,
-  'responseClass'   => new \Oploshka\Rpc\RpcResponse()                             ,
+  'responseClass'   => new \Oploshka\Rpc\RpcMethodResponse()                             ,
 ];
-$Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+$Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
 $Rpc->applyHeaderSettings();
 $Rpc->applyPhpSettings();
 
