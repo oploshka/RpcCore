@@ -14,10 +14,15 @@ class Rpc {
   //
   private $RpcMethodStorage;
   // обработка данных запроса/ответа
+  /** @var \Oploshka\RpcRequestLoad\Post_MultipartFormData_Field  */
   private $RpcRequestLoad;
+  /** @var \Oploshka\RpcFormatter\Json  */
   private $RpcRequestFormatter;
+  /** @var \Oploshka\RpcStructure\MultipartJsonRpc_v0_1  */
   private $RpcRequestStructure;
+  /** @var \Oploshka\RpcFormatter\Json  */
   private $RpcResponseFormatter;
+  /** @var Oploshka\RpcStructure\MultipartJsonRpc_v0_1  */
   private $RpcResponseStructure;
   // TODO: что это?
   private $ResponseClass;   // именно класс, а не обьект Класса
@@ -143,12 +148,42 @@ class Rpc {
       
       // TODO: опционально вернуть обьект или выводить содержимое
       // отдаем ответ
-      $this->RpcResponseFormatter->printResponse($loadStr);
+      // $this->RpcResponseFormatter->printResponse($loadStr);
+      return $this->RpcResponseFormatter->encode($loadStr);
+      
       
     } catch (\Throwable $e) {
       // TODO: fix
+      /** @var RpcMethodResponse $Response */
+      $Response = new $this->ResponseClass();
+      $Response->setErrorCode('asdasdasdasd');
     }
     
+  }
+  
+  public function runMethodByRequest() {
+  
+    try {
+      
+      // получим данные
+      $loadStr = $this->RpcRequestLoad->load();
+      // расшифруем
+      $loadData = $this->RpcRequestFormatter->decode($loadStr);
+      // считываем структуру
+      $RpcMethodInfoObj = $this->RpcRequestStructure->decode($loadData);
+      // запустим метод
+      $Response = $this->runMethod($RpcMethodInfoObj);
+      
+    } catch (RpcException $e) {
+      $Response = new $this->ResponseClass();
+      $Response->setErrorCode($e->getMessage());
+    } catch (\Throwable $e) {
+      // TODO: fix
+      /** @var RpcMethodResponse $Response */
+      $Response = new $this->ResponseClass();
+      $Response->setErrorCode('asdasdasdasd');
+    }
+    return $Response;
   }
   
   /**
