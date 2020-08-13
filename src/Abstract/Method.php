@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\RpcAbstract;
 
 
 abstract class Method implements \Oploshka\RpcInterface\Method {
