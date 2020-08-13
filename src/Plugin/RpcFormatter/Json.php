@@ -8,7 +8,7 @@ class Json {
     $Reform = new \Oploshka\Reform\Reform([]);
     $data = $Reform->item($str, ['type' => 'json']);
     if ($data === NULL){
-      throw new \Exception(); // TODO: add exception name
+      throw new \Oploshka\RpcException\RpcException('ERROR_REQUEST_FORMAT_DECODE');
     }
     
     return $data;
@@ -19,14 +19,7 @@ class Json {
     $Reform = new \Oploshka\Reform\Reform([]);
     $returnJson = $Reform->item($returnObj, ['type' => 'objToJson']);
     if($returnJson === NULL){
-      // TODO: fix
-      // $returnObj = [
-      //   "jsonrpc" => "2.0",
-      //   "error"   => 'ERROR_CONVERT_RESPONSE_TO_JSON', // todo: {"code": -32700, "message": "Parse error"},
-      //   'result'  => [],
-      //   "id"      => null
-      // ];
-      // $returnJson = $this->Reform->item($returnObj, ['type' => 'objToJson']);
+      throw new \Oploshka\RpcException\RpcException('ERROR_RESPONSE_FORMAT_ENCODE');
     }
     return $returnJson;
   }

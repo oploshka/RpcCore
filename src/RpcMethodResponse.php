@@ -13,24 +13,23 @@ class RpcMethodResponse implements \Oploshka\RpcInterface\Response {
   }
   
   // getters
-  /**
-   * @return array
-   */
+  /** @return array */
   public function getData(){
     return $this->data;
   }
-  /**
-   * @return Error
-   */
+  /**  @return Error */
   public function getError(){
     return $this->error;
   }
+  /**  @return string */
   public function getErrorCode(){
     return $this->error->getCode();
   }
+  /**  @return string */
   public function getErrorMessage(){
     return $this->error->getMessage();
   }
+  /**  @return array */
   public function getErrorData(){
     return $this->error->getData();
   }

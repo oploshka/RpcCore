@@ -19,7 +19,7 @@ class Post_MultipartFormData_Field {
     }
     // Post is empty
     if($_POST == [] ) {
-      throw new \Oploshka\RpcException\RpcException('ERROR_POST_NULL');
+      throw new \Oploshka\RpcException\RpcException('ERROR_POST_EMPTY');
     }
     // $_POST['data']  not send
     if( !isset($_POST[$this->filed]) ) {

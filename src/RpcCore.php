@@ -5,7 +5,7 @@ namespace Oploshka\Rpc;
 use Oploshka\Reform\ReformDebug;
 use Oploshka\RpcException\RpcException;
 
-class Rpc {
+class RpcCore {
   
   // валидация данных
   /** @var \Oploshka\Reform\Reform  */
