@@ -57,7 +57,7 @@ class Helper {
     return new \Oploshka\RpcHelperTest\ReturnFormatter\ReturnFormatter();
   }
   public static function getRpcMethodStorage(){
-    $MethodStorage  = new \Oploshka\Rpc\MethodStorage();
+    $MethodStorage  = new \Oploshka\Rpc\RpcMethodStorage();
     $MethodStorage->add('MethodTest1'     , 'Oploshka\\RpcHelperTest\\Method\\MethodTest1');
     $MethodStorage->add('MethodTest2'     , 'Oploshka\\RpcHelperTest\\Method\\MethodTest2');
     $MethodStorage->add('MethodTestData'  , 'Oploshka\\RpcHelperTest\\Method\\MethodTestData');
@@ -67,7 +67,7 @@ class Helper {
     return $MethodStorage;
   }
   public static function getResponseClass(){
-    return  new \Oploshka\Rpc\Response();
+    return  new \Oploshka\Rpc\RpcResponse();
   }
 
   public static function getRpc(){

@@ -91,7 +91,7 @@ class Core implements \Oploshka\RpcInterface\Core {
   }
 
   /**
-   * @return Response
+   * @return RpcResponse
    */
   public function startProcessingRequest() {
     // data load
@@ -149,7 +149,7 @@ class Core implements \Oploshka\RpcInterface\Core {
    * @param string $methodName string
    * @param array $methodData array
    *
-   * @return Response
+   * @return RpcResponse
    */
   public function startProcessingMethod($methodName, $methodData ) {
 
@@ -230,7 +230,7 @@ class Core implements \Oploshka\RpcInterface\Core {
 
     // $Response is Response class?
     $responseType = gettype ( $Response );
-    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\Response'){
+    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\RpcResponse'){
 
       $this->Logger->error('responseErrorType', ['gettype' => gettype($Response)] );
       if( gettype ( $Response ) == 'object' ) {

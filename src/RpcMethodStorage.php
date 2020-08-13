@@ -2,12 +2,12 @@
 
 namespace Oploshka\Rpc;
 
-class MethodStorage implements \Oploshka\RpcInterface\MethodStorage {
+class RpcMethodStorage implements \Oploshka\RpcInterface\MethodStorage {
   
   private $methods = [];
   
   /**
-   * 
+   *
    * @param string $methodName
    * @param string $methodClass
    * // TODO: @param string $methodGroup

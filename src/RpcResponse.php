@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-class Response implements \Oploshka\RpcInterface\Response {
+class RpcResponse implements \Oploshka\RpcInterface\Response {
   
   private $errorObj    = [
     'code'    => 'ERROR_DEFAULT',
