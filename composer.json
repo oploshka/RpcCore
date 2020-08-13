@@ -18,11 +18,13 @@
   },
   "autoload": {
     "psr-4": {
+      "Oploshka\\Rpc\\"                 : "src/",
       "Oploshka\\RpcInterface\\"        : "src/Interface",
-      "Oploshka\\Rpc\\"                 : "src/Code/Core",
-      "Oploshka\\RpcDataFormatter\\"    : "src/Code/DataFormatter",
-      "Oploshka\\RpcDataLoader\\"       : "src/Code/DataLoader",
-      "Oploshka\\RpcReturnFormatter\\"  : "src/Code/ReturnFormatter"
+      "Oploshka\\RpcException\\"        : "src/Exception",
+      
+      "Oploshka\\RpcDataFormatter\\"    : "src/Plugin/DataFormatter",
+      "Oploshka\\RpcDataLoader\\"       : "src/Plugin/DataLoader",
+      "Oploshka\\RpcReturnFormatter\\"  : "src/Plugin/ReturnFormatter"
     }
   },
   "autoload-dev": {
