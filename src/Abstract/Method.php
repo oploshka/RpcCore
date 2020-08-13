@@ -24,5 +24,30 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
   // public static function responseSchema() { return []; }
   
   abstract public function run();
+  
+  // сокращения
+  protected function setData($key, $value){
+    $this->Response->setData($key, $value);
+    return $this->Response;
+  }
+  
+  // сокращения по ошибкам
+  protected function setError($error): RpcMethodResponse {
+    $this->Response->error($error);
+    return $this->Response;
+  }
+  protected function setErrorCode($code){
+    $this->Response->setErrorCode($code);
+    return $this->Response;
+  }
+  protected function setErrorMessage($message){
+    $this->Response->setErrorMessage($message);
+    return $this->Response;
+  }
+  protected function setErrorData($data){
+    $this->Response->setErrorData($data);
+    return $this->Response;
+  }
+  
 
 }

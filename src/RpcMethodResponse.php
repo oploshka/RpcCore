@@ -34,6 +34,11 @@ class RpcMethodResponse implements \Oploshka\RpcInterface\Response {
     return $this->error->getData();
   }
   
+  // TODO: fix
+  public function getResponseId(){
+    return null;
+  }
+  
   // setters
   /**
    * @param string $key

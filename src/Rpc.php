@@ -13,49 +13,45 @@ class Rpc extends RpcCore {
     parent::__construct($obj);
   }
   
-  /**
-   * @return RpcMethodResponse
-   */
-  public function startProcessingRequest() {
+  public function startProcessingRequest($print = true) {
     $MethodResponse = $this->runMethodByRequest();
-    try {
-      // создаем структуру
-      $RpcRequestObj = $this->RpcResponseStructure->encode($MethodResponse);
-      // TODO: опционально вернуть обьект или выводить содержимое
-      // отдаем ответ
-      // $this->RpcResponseFormatter->printResponse($loadStr);
-      return $this->RpcResponseFormatter->encode($loadStr);
-    } catch (\Throwable $e) {
-      // TODO: fix
-      /** @var RpcMethodResponse $Response */
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
-      $Response->setErrorCode('asdasdasdasd');
-    }
+    return $this->convertMethodResponseToString($MethodResponse);
   }
+  
+  
   
   /**
    * @return RpcMethodResponse
    */
   public function runMethodByRequest() {
+    $Response = false;
     try {
       // получаем данные из запроса
       $RpcMethodRequest = $this->getRpcMethodRequestByRequest();
-      // запустим метод
-      $Response = $this->runMethod($RpcMethodRequest);
     } catch (RpcException $e) {
       $Response = new \Oploshka\Rpc\RpcMethodResponse();
       $Response->setErrorCode($e->getMessage());
     } catch (\Throwable $e) {
-      // TODO: fix
       /** @var RpcMethodResponse $Response */
       $Response = new \Oploshka\Rpc\RpcMethodResponse();
       $Response->setErrorCode('ERROR_RUN_METHOD_BY_REQUEST');
       $Response->setErrorMessage($e->getMessage());
     }
+    
+    if($Response) {
+      return $Response;
+    }
+    
+    // запустим метод
+    $Response = $this->runMethod($RpcMethodRequest);
+    
     return $Response;
   }
   
   /**
+   * получить запрос
+   *
+   * @throws RpcException
    * @return RpcMethodRequest
    */
   public function getRpcMethodRequestByRequest() {
@@ -67,6 +63,31 @@ class Rpc extends RpcCore {
     $RpcMethodRequest = $this->RpcRequestStructure->decode($loadData);
     //
     return $RpcMethodRequest;
+  }
+  
+  /**
+   * @param $MethodResponse
+   * @return mixed
+   */
+  public function convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false) {
+    try {
+      $res = $this->_convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false);
+    } catch (\Throwable $e) {
+      $MethodResponse = new \Oploshka\Rpc\RpcMethodResponse();
+      $MethodResponse->setErrorCode('ERROR_RESPONSE_CONVERT');
+      $res = $this->_convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false);
+    }
+    return $res;
+  }
+  private function _convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false) {
+    // создаем структуру
+    $responseObject = $this->RpcResponseStructure->encode($RpcResponse, $RpcRequest);
+    
+    if($print) {
+      return $this->RpcResponseFormatter->print($responseObject);
+    } else {
+      return $this->RpcResponseFormatter->encode($responseObject);
+    }
   }
   
   /**
