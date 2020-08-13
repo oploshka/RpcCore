@@ -2,48 +2,50 @@
 
 namespace Oploshka\Rpc;
 
-class RpcMethodResponse implements \Oploshka\RpcInterface\Response {
+class RpcResponse implements \Oploshka\RpcInterface\Response {
   
+  /** @var RpcRequest $RpcRequest  */
+  private $RpcRequest;
   /** @var Error  */
-  private $error;
+  private $Error;
+  /** @var array */
   private $data = [];
   
   public function __construct($arr = []) {
-    $this->error = new Error();
+    $this->RpcRequest = $arr['RpcRequest'] ?? new RpcRequest(['methodName' => 'UNDEFINED']);
+    $this->Error      = new Error();
   }
   
   // getters
+  public function getRpcRequest(){
+    return $this->RpcRequest;
+  }
   /** @return array */
   public function getData(){
     return $this->data;
   }
   /**  @return Error */
   public function getError(){
-    return $this->error;
+    return $this->Error;
   }
   /**  @return string */
   public function getErrorCode(){
-    return $this->error->getCode();
+    return $this->Error->getCode();
   }
   /**  @return string */
   public function getErrorMessage(){
-    return $this->error->getMessage();
+    return $this->Error->getMessage();
   }
   /**  @return array */
   public function getErrorData(){
-    return $this->error->getData();
-  }
-  
-  // TODO: fix
-  public function getResponseId(){
-    return null;
+    return $this->Error->getData();
   }
   
   // setters
   /**
    * @param string $key
    * @param mixed $value
-   * @return RpcMethodResponse
+   * @return RpcResponse
    */
   public function setData($key, $value){
     $this->data[$key] = $value;
@@ -52,22 +54,22 @@ class RpcMethodResponse implements \Oploshka\RpcInterface\Response {
   
   /**
    * @param Error $error
-   * @return RpcMethodResponse
+   * @return RpcResponse
    */
-  public function setError($error): RpcMethodResponse {
-    $this->error = $error;
+  public function setError($error): RpcResponse {
+    $this->Error = $error;
     return $this;
   }
   public function setErrorCode($code){
-    $this->error->setCode($code);
+    $this->Error->setCode($code);
     return $this;
   }
   public function setErrorMessage($message){
-    $this->error->setMessage($message);
+    $this->Error->setMessage($message);
     return $this;
   }
   public function setErrorData($data){
-    $this->error->setData($data);
+    $this->Error->setData($data);
     return $this;
   }
   

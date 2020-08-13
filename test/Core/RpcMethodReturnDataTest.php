@@ -8,7 +8,7 @@ class RpcMethodReturnDataTest extends TestCase {
   
   public function testBaseReturnData() {
     $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
-    $response = $Rpc->runMethod( new \Oploshka\Rpc\RpcMethodRequest([
+    $response = $Rpc->runMethodByRpcRequest( new \Oploshka\Rpc\RpcRequest([
       'methodName' => 'BaseReturnData'
     ]) );
   
@@ -20,7 +20,7 @@ class RpcMethodReturnDataTest extends TestCase {
   
   public function testReplaceReturnData() {
     $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
-    $response = $Rpc->runMethod( new \Oploshka\Rpc\RpcMethodRequest([
+    $response = $Rpc->runMethodByRpcRequest( new \Oploshka\Rpc\RpcRequest([
       'methodName' => 'ReplaceReturnData'
     ]) );
   
@@ -35,8 +35,8 @@ class RpcMethodReturnDataTest extends TestCase {
     $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
 
     //
-    $response = $Rpc->runMethod(
-      new \Oploshka\Rpc\RpcMethodRequest([
+    $response = $Rpc->runMethodByRpcRequest(
+      new \Oploshka\Rpc\RpcRequest([
         'methodName' => 'ReturnRequestSchemaData'
       ])
     );
@@ -49,8 +49,8 @@ class RpcMethodReturnDataTest extends TestCase {
     ]);
     
     //
-    $response = $Rpc->runMethod(
-      new \Oploshka\Rpc\RpcMethodRequest([
+    $response = $Rpc->runMethodByRpcRequest(
+      new \Oploshka\Rpc\RpcRequest([
         'methodName'  => 'ReturnRequestSchemaData',
         'data'        => [
           'string' => 'testString',

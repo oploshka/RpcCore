@@ -18,7 +18,7 @@ interface RpcStructure {
   /*
    * @param \Oploshka\Rpc\RpcMethodInfo $RpcMethodInfoObj
    *
-   * @return \Oploshka\Rpc\RpcMethodResponse
+   * @return \Oploshka\Rpc\RpcResponse
    **/
   public function encode($RpcMethodInfoObj);
 }

@@ -10,7 +10,7 @@ class RpcMethodStorage implements \Oploshka\RpcInterface\MethodStorage {
    *
    * @param string $methodName
    * @param string $methodClass
-   * // TODO: @param string $methodGroup
+   * @param string $methodGroup
    * @throws \Exception
    */
   public function add($methodName, $methodClass, $methodGroup = 'default'){

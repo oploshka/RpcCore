@@ -6,7 +6,7 @@ namespace Oploshka\RpcAbstract;
 abstract class Method implements \Oploshka\RpcInterface\Method {
   
   /**
-   * @var \Oploshka\Rpc\RpcMethodResponse
+   * @var \Oploshka\Rpc\RpcResponse
    */
   protected $Response;
   protected $Data;
@@ -32,7 +32,7 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
   }
   
   // сокращения по ошибкам
-  protected function setError($error): RpcMethodResponse {
+  protected function setError($error): RpcResponse {
     $this->Response->error($error);
     return $this;
   }

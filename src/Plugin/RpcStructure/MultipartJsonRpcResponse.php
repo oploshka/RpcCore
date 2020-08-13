@@ -24,7 +24,7 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
   
   /**
    * @param array $arr
-   * @return \Oploshka\Rpc\RpcMethodResponse
+   * @return \Oploshka\Rpc\RpcResponse
    * @throws \Exception
    */
   public function decode($arr) {
@@ -38,7 +38,7 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
       throw new \Oploshka\RpcException\RpcException('ERROR_RESPONSE_STRUCTURE_DECODE');
     }
     
-    return new \Oploshka\Rpc\RpcMethodResponse([
+    return new \Oploshka\Rpc\RpcResponse([
       'requestId'   => $arr['request']['id'] ?? null,
       'methodName'  => $arr['request']['name'],
       'data'        => $arr['request']['data'],
@@ -49,25 +49,25 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
   }
   
   /**
-   * @param  \Oploshka\Rpc\RpcMethodResponse $RpcMethodResponseObj
+   * @param  \Oploshka\Rpc\RpcResponse $RpcResponse
    * @return array
    */
-  public function encode($RpcMethodResponseObj){
+  public function encode($RpcResponse){
 
     return [
       'specification'         => 'multipart-json-rpc',
       'specificationVersion'  => '0.1.0',
-      'version'               => '1.0.0',               // TODO
-      'language'              => 'en',                  // TODO
+      'version'               => $RpcResponse->getRpcRequest()->getVersion(),
+      'language'              => $RpcResponse->getRpcRequest()->getLanguage(),
   
       'response'              => [
-        'requestId' => $RpcMethodResponseObj->getResponseId(), // TODO: fix
+        'requestId' => $RpcResponse->getRpcRequest()->getRequestId(),
         'error'     => [
-          "code"      => $RpcMethodResponseObj->getErrorCode(),
-          "message"   => $RpcMethodResponseObj->getErrorMessage(),
-          "data"      => $RpcMethodResponseObj->getErrorData()
+          "code"      => $RpcResponse->getErrorCode(),
+          "message"   => $RpcResponse->getErrorMessage(),
+          "data"      => $RpcResponse->getErrorData()
         ],
-        'data'      => $RpcMethodResponseObj->getData(),
+        'data'      => $RpcResponse->getData(),
       ],
     ];
   }

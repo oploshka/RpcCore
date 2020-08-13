@@ -12,7 +12,7 @@ class CoreStartProcessingMethodTest extends TestCase {
   public function testNoMethodName() {
     $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
 
-    $response = $Rpc->runMethod( new \Oploshka\Rpc\RpcMethodRequest([
+    $response = $Rpc->runMethodByRpcRequest( new \Oploshka\Rpc\RpcRequest([
       'methodName' => 'notCreatedMethodName'
     ]) );
 

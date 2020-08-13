@@ -58,7 +58,7 @@ DESCRIPTION;
     $loadData = [];
     $loadStatus = $this->DataLoader->load($loadData);
     if($loadStatus !== 'ERROR_NO'){
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      $Response = new \Oploshka\Rpc\RpcResponse();
       $Response->setError($loadStatus);
       return $this->ReturnFormatter->format([
         'requestType'   => $requestType,
@@ -73,7 +73,7 @@ DESCRIPTION;
     $methodList = [];
     $validateStatus = $this->DataFormatter->prepare($loadData, $methodList, $requestType);
     if($validateStatus !== 'ERROR_NO'){
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      $Response = new \Oploshka\Rpc\RpcResponse();
       $Response->setError($validateStatus);
       return $this->ReturnFormatter->format([
         'requestType'   => $requestType,

@@ -14,26 +14,30 @@ class Rpc extends RpcCore {
   }
   
   public function startProcessingRequest($print = true) {
-    $MethodResponse = $this->runMethodByRequest();
-    return $this->convertMethodResponseToString($MethodResponse);
+    $RpcResponse = $this->runMethodByRequest();
+    return $this->convertRpcResponseToString($RpcResponse, $print);
   }
   
-  
+  /**
+   * @return RpcResponse
+   */
+  public function runMethodByRpcRequest($RpcRequest) {
+    return $this->_runMethod($RpcRequest);
+  }
   
   /**
-   * @return RpcMethodResponse
+   * @return RpcResponse
    */
   public function runMethodByRequest() {
     $Response = false;
     try {
       // получаем данные из запроса
-      $RpcMethodRequest = $this->getRpcMethodRequestByRequest();
+      $RpcRequest = $this->getRpcRequest();
     } catch (RpcException $e) {
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      $Response = new \Oploshka\Rpc\RpcResponse();
       $Response->setErrorCode($e->getMessage());
     } catch (\Throwable $e) {
-      /** @var RpcMethodResponse $Response */
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      $Response = new \Oploshka\Rpc\RpcResponse();
       $Response->setErrorCode('ERROR_RUN_METHOD_BY_REQUEST');
       $Response->setErrorMessage($e->getMessage());
     }
@@ -42,19 +46,16 @@ class Rpc extends RpcCore {
       return $Response;
     }
     
-    // запустим метод
-    $Response = $this->runMethod($RpcMethodRequest);
-    
-    return $Response;
+    return $this->runMethodByRpcRequest($RpcRequest);
   }
   
   /**
    * получить запрос
    *
+   * @return RpcRequest
    * @throws RpcException
-   * @return RpcMethodRequest
    */
-  public function getRpcMethodRequestByRequest() {
+  public function getRpcRequest() {
     // получим данные
     $loadStr = $this->RpcRequestLoad->load();
     // расшифруем
@@ -66,22 +67,22 @@ class Rpc extends RpcCore {
   }
   
   /**
-   * @param $MethodResponse
+   * @param $RpcResponse
    * @return mixed
    */
-  public function convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false) {
+  public function convertRpcResponseToString($RpcResponse, $print = false) {
     try {
-      $res = $this->_convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false);
+      $res = $this->_convertRpcResponseToString($RpcResponse, $print = false);
     } catch (\Throwable $e) {
-      $MethodResponse = new \Oploshka\Rpc\RpcMethodResponse();
-      $MethodResponse->setErrorCode('ERROR_RESPONSE_CONVERT');
-      $res = $this->_convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false);
+      $RpcResponse = new \Oploshka\Rpc\RpcResponse();
+      $RpcResponse->setErrorCode('ERROR_RESPONSE_CONVERT');
+      $res = $this->_convertRpcResponseToString($RpcResponse, $print = false);
     }
     return $res;
   }
-  private function _convertMethodResponseToString($RpcRequest, $RpcResponse, $print = false) {
+  private function _convertRpcResponseToString($RpcResponse, $print = false) {
     // создаем структуру
-    $responseObject = $this->RpcResponseStructure->encode($RpcResponse, $RpcRequest);
+    $responseObject = $this->RpcResponseStructure->encode($RpcResponse);
     
     if($print) {
       return $this->RpcResponseFormatter->print($responseObject);
@@ -92,22 +93,22 @@ class Rpc extends RpcCore {
   
   /**
    * Run Rpc method
-   * @param RpcMethodRequest     $RpcMethodInfoObj
-   * @return RpcMethodResponse
+   * @param RpcRequest $RpcRequest
+   * @return RpcResponse
    **/
-  public function runMethod($RpcMethodInfoObj) {
+  private function _runMethod($RpcRequest) {
     ob_start();
     // ErrorHandler::add();
     
     // это нужно для корректного закрытия ob_start
-    $Response = $this->runMethodProcessing($RpcMethodInfoObj);
+    $Response = $this->_runMethodProcessing($RpcRequest);
   
-    // проверим что в ответе не шляпа а RpcMethodResponse
+    // проверим что в ответе не шляпа а RpcResponse
     if( !$this->isResponse($Response)) {
       $responseLink = $Response;
     
-      /** @var RpcMethodResponse  */
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      /** @var RpcResponse  */
+      $Response = new \Oploshka\Rpc\RpcResponse();
     
       $errorData = [
         'gettype' => gettype($responseLink)
@@ -138,19 +139,21 @@ class Rpc extends RpcCore {
   /**
    * Run Rpc method
    *
-   * @param RpcMethodRequest     $RpcMethodInfoObj
+   * @param RpcRequest $RpcRequest
    *
-   * @return RpcMethodResponse
+   * @return RpcResponse
    **/
-  private function runMethodProcessing($RpcMethodInfoObj) {
+  private function _runMethodProcessing($RpcRequest) {
   
   
     try {
-      /** @var RpcMethodResponse $Response  */
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      /** @var RpcResponse $Response  */
+      $Response = new \Oploshka\Rpc\RpcResponse([
+        'RpcRequest' => $RpcRequest,
+      ]);
       //
-      $methodName = $RpcMethodInfoObj->getMethodName();
-      $methodData = $RpcMethodInfoObj->getData();
+      $methodName = $RpcRequest->getMethodName();
+      $methodData = $RpcRequest->getData();
       
       $MethodClassName = $this->getMethodClassNameForMethodName($methodName);
   
@@ -183,7 +186,9 @@ class Rpc extends RpcCore {
       return $Response;
     }
     catch (\Throwable $e ) {
-      $Response = new \Oploshka\Rpc\RpcMethodResponse();
+      $Response = new \Oploshka\Rpc\RpcResponse([
+        'RpcRequest' => $RpcRequest,
+      ]);
       $Response->setError(
         new Error([
           'code'    => 'ERROR_METHOD_RUN',
@@ -204,7 +209,7 @@ class Rpc extends RpcCore {
   // $Response is Response class?
   public function isResponse($Response) {
     $responseType = gettype ( $Response );
-    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\RpcMethodResponse'){
+    if( $responseType === 'object' && get_class ( $Response ) != 'Oploshka\Rpc\RpcResponse'){
       return false;
     }
     return true;
