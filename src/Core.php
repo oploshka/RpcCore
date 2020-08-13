@@ -162,6 +162,10 @@ class Core implements \Oploshka\RpcInterface\Core {
       $this->Logger->error('runMethodError', $e->getMessage() );
       $Response->setError('ERROR_METHOD_RUN');
       // return $Response;
+    } catch (Throwable $e){
+      $this->Logger->error('runMethodError', $e->getMessage() );
+      $Response->setError('ERROR_METHOD_RUN');
+      // return $Response;
     }
 
     $echo = ob_get_contents();
@@ -182,30 +186,18 @@ class Core implements \Oploshka\RpcInterface\Core {
       $Response->setError('ERROR_NO_METHOD_NAME');
       return $Response;
     }
-
-    // get method info
-    $methodInfo = $this->MethodStorage->getMethodInfo($methodName);
-    if(!$methodInfo) {
-      $Response->setError('ERROR_NO_METHOD_INFO');
+  
+    // TODO: use function getMethodClass
+    try {
+      $MethodClassName = $this->getMethodClassNameForMethodName($methodName);
+    } catch (\Throwable $e ) {
+      $Response->setError( $e->getMessage() );
       return $Response;
     }
-
-    // method class create
-    $MethodClassName = $methodInfo['class'];
-    $MethodClass = new $MethodClassName( [
-      'response'  => false,
-      'data'      => false,
-      'logger'    => false,
-    ] );
-
-    // validate class interface
-    if ( !($MethodClass instanceof \Oploshka\RpcInterface\Method) ) {
-      $Response->setError('ERROR_NOT_INSTANCEOF_INTERFACE');
-      return $Response;
-    }
+    
 
     // validate method data
-    $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClass::validate()] );
+    $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClassName::requestSchema()] );
     if($data === null) {
       $field = [];
       $errorObjList = $this->Reform->getError();
@@ -225,8 +217,8 @@ class Core implements \Oploshka\RpcInterface\Core {
       ] );
       $MethodClass->run();
     } catch (MethodEndException $e) {
-
-    } catch (\Throwable $e ){
+      // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
+    } catch ( \Throwable $e ){
       $responseLink->setError('ERROR_METHOD', $e->getMessage(), [
         'methodName' => $methodName,
         'methodData' => $methodData,
@@ -252,5 +244,42 @@ class Core implements \Oploshka\RpcInterface\Core {
 
     return $Response;
   }
+  
+  
+  public function getMethodClassNameForMethodName($methodName){
+  
+    // get method info
+    $methodInfo = $this->MethodStorage->getMethodInfo($methodName);
+    if(!$methodInfo) {
+      throw new Exception('ERROR_NO_METHOD_INFO');
+    }
+    
+    // method class create
+    $MethodClassName = $methodInfo['class'];
+
+  
+    //# TODO: переделать на class_implements и проверить работет ли
+    //# https://www.php.net/manual/ru/function.class-implements.php
+    //# начиная с версии PHP 5.1.0 можно передавать имя класса вместо объекта
+    // validate class interface
+    
+    ///# $MethodClass = new $MethodClassName( [
+    ///#   'response'  => false,
+    ///#   'data'      => false,
+    ///#   'logger'    => false,
+    ///# ] );
+    ///# if ( !($MethodClass instanceof \Oploshka\RpcInterface\Method) ) {
+    ///#   throw new Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
+    ///# }
+  
+    $interfaces = class_implements( $MethodClassName );
+    if ( !isset( $interfaces['Oploshka\RpcInterface\Method'] ) ) {
+      // var_dump($interfaces);
+      throw new Exception('ERROR_NOT_INSTANCEOF_INTERFACE');
+    }
+    
+    return $MethodClassName;
+  }
+  
   
 }

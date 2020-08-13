@@ -9,7 +9,7 @@ class MethodTestLogger extends \Oploshka\Rpc\Method {
 DESCRIPTION;
   }
   
-  public static function validate(){
+  public static function requestSchema(){
     return [];
   }
   
@@ -18,7 +18,7 @@ DESCRIPTION;
     $this->Response->setError('ERROR_NO', 'errorMessage', ['errorKey' => 'errorValue']);
   }
 
-  public static function return(){
+  public static function responseSchema(){
     return [];
   }
   

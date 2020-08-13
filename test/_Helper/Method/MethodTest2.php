@@ -10,7 +10,7 @@ Test description
 DESCRIPTION;
   }
   
-  public static function validate(){
+  public static function requestSchema(){
     return [];
   }
   
@@ -19,7 +19,7 @@ DESCRIPTION;
     $this->Response->setError('ERROR_NO');
   }
 
-  public static function return(){
+  public static function responseSchema(){
     return [];
   }
   

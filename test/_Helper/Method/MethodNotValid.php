@@ -9,7 +9,7 @@ class MethodNotValid extends \Oploshka\Rpc\Method {
 DESCRIPTION;
   }
 
-  public static function validate(){
+  public static function requestSchema(){
     return [];
   }
 
@@ -18,7 +18,7 @@ DESCRIPTION;
     $this->Response->error('ERROR_NO');
   }
 
-  public static function return(){
+  public static function responseSchema(){
     return [];
   }
 }

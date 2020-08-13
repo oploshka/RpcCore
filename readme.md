@@ -41,7 +41,7 @@ $MethodStorage->add('TestMethod2', '\\RpcMethodPath\\TestMethod2');
 // init MultipartJsonRpc_v0_1
 $rpcInitData = [
   'methodStorage'   => $MethodStorage                                           ,
-  'reform'          => new \Oploshka\Reform\ReformDebug()                            ,
+  'reform'          => new \Oploshka\Reform\ReformDebug()                       ,
   'dataLoader'      => new \Oploshka\RpcDataLoader\PostMultipartFieldJson()     ,
   'dataFormatter'   => new \Oploshka\RpcDataFormatter\MultipartJsonRpc_v0_1()   ,
   'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,

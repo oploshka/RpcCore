@@ -9,7 +9,7 @@ class MethodTestData extends \Oploshka\Rpc\Method {
 DESCRIPTION;
   }
   
-  public static function validate(){
+  public static function requestSchema(){
     return [
       'string'  => ['type' => 'string', 'validate' => [], 'req' => false ],
       'int'     => ['type' => 'int'   , 'validate' => [], 'req' => false ],
@@ -27,7 +27,7 @@ DESCRIPTION;
     $this->Response->setError('ERROR_NO');
   }
 
-  public static function return(){
+  public static function responseSchema(){
     return [];
   }
   

@@ -12,21 +12,21 @@ interface Method {
 
   /**
    * Get RPC method description
-   * 
+   *
    * @return string
    **/
   public static function description();
   
   /**
    * Get validation scheme
-   * 
+   *
    * @return array Validation scheme
    **/
-  public static function validate();
+  public static function requestSchema();
   
   /**
-   * Main RPC method 
-   * 
+   * Main RPC method
+   *
    * not return! run $this->Response->error('ERROR_NO')
    *
    */
@@ -35,8 +35,8 @@ interface Method {
   /**
    * Get validation return scheme
    *
-   * @return array Validation scheme
+   * @return array response validation scheme
    **/
-  public static function return();
+  public static function responseSchema();
   
 }
