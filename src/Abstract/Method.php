@@ -28,25 +28,25 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
   // сокращения
   protected function setData($key, $value){
     $this->Response->setData($key, $value);
-    return $this->Response;
+    return $this;
   }
   
   // сокращения по ошибкам
   protected function setError($error): RpcMethodResponse {
     $this->Response->error($error);
-    return $this->Response;
+    return $this;
   }
   protected function setErrorCode($code){
     $this->Response->setErrorCode($code);
-    return $this->Response;
+    return $this;
   }
   protected function setErrorMessage($message){
     $this->Response->setErrorMessage($message);
-    return $this->Response;
+    return $this;
   }
   protected function setErrorData($data){
     $this->Response->setErrorData($data);
-    return $this->Response;
+    return $this;
   }
   
 
