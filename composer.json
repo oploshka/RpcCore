@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=7.3",
     "oploshka/reform": "0.4.0",
     "psr/log": "^1.1"
   },
@@ -18,17 +18,22 @@
   },
   "autoload": {
     "psr-4": {
+      "Oploshka\\Rpc\\"                 : "src/",
       "Oploshka\\RpcInterface\\"        : "src/Interface",
-      "Oploshka\\Rpc\\"                 : "src/Code/Core",
-      "Oploshka\\RpcDataFormatter\\"    : "src/Code/DataFormatter",
-      "Oploshka\\RpcDataLoader\\"       : "src/Code/DataLoader",
-      "Oploshka\\RpcReturnFormatter\\"  : "src/Code/ReturnFormatter"
+      "Oploshka\\RpcAbstract\\"         : "src/Abstract",
+      "Oploshka\\RpcException\\"        : "src/Exception",
+
+      "Oploshka\\RpcMethods\\"          : "src/Methods",
+
+      "Oploshka\\RpcRequestLoad\\"      : "src/Plugin/RpcRequestLoad",
+      "Oploshka\\RpcFormatter\\"        : "src/Plugin/RpcFormatter",
+      "Oploshka\\RpcStructure\\"        : "src/Plugin/RpcStructure"
     }
   },
   "autoload-dev": {
     "psr-4": {
       "Oploshka\\RpcTest\\"                 : "test/Core",
-      "Oploshka\\RpcHelperTest\\"           : "test/_Helper"
+      "Oploshka\\RpcTestHelper\\"           : "test/_Helper"
     }
   }
 }

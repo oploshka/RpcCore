@@ -33,7 +33,7 @@ php composer.phar require oploshka/rpc-core
 
 Sample code:
 ```php
-$MethodStorage  = new \Oploshka\Rpc\MethodStorage();
+$MethodStorage  = new \Oploshka\Rpc\RpcMethodStorage();
 
 $MethodStorage->add('TestMethod1', '\\RpcMethodPath\\TestMethod1');
 $MethodStorage->add('TestMethod2', '\\RpcMethodPath\\TestMethod2');
@@ -41,13 +41,13 @@ $MethodStorage->add('TestMethod2', '\\RpcMethodPath\\TestMethod2');
 // init MultipartJsonRpc_v0_1
 $rpcInitData = [
   'methodStorage'   => $MethodStorage                                           ,
-  'reform'          => new \Oploshka\Reform\ReformDebug()                            ,
+  'reform'          => new \Oploshka\Reform\ReformDebug()                       ,
   'dataLoader'      => new \Oploshka\RpcDataLoader\PostMultipartFieldJson()     ,
   'dataFormatter'   => new \Oploshka\RpcDataFormatter\MultipartJsonRpc_v0_1()   ,
   'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,
-  'responseClass'   => new \Oploshka\Rpc\Response()                             ,
+  'responseClass'   => new \Oploshka\Rpc\RpcResponse()                             ,
 ];
-$Rpc = new \Oploshka\Rpc\Core($rpcInitData);
+$Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
 $Rpc->applyHeaderSettings();
 $Rpc->applyPhpSettings();
 

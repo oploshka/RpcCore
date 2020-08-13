@@ -7,18 +7,8 @@ use PHPUnit\Framework\TestCase;
 class MultipartJsonRpcErrorHandlerTest extends TestCase {
 
   public function test_MultipartJsonRpc_v0_1__BasicRequest() {
-
-    // init MultipartJsonRpc_v0_1
-    $rpcInitData = [
-      'methodStorage'   => \Oploshka\RpcHelperTest\Helper::getRpcMethodStorage()    ,
-      'reform'          => \Oploshka\RpcHelperTest\Helper::getRpcReform()           ,
-      'dataLoader'      => new \Oploshka\RpcDataLoader\PostMultipartFieldJson()     ,
-      'dataFormatter'   => new \Oploshka\RpcDataFormatter\MultipartJsonRpc_v0_1()   ,
-      'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,
-      'responseClass'   => \Oploshka\RpcHelperTest\Helper::getResponseClass()       ,
-    ];
-    $Rpc = new \Oploshka\Rpc\Core($rpcInitData);
-    $Rpc->applyPhpSettings();
+  
+    $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
 
     $_SERVER['REQUEST_METHOD'] = 'POST';
     $_POST = [
@@ -37,9 +27,9 @@ class MultipartJsonRpcErrorHandlerTest extends TestCase {
       }',
     ];
 
-    $returnJson = $Rpc->startProcessingRequest();
+    $returnJson = $Rpc->startProcessingRequest(false);
     $returnObj = (array)json_decode($returnJson, true);
-    $this->assertEquals( $returnObj['response']['error']['code'], 'ERROR_METHOD');
+    $this->assertEquals( $returnObj['response']['error']['code'], 'ERROR_NO_METHOD');
   }
 
 }
