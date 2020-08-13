@@ -31,7 +31,7 @@ class MultipartJsonRpcRequest implements \Oploshka\RpcInterface\RpcStructure {
       throw new \Oploshka\RpcException\RpcException('ERROR_REQUEST_STRUCTURE_DECODE');
     }
     
-    return new \Oploshka\Rpc\RpcMethodInfo([
+    return new \Oploshka\Rpc\RpcMethodRequest([
       'requestId'   => $arr['request']['id'] ?? null,
       'methodName'  => $arr['request']['name'],
       'data'        => $arr['request']['data'],
@@ -43,7 +43,7 @@ class MultipartJsonRpcRequest implements \Oploshka\RpcInterface\RpcStructure {
   }
   
   /**
-   * @param \Oploshka\Rpc\RpcMethodInfo $RpcMethodInfo
+   * @param \Oploshka\Rpc\RpcMethodRequest $RpcMethodInfo
    **/
   public function encode($RpcMethodInfo){
 

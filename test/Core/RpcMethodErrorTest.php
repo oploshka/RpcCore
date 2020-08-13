@@ -28,7 +28,7 @@ class RpcMethodErrorTest extends TestCase {
   public function testInterfaceNotRealization() {
     $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
     $response = $Rpc->runMethod(
-      new \Oploshka\Rpc\RpcMethodInfo([
+      new \Oploshka\Rpc\RpcMethodRequest([
         'methodName' => 'RunUnknownFunction'
       ])
     );

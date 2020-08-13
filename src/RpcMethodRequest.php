@@ -4,7 +4,7 @@ namespace Oploshka\Rpc;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 
-class RpcMethodInfo {
+class RpcMethodRequest {
   
   private $requestId  = null;
   private $methodName = '';
