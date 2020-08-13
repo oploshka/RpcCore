@@ -24,5 +24,16 @@ class RpcMethodErrorTest extends TestCase {
     // TODO
     $this->assertEquals( true , true);
   }
-
+  
+  public function testInterfaceNotRealization() {
+    $data = \Oploshka\RpcTestHelper\Method\Error\RunUnknownFunction::requestSchema();
+    $Rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
+    $response = $Rpc->runMethod(
+      new \Oploshka\Rpc\RpcMethodInfo([
+        'methodName' => 'RunUnknownFunction'
+      ])
+    );
+    $this->assertEquals( $response->getErrorCode(), 'ERROR_METHOD_RUN');
+    $this->assertEquals( $response->getErrorMessage(), 'Call to undefined function Oploshka\RpcTestHelper\Method\Error\ololo()');
+  }
 }
