@@ -72,15 +72,15 @@ class Rpc extends RpcCore {
    */
   public function convertRpcResponseToString($RpcResponse, $print = false) {
     try {
-      $res = $this->_convertRpcResponseToString($RpcResponse, $print = false);
+      $res = $this->_convertRpcResponseToString($RpcResponse, $print);
     } catch (\Throwable $e) {
       $RpcResponse = new \Oploshka\Rpc\RpcResponse();
       $RpcResponse->setErrorCode('ERROR_RESPONSE_CONVERT');
-      $res = $this->_convertRpcResponseToString($RpcResponse, $print = false);
+      $res = $this->_convertRpcResponseToString($RpcResponse, $print);
     }
     return $res;
   }
-  private function _convertRpcResponseToString($RpcResponse, $print = false) {
+  private function _convertRpcResponseToString($RpcResponse, $print) {
     // создаем структуру
     $responseObject = $this->RpcResponseStructure->encode($RpcResponse);
     

@@ -9,9 +9,9 @@ class Error {
   private $data = [];
   
   public function __construct($arr = []) {
-    isset($arr['code']) && $this->setCode($arr['code']);
-    isset($arr['message']) && $this->setMessage($arr['message']);
-    isset($arr['data']) && $this->setData($arr['data']);
+    isset($arr['code'])     && $this->setCode($arr['code']);
+    isset($arr['message'])  && $this->setMessage($arr['message']);
+    isset($arr['data'])     && $this->setData($arr['data']);
   }
   
   // getters

@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcMethods;
 
-class SystemMultiple extends \Oploshka\Rpc\Method {
+class SystemMultiple extends \Oploshka\RpcAbstract\Method {
 
   public static function description(){
     return <<<DESCRIPTION
@@ -104,7 +104,9 @@ DESCRIPTION;
     
     
     
-    $this->Response->error('ERROR_NO');
+    $this->setErrorCode('ERROR_NO');
+    return;
+    
   }
 
   public static function responseSchema(){

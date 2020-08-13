@@ -32,10 +32,12 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
   }
   
   // сокращения по ошибкам
-  protected function setError($error): RpcResponse {
+  /*
+  protected function error($error): RpcResponse {
     $this->Response->error($error);
     return $this;
   }
+  */
   protected function setErrorCode($code){
     $this->Response->setErrorCode($code);
     return $this;
