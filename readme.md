@@ -33,33 +33,24 @@ php composer.phar require oploshka/rpc-core
 
 Sample code:
 ```php
-$MethodStorage  = new \Oploshka\Rpc\RpcMethodStorage();
-
-$MethodStorage->add('TestMethod1', '\\RpcMethodPath\\TestMethod1');
-$MethodStorage->add('TestMethod2', '\\RpcMethodPath\\TestMethod2');
-
-// init MultipartJsonRpc_v0_1
-$rpcInitData = [
-  'methodStorage'   => $MethodStorage                                           ,
-  'reform'          => new \Oploshka\Reform\ReformDebug()                       ,
-  'dataLoader'      => new \Oploshka\RpcDataLoader\PostMultipartFieldJson()     ,
-  'dataFormatter'   => new \Oploshka\RpcDataFormatter\MultipartJsonRpc_v0_1()   ,
-  'returnFormatter' => new \Oploshka\RpcReturnFormatter\MultipartJsonRpc_v0_1() ,
-  'responseClass'   => new \Oploshka\Rpc\RpcResponse()                             ,
-];
-$Rpc = new \Oploshka\Rpc\Rpc($rpcInitData);
-$Rpc->applyHeaderSettings();
+// init Rpc
+$Rpc = new \Oploshka\Rpc\Rpc();
 $Rpc->applyPhpSettings();
+// get method storage
+$RpcMethodStorage = $Rpc->getRpcMethodStorage();
 
-$returnJson = $Rpc->startProcessingRequest();
+// add error method
+$RpcMethodStorage->add('MyMethodName_1', '\\RpcMethod\\MethodGroupName\\InterfaceNotRealization', 'MethodGroupName');
+$RpcMethodStorage->add('MyMethodName_2', '\\RpcMethod\\MethodGroupName\\InterfaceNotRealization', 'MethodGroupName');
 
-echo $returnJson;
+$Rpc->startProcessingRequest();
+return;
 ```
 More info in docs
 
 <a name="block4"></a>
 ## 4. Testing
-Testing has been done using PHPUnit. Code has been tested to be PHP 7.0.
+Testing has been done using PHPUnit. Code has been tested to be PHP 7.3.
 
 <a name="block5"></a>
 ## 5. Author
