@@ -165,7 +165,9 @@ class Rpc extends RpcCore {
         foreach ($errorObjList as $errorObj){
           $field[] = $errorObj['data'];
         }
-        $Response->setError('ERROR_NOT_VALIDATE_DATA', '', ['field' => $field]);
+        $Response->setErrorCode('ERROR_NOT_VALIDATE_DATA')
+          ->setErrorMessage('')
+          ->setErrorData(['field' => $field]);
         return $Response;
       }
   
