@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-use Oploshka\RpcException\RpcException;
+use Oploshka\RpcException\ReformException;
 
 class Rpc extends RpcCore {
   
@@ -33,7 +33,7 @@ class Rpc extends RpcCore {
     try {
       // получаем данные из запроса
       $RpcRequest = $this->getRpcRequest();
-    } catch (RpcException $e) {
+    } catch (ReformException $e) {
       $Response = new \Oploshka\Rpc\RpcResponse();
       $Response->setErrorCode($e->getMessage());
     } catch (\Throwable $e) {
@@ -53,7 +53,7 @@ class Rpc extends RpcCore {
    * получить запрос
    *
    * @return RpcRequest
-   * @throws RpcException
+   * @throws ReformException
    */
   public function getRpcRequest() {
     // получим данные
@@ -183,7 +183,7 @@ class Rpc extends RpcCore {
       
     } catch (\Oploshka\RpcException\MethodEndException $e) {
       // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
-    } catch (RpcException $e) {
+    } catch (ReformException $e) {
       $Response->setErrorCode($e->getMessage());
       return $Response;
     }
@@ -225,7 +225,7 @@ class Rpc extends RpcCore {
     // get method info
     $methodInfo = $this->RpcMethodStorage->getMethodInfo($methodName);
     if(!$methodInfo) {
-      throw new RpcException('ERROR_NO_METHOD');
+      throw new ReformException('ERROR_NO_METHOD');
     }
     // method class create
     $MethodClassName = $methodInfo['class'];

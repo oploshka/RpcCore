@@ -35,7 +35,7 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
       || !isset($arr['request']['name']) || !is_string($arr['request']['name'])
       || !isset($arr['request']['data']) || !is_array($arr['request']['data'])
     ){
-      throw new \Oploshka\RpcException\RpcException('ERROR_RESPONSE_STRUCTURE_DECODE');
+      throw new \Oploshka\RpcException\ReformException('ERROR_RESPONSE_STRUCTURE_DECODE');
     }
     
     return new \Oploshka\Rpc\RpcResponse([

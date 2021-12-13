@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-use Oploshka\RpcException\RpcException;
+use Oploshka\RpcException\ReformException;
 use Oploshka\RpcInterface\MethodStorage;
 
 class RpcAutoDoc {
