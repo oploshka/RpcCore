@@ -9,40 +9,45 @@ abstract class iRpcMethod implements \Oploshka\RpcInterface\iRpcMethod {
   public static function description(): string { return ''; }
   
   //
-  private RpcResponse $RpcResponse;
+  private RpcResponse $rpcResponse;
   // protected $Data;
-
+  
+  
   public function __construct(){
-    $this->RpcResponse = new RpcResponse();
+    $this->rpcResponse = new RpcResponse();
   }
+
   
   abstract public function run();
   
   // TODO fix magic method
-  public final function getDataObj()  {
+  public final function getRpcMethodDataObj()  {
     return $this->Data;
   }
-  // public final function setRpcData($data)  {
-  //   return $this->Data = $data;
-  // }
+  public final function setRpcMethodDataObj($data)  {
+    return $this->Data = $data;
+  }
+  public final function getRpcMethodResponseObj() :RpcResponse  {
+    return $this->rpcResponse;
+  }
   
   // сокращения
   protected function setData(string $key, $value) :iRpcMethod{
-    $this->RpcResponse->setData($key, $value);
+    $this->rpcResponse->setData($key, $value);
     return $this;
   }
   
   // сокращения по ошибкам
   protected final function setErrorCode(string $code) :iRpcMethod{
-    $this->RpcResponse->setErrorCode($code);
+    $this->rpcResponse->setErrorCode($code);
     return $this;
   }
   protected final function setErrorMessage(string $message) :iRpcMethod{
-    $this->RpcResponse->setErrorMessage($message);
+    $this->rpcResponse->setErrorMessage($message);
     return $this;
   }
   protected final function setErrorData(array $data) :iRpcMethod{
-    $this->RpcResponse->setErrorData($data);
+    $this->rpcResponse->setErrorData($data);
     return $this;
   }
 

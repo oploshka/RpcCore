@@ -5,8 +5,8 @@ namespace Oploshka\RpcTestHelper;
 class Helper {
 
   public static function getRpc(){
-    $Rpc = new \Oploshka\Rpc\Rpc();
-    $Rpc->applyPhpSettings();
+    $Rpc = new \Oploshka\Rpc\RpcCore();
+    // $Rpc->applyPhpSettings();
     //
     $RpcMethodStorage = $Rpc->getRpcMethodStorage();
     
@@ -18,9 +18,10 @@ class Helper {
     // $RpcMethodStorage->add('BaseReturnData'         , '\\Oploshka\\RpcTestHelper\\Method\\ReturnData\\BaseMethod', 'ReturnData');
     // $RpcMethodStorage->add('ReplaceReturnData'      , '\\Oploshka\\RpcTestHelper\\Method\\ReturnData\\ReplaceReturnData'      , 'ReturnData');
     // $RpcMethodStorage->add('ReturnRequestSchemaData', '\\Oploshka\\RpcTestHelper\\Method\\ReturnData\\ReturnRequestSchemaData', 'ReturnData');
-    
-    
-    
+  
+    $RpcMethodStorage->add('MethodBase', '\\Oploshka\\RpcTestHelper\\MethodBase\\MethodBase', 'Base');
+  
+  
     return $Rpc;
   }
   

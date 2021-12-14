@@ -2,16 +2,14 @@
 
 namespace Oploshka\RpcTestHelper\MethodBase;
 
-use Oploshka\RpcTestHelper\Method\Base\BaseMethodRequest;
-
-class BaseMethod extends \Oploshka\RpcAbstract\iRpcMethod {
+class MethodBase extends \Oploshka\RpcAbstract\iRpcMethod {
   
   public static function description(): string {
     return '';
   }
   
   // Todo: protected | private | public
-  protected ?BaseMethodRequest $Data = null;
+  protected ?MethodBaseRequest $Data = null;
   
   // TODO: add
   // protected ?BaseMethodResponse $Response;

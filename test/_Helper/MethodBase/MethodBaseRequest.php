@@ -4,7 +4,7 @@ namespace Oploshka\RpcTestHelper\MethodBase;
 
 use Oploshka\RpcInterface\iRpcMethodRequest;
 
-class BaseIRpcMethodRequest implements iRpcMethodRequest {
+class MethodBaseRequest implements iRpcMethodRequest {
  
   public static function schema(): array {
     return [
@@ -15,6 +15,13 @@ class BaseIRpcMethodRequest implements iRpcMethodRequest {
  
   protected string $login;
   protected string $password;
+  
+  
+  // TODO: use init function by array
+  public function __construct() {
+    $this->login    = 'test';
+    $this->password = 'user';
+  }
  
   public function getLogin(): string {
     return $this->login;

@@ -4,37 +4,74 @@ namespace Oploshka\Rpc;
 
 use Oploshka\Reform\Reform;
 use Oploshka\Reform\ReformDebug;
+use Oploshka\RpcAbstract\iRpcMethod;
+use Oploshka\RpcException\RpcException;
 use Oploshka\RpcInterface\iRpcMethodStorage;
 use Oploshka\RpcInterface\iRpcLoadRequest;
 use Oploshka\RpcInterface\iRpcRequest;
 use Oploshka\RpcInterface\iRpcResponse;
 use Oploshka\RpcInterface\iRpcUnloadResponse;
 
-use Oploshka\RpcException\ReformException; // TODO: fix
+// use Oploshka\RpcException\ReformException; // TODO: fix
 
 class RpcCore {
   
   protected Reform              $reform;              // валидация данных
   protected iRpcMethodStorage   $rpcMethodStorage;    // хранилище методов
-  protected iRpcLoadRequest     $rpcLoadRequest;      // обработка данных запроса/ответа
-  protected iRpcUnloadResponse  $rpcUnloadResponse;
+  protected iRpcLoadRequest     $rpcLoadRequest;      // обработка данных запроса
+  protected iRpcUnloadResponse  $rpcUnloadResponse;   // обработка данных ответа
   
 
 
   public function __construct(array $obj = []) {
-    $this->reform               = $obj['Reform']                ?? new ReformDebug();
+    // $this->reform               = $obj['Reform']                ?? new ReformDebug();
     $this->rpcMethodStorage     = $obj['RpcMethodStorage']      ?? new RpcMethodStorage();
   }
   
+  
+  
+  
+  /**
+   * @return string Rpc method class name
+   */
+  public function getMethodClassName(string $methodName){
+    // get method info
+    $methodInfo = $this->rpcMethodStorage->getMethodInfo($methodName);
+    if(!$methodInfo) {
+      throw new RpcException('ERROR_NO_METHOD');
+    }
+    // method class create
+    $methodClassName = $methodInfo['class'];
+    //
+    $interfaces = class_implements( $methodClassName );
+    if ( !isset( $interfaces['Oploshka\RpcInterface\iRpcMethod'] ) ) {
+      throw new RpcException('ERROR_NOT_INSTANCEOF_INTERFACE');
+    }
+  
+    return $methodClassName;
+  }
+  
+  
+  public function runMethodByData(string $methodName, $data) :iRpcResponse {
+    // get method info
+    $MethodClassName = $this->getMethodClassName($methodName);
+    /** @var  $MethodClass iRpcMethod */
+    $MethodClass = new $MethodClassName();
+    $MethodClass->setRpcMethodDataObj($data);
+    $MethodClass->run();
+    return $MethodClass->getRpcMethodResponseObj();
+  }
+  
   // // getters
-  // public function getReform()               { return $this->Reform;               }
-  // public function getRpcMethodStorage()     { return $this->RpcMethodStorage;     }
-  // public function getRpcRequestLoad()       { return $this->RpcRequestLoad;       }
+  // public function getReform()               { return $this->reform;               }
+  public function getRpcMethodStorage()     { return $this->rpcMethodStorage;     }
+  // public function getRpcRequestLoad()       { return $this->rpcRequestLoad;       }
   
   // // setters TODO: fix
-  // public function setReform($obj)               { return $this->Reform           = $obj; }
-  // public function setRpcMethodStorage($obj)     { return $this->RpcMethodStorage = $obj; }
+  // public function setReform($obj)               { return $this->reform           = $obj; }
+  // public function setRpcMethodStorage($obj)     { return $this->rpcMethodStorage = $obj; }
   
+  /*
   
   public function startProcessingRequest($print = true) {
     $RpcResponse = $this->runMethodByRequest();
@@ -46,10 +83,11 @@ class RpcCore {
     $errorResponse = null;
     try {
       // получаем данные из запроса
-      $RpcRequest = $this->rpcLoadRequest->load();
-    } catch (ReformException $e) { // TODO: fix
-      $errorResponse = new RpcResponse();
-      $errorResponse->setErrorCode($e->getMessage());
+      $rpcRequest = $this->rpcLoadRequest->load();
+    // TODO: fix
+    ///# } catch (ReformException $e) {
+    ///#   $errorResponse = new RpcResponse();
+    ///#   $errorResponse->setErrorCode($e->getMessage());
     } catch (\Throwable $e) {
       $errorResponse = new RpcResponse();
       $errorResponse->setErrorCode('ERROR_RUN_METHOD_BY_REQUEST');
@@ -60,7 +98,7 @@ class RpcCore {
       return $errorResponse;
     }
     
-    return $this->runMethodByRpcRequest($RpcRequest);
+    return $this->runMethodByRpcRequest($rpcRequest);
   }
   
   
@@ -75,7 +113,7 @@ class RpcCore {
     if( !$this->isResponse($Response)) {
       $responseLink = $Response;
       
-      /** @var RpcResponse  */
+      // /** @var RpcResponse  * /
       $Response = new \Oploshka\Rpc\RpcResponse();
       
       $errorData = [
@@ -176,25 +214,5 @@ class RpcCore {
     return true;
   }
   
-  /**
-   * @param string $methodName
-   * @return string Rpc method class name
-   */
-  public function getMethodClassNameForMethodName($methodName){
-    // get method info
-    $methodInfo = $this->RpcMethodStorage->getMethodInfo($methodName);
-    if(!$methodInfo) {
-      throw new ReformException('ERROR_NO_METHOD');
-    }
-    // method class create
-    $MethodClassName = $methodInfo['class'];
-    //
-    $interfaces = class_implements( $MethodClassName );
-    if ( !isset( $interfaces['Oploshka\RpcInterface\iRpcMethod'] ) ) {
-      throw new \RpcException('ERROR_NOT_INSTANCEOF_INTERFACE');
-    }
-    
-    return $MethodClassName;
-  }
-  
+  */
 }

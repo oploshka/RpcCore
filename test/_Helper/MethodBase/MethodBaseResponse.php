@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTestHelper\MethodBase;
 
-class BaseMethodResponse {
+class MethodBaseResponse {
   
   public static function schema(): array {
     return [
