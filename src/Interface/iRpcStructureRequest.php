@@ -7,7 +7,7 @@ namespace Oploshka\RpcInterface;
  * например: RPC 1.0, RPC 2.0
  *
  **/
-interface RpcStructure {
+interface iRpcStructureRequest {
   /*
    * @param string|object|array $str
    *

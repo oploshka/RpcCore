@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTestHelper\Method\Error;
 
-class InterfaceNotRealization extends \Oploshka\RpcAbstract\Method {
+class InterfaceNotRealization extends \Oploshka\RpcAbstract\iRpcMethod {
 
   public static function description(){
     return <<<DESCRIPTION

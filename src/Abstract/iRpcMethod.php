@@ -4,7 +4,7 @@ namespace Oploshka\RpcAbstract;
 
 use Oploshka\Rpc\RpcResponse;
 
-abstract class Method implements \Oploshka\RpcInterface\Method {
+abstract class iRpcMethod implements \Oploshka\RpcInterface\iRpcMethod {
   // static
   public static function description(): string { return ''; }
   
@@ -27,21 +27,21 @@ abstract class Method implements \Oploshka\RpcInterface\Method {
   // }
   
   // сокращения
-  protected function setData(string $key, $value) :Method{
+  protected function setData(string $key, $value) :iRpcMethod{
     $this->RpcResponse->setData($key, $value);
     return $this;
   }
   
   // сокращения по ошибкам
-  protected final function setErrorCode(string $code) :Method{
+  protected final function setErrorCode(string $code) :iRpcMethod{
     $this->RpcResponse->setErrorCode($code);
     return $this;
   }
-  protected final function setErrorMessage(string $message) :Method{
+  protected final function setErrorMessage(string $message) :iRpcMethod{
     $this->RpcResponse->setErrorMessage($message);
     return $this;
   }
-  protected final function setErrorData(array $data) :Method{
+  protected final function setErrorData(array $data) :iRpcMethod{
     $this->RpcResponse->setErrorData($data);
     return $this;
   }

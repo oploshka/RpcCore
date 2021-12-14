@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcInterface;
 
-interface MethodRequest {
+interface iRpcMethodResponse {
 
   public static function schema(): array;
   

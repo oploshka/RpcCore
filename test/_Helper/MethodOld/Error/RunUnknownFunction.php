@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTestHelper\Method\Error;
 
-class RunUnknownFunction extends \Oploshka\RpcAbstract\Method {
+class RunUnknownFunction extends \Oploshka\RpcAbstract\iRpcMethod {
   
   public static function description(){ return ''; }
   public static function requestSchema(){ return [];  }

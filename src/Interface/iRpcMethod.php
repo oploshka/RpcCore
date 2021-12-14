@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcInterface;
 
-interface Method {
+interface iRpcMethod {
 
   // protected $Response;
   // protected $Data;

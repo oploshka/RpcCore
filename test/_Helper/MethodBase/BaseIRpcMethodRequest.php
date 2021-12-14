@@ -2,9 +2,9 @@
 
 namespace Oploshka\RpcTestHelper\MethodBase;
 
-use Oploshka\RpcInterface\MethodRequest;
+use Oploshka\RpcInterface\iRpcMethodRequest;
 
-class BaseMethodRequest implements MethodRequest {
+class BaseIRpcMethodRequest implements iRpcMethodRequest {
  
   public static function schema(): array {
     return [

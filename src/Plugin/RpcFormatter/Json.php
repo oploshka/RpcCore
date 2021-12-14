@@ -2,9 +2,9 @@
 
 namespace Oploshka\RpcFormatter;
 
-use Oploshka\RpcInterface\RpcFormatter;
+use Oploshka\RpcInterface\iRpcFormatter;
 
-class Json implements RpcFormatter {
+class Json implements iRpcFormatter {
   
   public function decode($str){
     $Reform = new \Oploshka\Reform\Reform([]);

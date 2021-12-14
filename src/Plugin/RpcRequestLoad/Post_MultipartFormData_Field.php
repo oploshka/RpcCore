@@ -2,9 +2,9 @@
 
 namespace Oploshka\RpcRequestLoad;
 
-use Oploshka\RpcInterface\RpcRequestLoad;
+use Oploshka\RpcInterface\iRpcLoadRequest;
 
-class Post_MultipartFormData_Field implements RpcRequestLoad {
+class Post_MultipartFormData_Field implements iRpcLoadRequest {
 
   private $filed ;
   

@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTestHelper\Method\ReturnData;
 
-class ReplaceReturnData extends \Oploshka\RpcAbstract\Method {
+class ReplaceReturnData extends \Oploshka\RpcAbstract\iRpcMethod {
   
   public static function description(){ return ''; }
   public static function requestSchema(){ return [];  }

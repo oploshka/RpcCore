@@ -3,12 +3,12 @@
 namespace Oploshka\Rpc;
 
 use Oploshka\RpcException\ReformException;
-use Oploshka\RpcInterface\MethodStorage;
+use Oploshka\RpcInterface\iRpcMethodStorage;
 
 class RpcAutoDoc {
   
   /**
-   * @param MethodStorage $MethodStorage
+   * @param iRpcMethodStorage $MethodStorage
    * @return array
    */
   public function docs($MethodStorage) {

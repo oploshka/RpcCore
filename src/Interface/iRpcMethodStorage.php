@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcInterface;
 
-interface MethodStorage {
+interface iRpcMethodStorage {
   // public function add($methodName, ....);
   public function getMethodInfo(string $methodName) :?array;
 }

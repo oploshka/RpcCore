@@ -4,7 +4,7 @@ namespace Oploshka\RpcTestHelper\MethodBase;
 
 use Oploshka\RpcTestHelper\Method\Base\BaseMethodRequest;
 
-class BaseMethod extends \Oploshka\RpcAbstract\Method {
+class BaseMethod extends \Oploshka\RpcAbstract\iRpcMethod {
   
   public static function description(): string {
     return '';

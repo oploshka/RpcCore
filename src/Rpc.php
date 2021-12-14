@@ -3,6 +3,7 @@
 namespace Oploshka\Rpc;
 
 use Oploshka\RpcException\ReformException;
+use Oploshka\RpcInterface\iRpcResponse;
 
 class Rpc extends RpcCore {
   
@@ -22,68 +23,28 @@ class Rpc extends RpcCore {
     return $this->_runMethod($RpcRequest);
   }
   
-  public function runMethodByRequest() :RpcResponse {
-    $Response = false;
+  public function runMethodByRequest() :iRpcResponse {
+    $ErrorResponse = null;
     try {
       // получаем данные из запроса
-      $RpcRequest = $this->getRpcRequest();
+      $RpcRequest = $this->RpcLoadRequest->load();
     } catch (ReformException $e) {
-      $Response = new \Oploshka\Rpc\RpcResponse();
-      $Response->setErrorCode($e->getMessage());
+      $ErrorResponse = new \Oploshka\Rpc\RpcResponse();
+      $ErrorResponse->setErrorCode($e->getMessage());
     } catch (\Throwable $e) {
-      $Response = new \Oploshka\Rpc\RpcResponse();
-      $Response->setErrorCode('ERROR_RUN_METHOD_BY_REQUEST');
-      $Response->setErrorMessage($e->getMessage());
+      $ErrorResponse = new \Oploshka\Rpc\RpcResponse();
+      $ErrorResponse->setErrorCode('ERROR_RUN_METHOD_BY_REQUEST');
+      $ErrorResponse->setErrorMessage($e->getMessage());
     }
     
-    if($Response) {
-      return $Response;
+    if($ErrorResponse) {
+      return $ErrorResponse;
     }
     
     return $this->runMethodByRpcRequest($RpcRequest);
   }
   
-  /**
-   * получить запрос
-   *
-   * @return RpcRequest
-   * @throws ReformException
-   */
-  public function getRpcRequest() :RpcRequest {
-    // получим данные
-    $loadStr = $this->RpcRequestLoad->load();
-    // расшифруем
-    $loadData = $this->RpcRequestFormatter->decode($loadStr);
-    // считываем структуру
-    $RpcMethodRequest = $this->RpcRequestStructure->decode($loadData);
-    //
-    return $RpcMethodRequest;
-  }
-  
-  /**
-   * @param $RpcResponse
-   * @return mixed
-   */
-  public function convertRpcResponseToString($RpcResponse, $print = false) {
-    try {
-      $res = $this->_convertRpcResponseToString($RpcResponse, $print);
-    } catch (\Throwable $e) {
-      $RpcResponse = new \Oploshka\Rpc\RpcResponse();
-      $RpcResponse->setErrorCode('ERROR_RESPONSE_CONVERT');
-      $res = $this->_convertRpcResponseToString($RpcResponse, $print);
-    }
-    return $res;
-  }
-  private function _convertRpcResponseToString($RpcResponse, $print) {
-    // создаем структуру
-    $responseObject = $this->RpcResponseStructure->encode($RpcResponse);
-    
-    if($print) {
-      return $this->RpcResponseFormatter->print($responseObject);
-    } else {
-      return $this->RpcResponseFormatter->encode($responseObject);
-    }
-  }
+
   
   /**
    * Run Rpc method
@@ -225,7 +186,7 @@ class Rpc extends RpcCore {
     $MethodClassName = $methodInfo['class'];
     //
     $interfaces = class_implements( $MethodClassName );
-    if ( !isset( $interfaces['Oploshka\RpcInterface\Method'] ) ) {
+    if ( !isset( $interfaces['Oploshka\RpcInterface\iRpcMethod'] ) ) {
       throw new \RpcException('ERROR_NOT_INSTANCEOF_INTERFACE');
     }
     

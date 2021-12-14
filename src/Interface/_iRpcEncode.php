@@ -7,8 +7,7 @@ namespace Oploshka\RpcInterface;
  * например: json/xml/csv <-> object
  *
  **/
-interface RpcFormatter {
+interface iRpcEncode {
   public function decode($str);
   public function encode($obj);
-  public function print($obj);
 }

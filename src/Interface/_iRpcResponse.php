@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcInterface;
 
-interface Response {
+interface iRpcResponse {
   public function getData();
   public function setData($key, $value);
 

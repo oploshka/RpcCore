@@ -17,7 +17,7 @@ namespace Oploshka\RpcStructure;
   }
 }
 */
-class MultipartJsonRpcRequest implements \Oploshka\RpcInterface\RpcStructure {
+class MultipartJsonIRpcRequestRequest implements \Oploshka\RpcInterface\iRpcStructureRequest {
   
   public function decode($arr) {
   
