@@ -24,7 +24,7 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
   
   /**
    * @param array $arr
-   * @return \Oploshka\Rpc\RpcResponse
+   * @return \Oploshka\Rpc\RpcResponseOld
    * @throws \Exception
    */
   public function decode($arr) {
@@ -38,7 +38,7 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
       throw new \Oploshka\RpcException\ReformException('ERROR_RESPONSE_STRUCTURE_DECODE');
     }
     
-    return new \Oploshka\Rpc\RpcResponse([
+    return new \Oploshka\Rpc\RpcResponseOld([
       'requestId'   => $arr['request']['id'] ?? null,
       'methodName'  => $arr['request']['name'],
       'data'        => $arr['request']['data'],
@@ -49,7 +49,7 @@ class MultipartJsonRpcResponse implements \Oploshka\RpcInterface\RpcStructure {
   }
   
   /**
-   * @param  \Oploshka\Rpc\RpcResponse $RpcResponse
+   * @param  \Oploshka\Rpc\RpcResponseOld $RpcResponse
    * @return array
    */
   public function encode($RpcResponse){

@@ -4,27 +4,12 @@ namespace Oploshka\Rpc;
 
 class RpcMethodStorage implements \Oploshka\RpcInterface\MethodStorage {
   
-  private $methods = [];
+  private $methodList = [];
   
   /**
-   *
-   * @param string $methodName
-   * @param string $methodClass
-   * @param string $methodGroup
    * @throws \Exception
    */
-  public function add($methodName, $methodClass, $methodGroup = 'default'){
-    
-    // Название метода должно быть строкой
-    if( !is_string($methodName) ){
-      throw new \Exception('RPCMethodStorage: Method name no string');
-    }
-    if( !is_string($methodClass) ){
-      throw new \Exception('RPCMethodStorage: Method class no string');
-    }
-     if( !is_string($methodGroup) ){
-       throw new \Exception('RPCMethodStorage: Method group no string');
-     }
+  public function add(string $methodName, string $methodClass, string $methodGroup = 'default'){
     
     // Запрет переопределения существующего метода
     if( isset($this->methods[$methodName]) ){
@@ -32,20 +17,17 @@ class RpcMethodStorage implements \Oploshka\RpcInterface\MethodStorage {
     }
     
     // если все хорошо то добавляем
-    $this->methods[$methodName] = [
+    $this->methodList[$methodName] = [
       'name'  => $methodName,
       'class' => $methodClass,
       'group' => $methodGroup,
     ];
   }
   
-  /**
-   * @return array || false
-   */
-  public function getMethodInfo($methodName) {
-    if( !isset($this->methods[$methodName]) ){
-      return false;
+  public function getMethodInfo(string $methodName) :?array {
+    if( !isset($this->methodList[$methodName]) ){
+      return null;
     }
-    return $this->methods[$methodName];
+    return $this->methodList[$methodName];
   }
 }

@@ -18,17 +18,11 @@ class Rpc extends RpcCore {
     return $this->convertRpcResponseToString($RpcResponse, $print);
   }
   
-  /**
-   * @return RpcResponse
-   */
-  public function runMethodByRpcRequest($RpcRequest) {
+  public function runMethodByRpcRequest($RpcRequest) :RpcResponse {
     return $this->_runMethod($RpcRequest);
   }
   
-  /**
-   * @return RpcResponse
-   */
-  public function runMethodByRequest() {
+  public function runMethodByRequest() :RpcResponse {
     $Response = false;
     try {
       // получаем данные из запроса
@@ -55,7 +49,7 @@ class Rpc extends RpcCore {
    * @return RpcRequest
    * @throws ReformException
    */
-  public function getRpcRequest() {
+  public function getRpcRequest() :RpcRequest {
     // получим данные
     $loadStr = $this->RpcRequestLoad->load();
     // расшифруем
@@ -118,7 +112,7 @@ class Rpc extends RpcCore {
       }
     
       $Response->setError(
-        new Error([
+        new RpcError([
           'code'    => 'ERROR_NOT_CORRECT_METHOD_RETURN',
           'data'    => $errorData
         ])
@@ -192,7 +186,7 @@ class Rpc extends RpcCore {
         'RpcRequest' => $RpcRequest,
       ]);
       $Response->setError(
-        new Error([
+        new RpcError([
           'code'    => 'ERROR_METHOD_RUN',
           'message' => $e->getMessage(),
           'data'    => [

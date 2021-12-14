@@ -2,54 +2,48 @@
 
 namespace Oploshka\RpcAbstract;
 
+use Oploshka\Rpc\RpcResponse;
 
 abstract class Method implements \Oploshka\RpcInterface\Method {
+  // static
+  public static function description(): string { return ''; }
   
-  /**
-   * @var \Oploshka\Rpc\RpcResponse
-   */
-  protected $Response;
-  protected $Data;
-  protected $Logger;
+  //
+  private RpcResponse $RpcResponse;
+  // protected $Data;
 
-  public function __construct($obj){
-    $this->Response = $obj['response'];
-    $this->Data     = $obj['data'];
-    $this->Logger   = $obj['logger'];
+  public function __construct(){
+    $this->RpcResponse = new RpcResponse();
   }
-  
-  public static function description() { return ''; }
-  
-  // public static function requestSchema() { return []; }
-  // public static function responseSchema() { return []; }
   
   abstract public function run();
   
+  // TODO fix magic method
+  public final function getDataObj()  {
+    return $this->Data;
+  }
+  // public final function setRpcData($data)  {
+  //   return $this->Data = $data;
+  // }
+  
   // сокращения
-  protected function setData($key, $value){
-    $this->Response->setData($key, $value);
+  protected function setData(string $key, $value) :Method{
+    $this->RpcResponse->setData($key, $value);
     return $this;
   }
   
   // сокращения по ошибкам
-  /*
-  protected function error($error): RpcResponse {
-    $this->Response->error($error);
+  protected final function setErrorCode(string $code) :Method{
+    $this->RpcResponse->setErrorCode($code);
     return $this;
   }
-  */
-  protected function setErrorCode($code){
-    $this->Response->setErrorCode($code);
+  protected final function setErrorMessage(string $message) :Method{
+    $this->RpcResponse->setErrorMessage($message);
     return $this;
   }
-  protected function setErrorMessage($message){
-    $this->Response->setErrorMessage($message);
+  protected final function setErrorData(array $data) :Method{
+    $this->RpcResponse->setErrorData($data);
     return $this;
   }
-  protected function setErrorData($data){
-    $this->Response->setErrorData($data);
-    return $this;
-  }
-  
 
 }
