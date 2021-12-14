@@ -6,8 +6,11 @@ use Oploshka\Reform\Reform;
 use Oploshka\Reform\ReformDebug;
 use Oploshka\RpcInterface\iRpcMethodStorage;
 use Oploshka\RpcInterface\iRpcLoadRequest;
+use Oploshka\RpcInterface\iRpcRequest;
 use Oploshka\RpcInterface\iRpcResponse;
 use Oploshka\RpcInterface\iRpcUnloadResponse;
+
+use Oploshka\RpcException\ReformException; // TODO: fix
 
 class RpcCore {
   
@@ -101,24 +104,15 @@ class RpcCore {
     return $Response;
   }
   
-  /**
-   * Run Rpc method
-   *
-   * @param RpcRequest $RpcRequest
-   *
-   * @return RpcResponse
-   **/
-  private function _runMethodProcessing($RpcRequest) {
+
+  private function _runMethodProcessing(iRpcRequest $rpcRequest) :iRpcResponse {
     
     
     try {
-      /** @var RpcResponse $Response  */
-      $Response = new \Oploshka\Rpc\RpcResponse([
-          'RpcRequest' => $RpcRequest,
-      ]);
+      $rpcResponse = new RpcResponse();
       //
-      $methodName = $RpcRequest->getMethodName();
-      $methodData = $RpcRequest->getData();
+      $methodName = $rpcRequest->getMethodName();
+      $methodData = $rpcRequest->getData();
       
       $MethodClassName = $this->getMethodClassNameForMethodName($methodName);
       
@@ -130,33 +124,33 @@ class RpcCore {
         foreach ($errorObjList as $errorObj){
           $field[] = $errorObj['data'];
         }
-        $Response->setErrorCode('ERROR_NOT_VALIDATE_DATA')
+        $rpcResponse->setErrorCode('ERROR_NOT_VALIDATE_DATA')
             ->setErrorMessage('')
             ->setErrorData(['field' => $field]);
-        return $Response;
+        return $rpcResponse;
       }
       
+      // TODO: fix and add DI
       $MethodClass = new $MethodClassName( [
-          'response'  => $Response,
+          'response'  => $rpcResponse,
           'data'      => $data,
-          'logger'    => $this->Logger,
       ] );
       $returnResponse = $MethodClass->run();
       if( $returnResponse !== null && $this->isResponse($returnResponse)) {
         $Response = $returnResponse;
       }
       
-    } catch (\Oploshka\RpcException\MethodEndException $e) {
-      // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
+    // TODO: fix
+    ///#
+    ///#} catch (\Oploshka\RpcException\MethodEndException $e) {
+    ///#  // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
     } catch (ReformException $e) {
-      $Response->setErrorCode($e->getMessage());
-      return $Response;
+      $rpcResponse->setErrorCode($e->getMessage());
+      return $rpcResponse;
     }
     catch (\Throwable $e ) {
-      $Response = new \Oploshka\Rpc\RpcResponse([
-          'RpcRequest' => $RpcRequest,
-      ]);
-      $Response->setError(
+      $rpcResponse = new RpcResponse();
+      $rpcResponse->setError(
           new RpcError([
               'code'    => 'ERROR_METHOD_RUN',
               'message' => $e->getMessage(),
@@ -170,7 +164,7 @@ class RpcCore {
       );
     }
     
-    return $Response;
+    return $rpcResponse;
   }
   
   // $Response is Response class?

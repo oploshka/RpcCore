@@ -2,7 +2,9 @@
 
 namespace Oploshka\Rpc;
 
-class RpcResponse {
+use Oploshka\RpcInterface\iRpcResponse;
+
+class RpcResponse implements iRpcResponse {
   
   private RpcError  $Error;
   private array     $data;
