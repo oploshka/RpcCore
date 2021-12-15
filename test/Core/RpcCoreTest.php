@@ -8,14 +8,15 @@ use Oploshka\RpcTestHelper\MethodBase\MethodBaseRequest;
 
 class RpcCoreTest extends TestCase {
   
-  public function testRunMethodByData() {
+  public function test_runMethodByData() {
   
     $rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
   
-    $rpcResponse = $rpc->runMethodByData('MethodBase', new MethodBaseRequest());
+    $data = ['login' => 'test', 'password' => 'user'];
+    $rpcResponse = $rpc->runMethodByData('MethodBase', new MethodBaseRequest($data));
   
     $this->assertEquals( $rpcResponse->getErrorCode(), 'ERROR_DEFAULT');
-    $this->assertEquals( $rpcResponse->getData() , ['login' => 'test', 'password' => 'user']);
+    $this->assertEquals( $rpcResponse->getData() , $data);
   }
   
 }

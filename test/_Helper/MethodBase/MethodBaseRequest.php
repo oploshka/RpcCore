@@ -12,13 +12,28 @@ class MethodBaseRequest implements iRpcMethodRequest {
         'password'  => ['type' => 'string', 'validate' => [], 'req' => true ],
     ];
   }
- 
+  
+  protected array $data;
+  
+  public function __construct(array $data) {
+    // TODO: add validate by schema
+    $this->data = $data;
+  }
+  
+  public function getLogin(): string {
+    return $this->data['login'];
+  }
+  public function getPassword(): string {
+    return $this->data['password'];
+  }
+  
+  /*
+  // вариант 1 более правильный
   protected string $login;
   protected string $password;
   
   
-  // TODO: use init function by array
-  public function __construct() {
+  public function __construct($arr) {
     $this->login    = 'test';
     $this->password = 'user';
   }
@@ -29,5 +44,5 @@ class MethodBaseRequest implements iRpcMethodRequest {
   public function getPassword(): string {
     return $this->password;
   }
- 
+  */
 }

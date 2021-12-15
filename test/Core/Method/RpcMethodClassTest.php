@@ -14,7 +14,7 @@ class RpcMethodClassTest extends TestCase {
     $data = $rpcMethod->getRpcMethodDataObj();
     $this->assertEquals($data,  null);
     
-    $data = new MethodBaseRequest();
+    $data = new MethodBaseRequest([]);
     $rpcMethod->setRpcMethodDataObj($data);
   
     $rpcMethod->run();
