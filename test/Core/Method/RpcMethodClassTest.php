@@ -14,7 +14,21 @@ class RpcMethodClassTest extends TestCase {
     $data = $rpcMethod->getRpcMethodDataObj();
     $this->assertEquals($data,  null);
     
-    $data = new MethodBaseRequest([]);
+    $data = new MethodBaseRequest(['login' => 'test', 'password' => 'user']);
+    $rpcMethod->setRpcMethodDataObj($data);
+  
+    $rpcMethod->run();
+    $rpcResponse = $rpcMethod->getRpcMethodResponseObj();
+  
+    $this->assertEquals($rpcResponse->getErrorCode(),  'ERROR_DEFAULT');
+  }
+  
+  public function testInitData() {
+    $rpcMethod = new MethodBase();
+    $data = $rpcMethod->getRpcMethodDataObj();
+    $this->assertEquals($data,  null);
+    
+    $data = new MethodBaseRequest(['login' => 'test', 'password' => 'user']);
     $rpcMethod->setRpcMethodDataObj($data);
   
     $rpcMethod->run();

@@ -4,9 +4,6 @@ namespace Oploshka\RpcInterface;
 
 interface iRpcMethod {
 
-  // protected $Response;
-  // protected $Data;
-
   public function __construct();
 
   /**
@@ -21,4 +18,8 @@ interface iRpcMethod {
    */
   public function run();
   
+  
+  public function getRpcMethodDataObj();
+  public function setRpcMethodDataObj($data);
+  public function getRpcMethodResponseObj() :iRpcResponse;
 }

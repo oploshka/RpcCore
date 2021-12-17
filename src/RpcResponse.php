@@ -58,7 +58,7 @@ class RpcResponse implements iRpcResponse {
   //
   public final function error(RpcError $error) {
     $this->setError($error);
-    throw new \Oploshka\RpcException\MethodEndException('');
+    throw new \Oploshka\RpcException\RpcMethodEndException('');
   }
 }
 
