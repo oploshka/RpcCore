@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-use Oploshka\RpcInterface\iRpcResponse;
+use Oploshka\RpcContract\iRpcResponse;
 
 class RpcResponse implements iRpcResponse {
   

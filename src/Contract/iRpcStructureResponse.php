@@ -1,13 +1,13 @@
 <?php
 
-namespace Oploshka\RpcInterface;
+namespace Oploshka\RpcContract;
 
 /*
  * Интерфейс определяющий какая структура данных получена и как с ней работать
  * например: RPC 1.0, RPC 2.0
  *
  **/
-interface iRpcStructureRequest {
+interface iRpcStructureResponse {
   /*
    * @param string|object|array $str
    *

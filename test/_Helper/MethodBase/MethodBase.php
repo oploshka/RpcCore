@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTestHelper\MethodBase;
 
-class MethodBase extends \Oploshka\RpcAbstract\RpcMethod {
+class MethodBase extends \Oploshka\Rpc\RpcMethod {
   
   public static function description(): string {
     return '';

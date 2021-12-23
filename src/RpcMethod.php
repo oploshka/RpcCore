@@ -1,10 +1,11 @@
 <?php
 
-namespace Oploshka\RpcAbstract;
+
+namespace Oploshka\Rpc;
 
 use Oploshka\Rpc\RpcResponse;
 
-abstract class RpcMethod implements \Oploshka\RpcInterface\iRpcMethod {
+abstract class RpcMethod implements \Oploshka\RpcContract\iRpcMethod {
   // static
   public static function description(): string { return ''; }
   

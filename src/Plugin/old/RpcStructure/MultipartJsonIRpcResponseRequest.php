@@ -20,7 +20,7 @@ namespace Oploshka\RpcStructure;
   }
 }
  **/
-class MultipartJsonIRpcResponseRequest implements \Oploshka\RpcInterface\iRpcStructureRequest {
+class MultipartJsonIRpcResponseRequest implements \Oploshka\RpcContract\iRpcStructureRequest {
   
   /**
    * @param array $arr

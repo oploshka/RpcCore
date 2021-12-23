@@ -9,13 +9,13 @@ use Oploshka\RpcAbstract\rpcMethod;
 use Oploshka\RpcException\RpcException;
 use Oploshka\RpcException\RpcMethodEndException;
 // Interface
-use Oploshka\RpcInterface\iRpcMethod;
-use Oploshka\RpcInterface\iRpcMethodRequest;
-use Oploshka\RpcInterface\iRpcMethodStorage;
-use Oploshka\RpcInterface\iRpcLoadRequest;
-use Oploshka\RpcInterface\iRpcRequest;
-use Oploshka\RpcInterface\iRpcResponse;
-use Oploshka\RpcInterface\iRpcUnloadResponse;
+use Oploshka\RpcContract\iRpcMethod;
+use Oploshka\RpcContract\iRpcMethodRequest;
+use Oploshka\RpcContract\iRpcMethodStorage;
+use Oploshka\RpcContract\iRpcLoadRequest;
+use Oploshka\RpcContract\iRpcRequest;
+use Oploshka\RpcContract\iRpcResponse;
+use Oploshka\RpcContract\iRpcUnloadResponse;
 
 // use Oploshka\RpcException\ReformException; // TODO: fix
 

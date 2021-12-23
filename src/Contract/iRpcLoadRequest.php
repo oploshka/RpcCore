@@ -1,10 +1,10 @@
 <?php
 
-namespace Oploshka\RpcInterface;
+namespace Oploshka\RpcContract;
 
 /**
  * Interface iRpcRequestLoad
- * @package Oploshka\RpcInterface
+ * @package Oploshka\RpcContract
  *
  * Данный слой может состоять из 3 подслоев
  * - получение данных (вытаскивание их запроса) и отдаем набор байт или текс

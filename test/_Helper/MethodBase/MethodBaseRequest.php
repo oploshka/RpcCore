@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcTestHelper\MethodBase;
 
-use Oploshka\RpcInterface\iRpcMethodRequest;
+use Oploshka\RpcContract\iRpcMethodRequest;
 
 class MethodBaseRequest implements iRpcMethodRequest {
  

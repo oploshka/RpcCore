@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcInterface;
+namespace Oploshka\RpcContract;
 
 interface iRpcRequest {
   

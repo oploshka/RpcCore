@@ -19,7 +19,7 @@
   "autoload": {
     "psr-4": {
       "Oploshka\\Rpc\\"                 : "src/",
-      "Oploshka\\RpcInterface\\"        : "src/Interface",
+      "Oploshka\\RpcContract\\"         : "src/Contract",
       "Oploshka\\RpcAbstract\\"         : "src/Abstract",
       "Oploshka\\RpcException\\"        : "src/Exception",
 

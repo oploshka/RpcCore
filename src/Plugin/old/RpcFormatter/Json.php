@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcFormatter;
 
-use Oploshka\RpcInterface\iRpcFormatter;
+use Oploshka\RpcContract\iRpcFormatter;
 
 class Json implements iRpcFormatter {
   

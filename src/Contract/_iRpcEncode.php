@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcInterface;
+namespace Oploshka\RpcContract;
 
 /*
  * Интерфейс для преобразования тела запроса в объект и обратно

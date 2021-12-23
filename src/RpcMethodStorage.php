@@ -2,7 +2,7 @@
 
 namespace Oploshka\Rpc;
 
-class RpcMethodStorage implements \Oploshka\RpcInterface\iRpcMethodStorage {
+class RpcMethodStorage implements \Oploshka\RpcContract\iRpcMethodStorage {
   
   private $methodList = [];
   

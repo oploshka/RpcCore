@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcInterface;
+namespace Oploshka\RpcContract;
 
 use Oploshka\Rpc\RpcError;
 use Oploshka\Rpc\RpcResponse;

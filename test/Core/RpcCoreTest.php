@@ -14,7 +14,7 @@ class RpcCoreTest extends TestCase {
     $rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
   
     $data = ['login' => 'test', 'password' => 'user'];
-    $rpcResponse = $rpc->runMethodByData('MethodBase', $data);
+    $rpcResponse = $rpc->runMethodByObject('MethodBase', new MethodBaseRequest($data));
   
     $this->assertEquals( $rpcResponse->getErrorCode(), 'ERROR_DEFAULT');
     $this->assertEquals( $rpcResponse->getData() , $data);

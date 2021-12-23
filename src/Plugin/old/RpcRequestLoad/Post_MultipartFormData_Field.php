@@ -2,7 +2,7 @@
 
 namespace Oploshka\RpcRequestLoad;
 
-use Oploshka\RpcInterface\iRpcLoadRequest;
+use Oploshka\RpcContract\iRpcLoadRequest;
 
 class Post_MultipartFormData_Field implements iRpcLoadRequest {
 
