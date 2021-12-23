@@ -106,23 +106,6 @@ class RpcCore {
     //   return $rpcResponse;
     // }
   
-    /**
-     * https://www.php.net/manual/ru/reflectionproperty.gettype.php
-     *
-     * class User { public string $name; }
-     * $rp = new ReflectionProperty('User', 'name');
-     * $rp->getType()->getName(); // string
-     */
-    
-    // TODO: fix trown ReflectionException
-    // $reflectionMethodClass  = new \ReflectionClass($methodClassName);
-    // $propertyData           = $reflectionMethodClass->getProperty('Data');  // Получаем свойство Data из класса метода
-    // $reflectionDataClass    = $propertyData->getDeclaringClass();           // Получаем объект ReflectionClass
-    //
-    // $propertyDataType         = $propertyData->getType();           // Получаем объект ReflectionClass
-    // $propertyDataTypeName    = $propertyDataType->getName();           // Получаем объект ReflectionClass
-  
-  
     $reflectionPropertyData = new \ReflectionProperty($rpcMethodClassName, 'Data');   // Получаем объект ReflectionProperty
     $DataClassName          = $reflectionPropertyData->getType()->getName();      // Получаем имя класса
     /**

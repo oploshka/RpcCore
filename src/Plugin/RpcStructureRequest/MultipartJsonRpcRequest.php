@@ -1,23 +1,25 @@
 <?php
 
-namespace Oploshka\RpcStructure;
+namespace Oploshka\Rpc\Plugin\RpcStructureRequest;
 
-/*
-{
-  "specification": "multipart-json-rpc",
-  "specificationVersion" : "0.1.0",
 
-  "version": "1",
-  "language": "en",
-
-  "request" : {
-    "id"   : "9423234",
-    "name" : "MethodTest1",
-    "data" : { "userId" : 1 }
-  }
-}
-*/
-class MultipartJsonIRpcRequestRequest implements \Oploshka\RpcContract\iRpcStructureRequest {
+/**
+ * Class MultipartJsonRpcRequest
+ * @package Oploshka\Rpc\Plugin\RpcStructureRequest
+ *
+ *  {
+ *    "specification": "multipart-json-rpc",
+ *    "specificationVersion" : "0.1.0",
+ *    "version": "1",
+ *    "language": "en",
+ *    "request" : {
+ *      "id"   : "9423234",
+ *      "name" : "MethodTest1",
+ *      "data" : { "userId" : 1 }
+ *    }
+ *  }
+ */
+class MultipartJsonRpcRequest {
   
   public function decode($arr) {
   
