@@ -20,6 +20,10 @@ class MethodBaseRequest implements iRpcMethodRequest {
     $this->data = $data;
   }
   
+  
+  public function getData(): array {
+    return $this->data;
+  }
   public function getLogin(): string {
     return $this->data['login'];
   }

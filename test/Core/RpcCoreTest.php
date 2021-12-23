@@ -11,7 +11,11 @@ class RpcCoreTest extends TestCase {
   
   public function test_createRpcMethodClass() {
     $rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
-    $rpcMethodClass = $rpc->createRpcMethodClass('MethodBase', ['login' => 'test', 'password' => 'user']);
+    
+    $dataNotFilter = ['login' => 'test', 'password' => 'user', 'unnecessary' => 'bla bla bla', 'test' => 112 ];
+    $dataFiltered  = ['login' => 'test', 'password' => 'user'];
+    
+    $rpcMethodClass = $rpc->createRpcMethodClass('MethodBase', $dataNotFilter);
     /**
      * @var $data MethodBaseRequest
      */
@@ -19,6 +23,7 @@ class RpcCoreTest extends TestCase {
   
     $this->assertEquals( $data->getLogin()    , 'test');
     $this->assertEquals( $data->getPassword() , 'user');
+    $this->assertEquals( $data->getData()     , $dataFiltered);
   }
   
 }

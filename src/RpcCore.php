@@ -4,6 +4,7 @@ namespace Oploshka\Rpc;
 
 use Oploshka\Reform\Reform;
 use Oploshka\Reform\ReformDebug;
+use Oploshka\Reform\ReformInterface;
 use Oploshka\RpcAbstract\rpcMethod;
 // Exception
 use Oploshka\RpcException\RpcException;
@@ -21,23 +22,23 @@ use Oploshka\RpcContract\iRpcUnloadResponse;
 
 class RpcCore {
   
-  protected Reform              $reform;              // валидация данных
+  protected ReformInterface     $reform;              // валидация данных
   protected iRpcMethodStorage   $rpcMethodStorage;    // хранилище методов
   protected iRpcLoadRequest     $rpcLoadRequest;      // обработка данных запроса
   protected iRpcUnloadResponse  $rpcUnloadResponse;   // обработка данных ответа
   
   // // getters
   // public function getReform()               { return $this->reform;               }
-  public function getRpcMethodStorage()     { return $this->rpcMethodStorage;     }
+  // public function getRpcMethodStorage()     { return $this->rpcMethodStorage;     }
   // public function getRpcRequestLoad()       { return $this->rpcRequestLoad;       }
   
-  // // setters TODO: fix
+  // // setters
   // public function setReform($obj)               { return $this->reform           = $obj; }
   // public function setRpcMethodStorage($obj)     { return $this->rpcMethodStorage = $obj; }
   
   
   public function __construct(iRpcMethodStorage $rpcMethodStorage) {
-    // $this->reform               = $obj['Reform']                ?? new ReformDebug();
+    $this->reform               = new ReformDebug();
     $this->rpcMethodStorage     = $rpcMethodStorage;
   }
   
@@ -90,24 +91,29 @@ class RpcCore {
   public function createRpcMethodClass(string $rpcMethodName, array $rpcMethodData) :iRpcMethod {
     $rpcMethodClassName = $this->getRpcMethodClassName($rpcMethodName);
     
-    // TODO: fix validate method data and add exception
-    ///# $data = $this->Reform->item($methodData, ['type' => 'array', 'validate' => $MethodClassName::requestSchema()] );
-    $data = $rpcMethodData;
     
-    // if($data === null) {
-    //   $field = [];
-    //   $errorObjList = $this->Reform->getError();
-    //   foreach ($errorObjList as $errorObj){
-    //     $field[] = $errorObj['data'];
-    //   }
-    //   $rpcResponse->setErrorCode('ERROR_NOT_VALIDATE_DATA')
-    //       ->setErrorMessage('')
-    //       ->setErrorData(['field' => $field]);
-    //   return $rpcResponse;
-    // }
-  
     $reflectionPropertyData = new \ReflectionProperty($rpcMethodClassName, 'Data');   // Получаем объект ReflectionProperty
     $DataClassName          = $reflectionPropertyData->getType()->getName();      // Получаем имя класса
+  
+  
+    // TODO: validate update
+    //   - проверить работу валидационной схемы
+    //   - подумать о переносе валидации в RpcMethod.php (за/против)
+    //   - обновить схему валидации
+    // получаем схему входных данных
+    $rpcMethodDataSchema = $DataClassName::schema();
+    $data = $this->reform->item($rpcMethodData, ['type' => 'array', 'validate' => $rpcMethodDataSchema] );
+    // TODO: перенести эту логику в Reform
+    if($data === null) {
+      $field = [];
+      $errorObjList = $this->reform->getError();
+      foreach ($errorObjList as $errorObj){
+        $field[] = $errorObj['data'];
+      }
+      throw new RpcException('ERROR_NOT_VALIDATE_DATA', ['field' => $field]);
+    }
+    
+    
     /**
      * @var $rpcMethodDataClass iRpcMethodRequest
      */
