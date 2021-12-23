@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\Rpc\Method;
 
 class RpcMethodStorage implements \Oploshka\RpcContract\iRpcMethodStorage {
   

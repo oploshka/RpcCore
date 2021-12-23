@@ -2,7 +2,9 @@
 
 namespace Oploshka\Rpc;
 
-class RpcRequest {
+use Oploshka\RpcContract\iRpcRequest;
+
+class RpcRequest implements iRpcRequest {
   
   private $requestId  = null;
   private string $methodName = '';

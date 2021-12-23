@@ -36,9 +36,9 @@ class RpcCore {
   // public function setRpcMethodStorage($obj)     { return $this->rpcMethodStorage = $obj; }
   
   
-  public function __construct(array $obj = []) {
+  public function __construct(iRpcMethodStorage $rpcMethodStorage) {
     // $this->reform               = $obj['Reform']                ?? new ReformDebug();
-    $this->rpcMethodStorage     = $obj['RpcMethodStorage']      ?? new RpcMethodStorage();
+    $this->rpcMethodStorage     = $rpcMethodStorage;
   }
   
   

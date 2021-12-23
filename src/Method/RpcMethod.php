@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Oploshka\Rpc;
+namespace Oploshka\Rpc\Method;
 
 use Oploshka\Rpc\RpcResponse;
 

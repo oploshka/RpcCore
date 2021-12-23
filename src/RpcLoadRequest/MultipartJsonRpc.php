@@ -2,37 +2,26 @@
 
 namespace Oploshka\Rpc\RpcLoadRequest;
 
+// interface
+use Oploshka\RpcContract\iRpcLoadRequest;
+use Oploshka\RpcContract\iRpcRequest;
+//
 use Oploshka\Rpc\Plugin\RpcLoadContent\Post_MultipartFormData_Field;
 use Oploshka\Rpc\Plugin\RpcStructureRequest\MultipartJsonRpcRequest;
-use Oploshka\RpcContract\iRpcLoadRequest;
 
 class MultipartJsonRpc implements iRpcLoadRequest {
   
-  private $contentLoad;
-  private $requestStructureParser;
+  private Post_MultipartFormData_Field $contentLoad;
+  private MultipartJsonRpcRequest      $requestStructureParser;
   
   public function __construct(){
-    $this->contentLoad = new Post_MultipartFormData_Field('data');
+    $this->contentLoad            = new Post_MultipartFormData_Field('data');
     $this->requestStructureParser = new MultipartJsonRpcRequest();
   }
   
-  public function load() {
+  public function load() :iRpcRequest {
     $data = $this->contentLoad->load();
     return $this->requestStructureParser->decode($data);
   }
-
+  
 }
-
-/*
-
-public function load() :iRpcRequest {
-  // получим данные
-  $loadStr = $this->RpcRequestLoad->load();
-  // расшифруем
-  $loadData = $this->RpcRequestFormatter->decode($loadStr);
-  // считываем структуру
-  $RpcMethodRequest = $this->RpcRequestStructure->decode($loadData);
-  //
-  return $RpcMethodRequest;
-}
- */
