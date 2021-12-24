@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc\RpcLoadRequest;
+namespace Oploshka\Rpc\Plugin\RpcResponseUnload;
 
 // interface
 use Oploshka\RpcContract\iRpcUnloadResponse;
@@ -8,7 +8,7 @@ use Oploshka\RpcContract\iRpcResponse;
 use Oploshka\RpcContract\iRpcRequest;
 //
 use Oploshka\Rpc\Plugin\RpcCodec\RpcCodecJson;
-use Oploshka\RpcStructure\MultipartJsonRpcResponse;
+use Oploshka\Rpc\Plugin\RpcResponseStructure\MultipartJsonRpcResponse;
 
 class MultipartJsonRpc implements iRpcUnloadResponse {
   

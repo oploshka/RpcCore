@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc\Plugin\RpcGetContent;
+namespace Oploshka\Rpc\Plugin\RpcContentGet;
 
 class ApplicationJson {
 

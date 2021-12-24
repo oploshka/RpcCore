@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc\Plugin\RpcStructureRequest;
+namespace Oploshka\Rpc\Plugin\RpcRequestStructure;
 
 
 /**

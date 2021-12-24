@@ -1,13 +1,13 @@
 <?php
 
-namespace Oploshka\Rpc\RpcLoadRequest;
+namespace Oploshka\Rpc\Plugin\RpcRequestLoad;
 
 // interface
 use Oploshka\RpcContract\iRpcLoadRequest;
 use Oploshka\RpcContract\iRpcRequest;
 //
-use Oploshka\Rpc\Plugin\RpcLoadContent\Post_MultipartFormData_Field;
-use Oploshka\Rpc\Plugin\RpcStructureRequest\MultipartJsonRpcRequest;
+use Oploshka\Rpc\Plugin\RpcContentLoad\Post_MultipartFormData_Field;
+use Oploshka\Rpc\Plugin\RpcRequestStructure\MultipartJsonRpcRequest;
 
 class MultipartJsonRpc implements iRpcLoadRequest {
   

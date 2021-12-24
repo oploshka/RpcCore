@@ -1,15 +1,15 @@
 <?php
 
-namespace Oploshka\Rpc\RpcLoadRequest;
+namespace Oploshka\Rpc\Plugin\RpcRequestLoad;
 
 // interface
 use Oploshka\RpcContract\iRpcLoadRequest;
 use Oploshka\RpcContract\iRpcRequest;
 
 //
-use Oploshka\Rpc\Plugin\RpcGetContent\ApplicationJson;
+use Oploshka\Rpc\Plugin\RpcContentGet\ApplicationJson;
 use Oploshka\Rpc\Plugin\RpcCodec\RpcCodecJson;
-use Oploshka\Rpc\Plugin\RpcStructureRequest\MultipartJsonRpcRequest;
+use Oploshka\Rpc\Plugin\RpcRequestStructure\MultipartJsonRpcRequest;
 
 class ApplicationJsonSimpleRpc implements iRpcLoadRequest {
   

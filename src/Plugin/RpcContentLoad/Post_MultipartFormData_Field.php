@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\Rpc\Plugin\RpcLoadContent;
+namespace Oploshka\Rpc\Plugin\RpcContentLoad;
 
 class Post_MultipartFormData_Field {
 

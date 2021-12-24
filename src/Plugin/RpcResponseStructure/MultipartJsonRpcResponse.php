@@ -1,6 +1,6 @@
 <?php
 
-namespace Oploshka\RpcStructure;
+namespace Oploshka\Rpc\Plugin\RpcResponseStructure;
 
 use Oploshka\RpcContract\iRpcRequest;
 use Oploshka\RpcContract\iRpcResponse;
