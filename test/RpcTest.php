@@ -4,14 +4,13 @@ namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
-use Oploshka\RpcExample\Method\Base\BaseExample;
 use Oploshka\RpcExample\Method\Base\BaseExampleRequest;
 
 class RpcTest extends TestCase {
   
   public function test_runMethodByObject() {
   
-    $rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
+    $rpc = \Oploshka\RpcExample\RpcServerCreate::getRpc();
   
     $data = ['login' => 'test', 'password' => 'user'];
     $rpcResponse = $rpc->runMethodByObject('MethodBase', new BaseExampleRequest($data));

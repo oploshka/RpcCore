@@ -4,8 +4,8 @@ namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
-use Oploshka\RpcTestHelper\MethodBase\BaseExample;
-use Oploshka\RpcTestHelper\MethodBase\BaseExampleRequest;
+use Oploshka\RpcExample\Method\Base\BaseExample;
+use Oploshka\RpcExample\Method\Base\BaseExampleRequest;
 
 class RpcMethodClassTest extends TestCase {
   

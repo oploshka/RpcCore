@@ -1,22 +1,18 @@
 <?php
 
-namespace RpcExample;
+namespace Oploshka\RpcExample;
 
 use Oploshka\Rpc\Method\RpcMethodStorage;
+use Oploshka\RpcExample\Enum\MethodGroup;
+use Oploshka\RpcExample\Enum\MethodName;
 
 class RpcServerCreate {
   
   public static function getRpcMethodStorage(){
     $rpcMethodStorage = new RpcMethodStorage();
-    $rpcMethodStorage->add('MethodBase', '\\Oploshka\\RpcTestHelper\\MethodBase\\BaseExample', 'Base');
-    // // add error method
-    // $RpcMethodStorage->add('InterfaceNotRealization', '\\Oploshka\\RpcTestHelper\\Method\\Error\\InterfaceNotRealization'     , 'Error');
-    // $RpcMethodStorage->add('RunUnknownFunction'     , '\\Oploshka\\RpcTestHelper\\Method\\Error\\RunUnknownFunction'          , 'Error');
-    //
-    // // add method return data
-    // $RpcMethodStorage->add('BaseReturnData'         , '\\Oploshka\\RpcTestHelper\\Method\\ReturnData\\BaseMethod', 'ReturnData');
-    // $RpcMethodStorage->add('ReplaceReturnData'      , '\\Oploshka\\RpcTestHelper\\Method\\ReturnData\\ReplaceReturnData'      , 'ReturnData');
-    // $RpcMethodStorage->add('ReturnRequestSchemaData', '\\Oploshka\\RpcTestHelper\\Method\\ReturnData\\ReturnRequestSchemaData', 'ReturnData');
+    $rpcMethodStorage->add(MethodName::BASE_EXAMPLE, '\\Oploshka\\RpcExample\\Method\\Base\\BaseExample', MethodGroup::BASE);
+    // TODO use ::class
+    // $rpcMethodStorage->add(MethodName::BASE_EXAMPLE, \Oploshka\RpcExample\Method\Base\BaseExample::class, MethodGroup::BASE);
     return $rpcMethodStorage;
   }
   

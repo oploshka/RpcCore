@@ -22,12 +22,12 @@
       "Oploshka\\Rpc\\"           : "src/",
       "Oploshka\\RpcContract\\"   : "src/Contract",
       "Oploshka\\RpcException\\"  : "src/Exception",
-
+  
+      "Oploshka\\RpcExample\\"    : "example"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Oploshka\\RpcExample\\"    : "example",
       "Oploshka\\RpcTest\\"       : "test"
     }
   }
