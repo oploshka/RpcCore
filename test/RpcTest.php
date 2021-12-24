@@ -4,8 +4,8 @@ namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
-use Oploshka\RpcTestHelper\MethodBase\MethodBase;
-use Oploshka\RpcTestHelper\MethodBase\MethodBaseRequest;
+use Oploshka\RpcExample\Method\Base\BaseExample;
+use Oploshka\RpcExample\Method\Base\BaseExampleRequest;
 
 class RpcTest extends TestCase {
   
@@ -14,7 +14,7 @@ class RpcTest extends TestCase {
     $rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
   
     $data = ['login' => 'test', 'password' => 'user'];
-    $rpcResponse = $rpc->runMethodByObject('MethodBase', new MethodBaseRequest($data));
+    $rpcResponse = $rpc->runMethodByObject('MethodBase', new BaseExampleRequest($data));
   
     $this->assertEquals( $rpcResponse->getErrorCode(), 'ERROR_DEFAULT');
     $this->assertEquals( $rpcResponse->getData() , $data);

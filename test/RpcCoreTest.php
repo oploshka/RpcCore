@@ -4,20 +4,20 @@ namespace Oploshka\RpcTest;
 
 use PHPUnit\Framework\TestCase;
 
-use Oploshka\RpcTestHelper\MethodBase\MethodBase;
-use Oploshka\RpcTestHelper\MethodBase\MethodBaseRequest;
+use Oploshka\RpcTestHelper\MethodBase\BaseExample;
+use Oploshka\RpcTestHelper\MethodBase\BaseExampleRequest;
 
 class RpcCoreTest extends TestCase {
   
   public function test_createRpcMethodClass() {
-    $rpc = \Oploshka\RpcTestHelper\Helper::getRpc();
+    $rpc = \Oploshka\RpcExample\RpcServerCreate::getRpc();
     
     $dataNotFilter = ['login' => 'test', 'password' => 'user', 'unnecessary' => 'bla bla bla', 'test' => 112 ];
     $dataFiltered  = ['login' => 'test', 'password' => 'user'];
     
     $rpcMethodClass = $rpc->createRpcMethodClass('MethodBase', $dataNotFilter);
     /**
-     * @var $data MethodBaseRequest
+     * @var $data BaseExampleRequest
      */
     $data = $rpcMethodClass->getRpcMethodDataObj();
   

@@ -1,8 +1,8 @@
 <?php
 
-namespace Oploshka\RpcTestHelper\MethodBase;
+namespace Oploshka\RpcExample\Method\Base;
 
-class MethodBaseResponse {
+class BaseExampleResponse {
   
   public static function schema(): array {
     return [

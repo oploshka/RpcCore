@@ -1,15 +1,15 @@
 <?php
 
-namespace Oploshka\RpcTestHelper\MethodBase;
+namespace Oploshka\RpcExample\Method\Base;
 
-class MethodBase extends \Oploshka\Rpc\Method\RpcMethod {
+class BaseExample extends \Oploshka\Rpc\Method\RpcMethod {
   
   public static function description(): string {
     return '';
   }
   
   // Todo: protected | private | public
-  protected ?MethodBaseRequest $Data = null;
+  protected ?BaseExampleRequest $Data = null;
   
   // TODO: add
   // protected ?BaseMethodResponse $Response;

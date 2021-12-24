@@ -19,22 +19,16 @@
   },
   "autoload": {
     "psr-4": {
-      "Oploshka\\Rpc\\"                 : "src/",
-      "Oploshka\\RpcContract\\"         : "src/Contract",
-      "Oploshka\\RpcAbstract\\"         : "src/Abstract",
-      "Oploshka\\RpcException\\"        : "src/Exception",
+      "Oploshka\\Rpc\\"           : "src/",
+      "Oploshka\\RpcContract\\"   : "src/Contract",
+      "Oploshka\\RpcException\\"  : "src/Exception",
 
-      "Oploshka\\RpcMethods\\"          : "src/Methods",
-
-      "Oploshka\\RpcRequestLoad\\"      : "src/Plugin/RpcRequestLoad",
-      "Oploshka\\RpcFormatter\\"        : "src/Plugin/RpcFormatter",
-      "Oploshka\\RpcStructure\\"        : "src/Plugin/RpcStructure"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Oploshka\\RpcTest\\"                 : "test/Core",
-      "Oploshka\\RpcTestHelper\\"           : "test/_Helper"
+      "Oploshka\\RpcExample\\"    : "example",
+      "Oploshka\\RpcTest\\"       : "test"
     }
   }
 }

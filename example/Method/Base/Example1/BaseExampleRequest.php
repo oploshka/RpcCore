@@ -1,10 +1,10 @@
 <?php
 
-namespace Oploshka\RpcTestHelper\MethodBase;
+namespace Oploshka\RpcExample\Method\Base;
 
 use Oploshka\RpcContract\iRpcMethodRequest;
 
-class MethodBaseRequest implements iRpcMethodRequest {
+class BaseExampleRequest implements iRpcMethodRequest {
  
   public static function schema(): array {
     return [
