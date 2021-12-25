@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  nginx:
+    container_name: rpc_nginx
+    image: nginx:latest
+    ports:
+      - "9191:80"
+    volumes:
+      - ./nginx-rpc.conf:/etc/nginx/conf.d/default.conf:rw
+      - ./index.php:/var/www/html/index.php
+    links:
+      - rpc
+
+  rpc:
+    container_name: rpc
+    image: php:7.4-fpm
+    volumes:
+      - ./index.php:/var/www/html/index.php
+      - ./../:/var/www/rpc
+

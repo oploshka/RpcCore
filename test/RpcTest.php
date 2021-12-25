@@ -10,7 +10,7 @@ class RpcTest extends TestCase {
   
   public function test_runMethodByObject() {
   
-    $rpc = \Oploshka\RpcExample\RpcServerCreate::getRpc();
+    $rpc = \Oploshka\RpcExample\RpcServer::getRpc();
   
     $data = ['login' => 'test', 'password' => 'user'];
     $rpcResponse = $rpc->runMethodByObject('MethodBase', new BaseExampleRequest($data));

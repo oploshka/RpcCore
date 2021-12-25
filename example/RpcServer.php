@@ -6,7 +6,7 @@ use Oploshka\Rpc\Method\RpcMethodStorage;
 use Oploshka\RpcExample\Enum\MethodGroup;
 use Oploshka\RpcExample\Enum\MethodName;
 
-class RpcServerCreate {
+class RpcServer {
   
   public static function getRpcMethodStorage(){
     $rpcMethodStorage = new RpcMethodStorage();
@@ -22,6 +22,11 @@ class RpcServerCreate {
     // $Rpc->applyPhpSettings();
     
     return $rpc;
+  }
+  
+  
+  public static function run(){
+    echo 'testPrint';
   }
 
 }

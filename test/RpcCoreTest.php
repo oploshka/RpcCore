@@ -10,7 +10,7 @@ use Oploshka\RpcTestHelper\MethodBase\BaseExampleRequest;
 class RpcCoreTest extends TestCase {
   
   public function test_createRpcMethodClass() {
-    $rpc = \Oploshka\RpcExample\RpcServerCreate::getRpc();
+    $rpc = \Oploshka\RpcExample\RpcServer::getRpc();
     
     $dataNotFilter = ['login' => 'test', 'password' => 'user', 'unnecessary' => 'bla bla bla', 'test' => 112 ];
     $dataFiltered  = ['login' => 'test', 'password' => 'user'];
