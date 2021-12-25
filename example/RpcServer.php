@@ -17,8 +17,10 @@ class RpcServer {
   }
   
   public static function getRpc(){
-    $rpcMethodStorage = self::getRpcMethodStorage();
-    $rpc = new \Oploshka\Rpc\Rpc($rpcMethodStorage);
+    $rpcMethodStorage   = self::getRpcMethodStorage();
+    $rpcRequestLoad     = new \Oploshka\Rpc\Plugin\RpcRequestLoad\MultipartJsonRpc();
+    $rpcResponseUnload  = new \Oploshka\Rpc\Plugin\RpcResponseUnload\MultipartJsonRpc();
+    $rpc = new \Oploshka\Rpc\Rpc($rpcMethodStorage, $rpcRequestLoad, $rpcResponseUnload);
     // $Rpc->applyPhpSettings();
     
     return $rpc;
@@ -26,7 +28,8 @@ class RpcServer {
   
   
   public static function run(){
-    echo 'testPrint';
+    $rpc = self::getRpc();
+    $rpc->runRpc();
   }
 
 }

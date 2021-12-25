@@ -9,5 +9,5 @@ interface iRpcUnloadResponse {
    * @param iRpcRequest|null $rpcRequest
    * @throws \Exception
    */
-  public function unload(iRpcResponse $rpcResponse, ?iRpcRequest $rpcRequest);
+  public function unload(iRpcResponse $rpcResponse, ?iRpcRequest $rpcRequest = null);
 }

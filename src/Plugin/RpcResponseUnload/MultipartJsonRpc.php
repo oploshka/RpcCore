@@ -23,7 +23,7 @@ class MultipartJsonRpc implements iRpcUnloadResponse {
   /**
    * @inheritDoc
    */
-  public function unload(iRpcResponse $rpcResponse, ?iRpcRequest $rpcRequest) {
+  public function unload(iRpcResponse $rpcResponse, ?iRpcRequest $rpcRequest = null) {
     $data = $this->formatter->encode($rpcResponse, $rpcRequest);
     $res = $this->codec->encode($data);
     echo $res;

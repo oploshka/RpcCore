@@ -3,6 +3,9 @@
 namespace Oploshka\Rpc\Plugin\RpcRequestStructure;
 
 
+use Oploshka\Rpc\RpcRequest;
+use Oploshka\RpcException\RpcException;
+
 /**
  * Class MultipartJsonRpcRequest
  * @package Oploshka\Rpc\Plugin\RpcStructureRequest
@@ -21,19 +24,25 @@ namespace Oploshka\Rpc\Plugin\RpcRequestStructure;
  */
 class MultipartJsonRpcRequest {
   
-  public function decode($arr) {
+  public function decode($arr) :RpcRequest {
   
-    if(
-      !is_array($arr)
-      || !isset( $arr['request'] )
-      || !is_array($arr['request'])
-      || !isset($arr['request']['name']) || !is_string($arr['request']['name'])
-      || !isset($arr['request']['data']) || !is_array($arr['request']['data'])
-    ){
-      throw new \Oploshka\RpcException\ReformException('ERROR_REQUEST_STRUCTURE_DECODE');
+    if( !is_array($arr) ){
+      throw new RpcException('ERROR_REQUEST_STRUCTURE_DECODE', ['arr' => $arr], 'structure is not array');
+    }
+    if( !isset($arr['request']) ){
+      throw new RpcException('ERROR_REQUEST_STRUCTURE_DECODE', [], 'not require "request" params');
+    }
+    if( !is_array($arr['request']) ){
+      throw new RpcException('ERROR_REQUEST_STRUCTURE_DECODE', [], '"request" params is not array');
+    }
+    if( !isset($arr['request']['name']) || !is_string($arr['request']['name']) ){
+      throw new RpcException('ERROR_REQUEST_STRUCTURE_DECODE', [], '"request.name" params error');
+    }
+    if( !isset($arr['request']['data']) || !is_array($arr['request']['data']) ){
+      throw new RpcException('ERROR_REQUEST_STRUCTURE_DECODE', [], '"request.data" params error');
     }
     
-    return new \Oploshka\Rpc\RpcRequest([
+    return new RpcRequest([
       'requestId'   => $arr['request']['id'] ?? null,
       'methodName'  => $arr['request']['name'],
       'data'        => $arr['request']['data'],

@@ -2,6 +2,8 @@
 
 namespace Oploshka\RpcExample\Method\Base;
 
+use Oploshka\RpcExample\Enum\MethodError;
+
 class BaseExample extends \Oploshka\Rpc\Method\RpcMethod {
   
   public static function description(): string {
@@ -20,5 +22,7 @@ class BaseExample extends \Oploshka\Rpc\Method\RpcMethod {
 
     $this->setData('login'   , $log);
     $this->setData('password', $pas);
+    
+    $this->setErrorCode(MethodError::ERROR_NO);
   }
 }

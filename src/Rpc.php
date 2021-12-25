@@ -30,12 +30,14 @@ class Rpc extends RpcCore {
       // получаем данные из запроса
       $rpcRequest = $this->rpcRequestLoad();
     } catch (RpcException $e) {
-      // TODO: fix
       $rpcResponseError = new RpcResponse();
-      $rpcResponseError->setErrorCode('ERROR_REQUEST_LOAD');
+      $rpcResponseError->setErrorCode($e->getStrCode());
+      $rpcResponseError->setErrorData($e->getData());
       $rpcResponseError->setErrorMessage($e->getMessage());
       return $rpcResponseError;
     }
+    
+    // TODO: add Trown
     
     return $this->runRpcMethod($rpcRequest->getMethodName(), $rpcRequest->getData());
   }
@@ -50,11 +52,34 @@ class Rpc extends RpcCore {
     return $MethodClass->getRpcMethodResponseObj();
   }
   
-  /*
   public function runRpc() {
-    $rpcRequest = $this->runMethodByRequest();
-    // TODO: fix RpcRequest (подумать как отдавать request и response)
-    return $this->rpcUnloadResponse->unload($rpcRequest);
+    try {
+      // получаем данные из запроса
+      $rpcRequest = $this->rpcRequestLoad();
+    } catch (RpcException $e) {
+      // TODO: fix
+      $rpcResponseError = new RpcResponse();
+      $rpcResponseError->setErrorCode($e->getStrCode());
+      $rpcResponseError->setErrorData($e->getData());
+      $rpcResponseError->setErrorMessage($e->getMessage());
+  
+      $this->rpcUnloadResponse->unload($rpcResponseError);
+      return;
+    }
+  
+    try {
+      $rpcResponse = $this->runRpcMethod($rpcRequest->getMethodName(), $rpcRequest->getData());
+    } catch (RpcException $e) {
+      // TODO: fix
+      $rpcResponseError = new RpcResponse();
+      $rpcResponseError->setErrorCode($e->getStrCode());
+      $rpcResponseError->setErrorData($e->getData());
+  
+      $this->rpcUnloadResponse->unload($rpcResponseError, $rpcRequest);
+      return;
+    }
+    
+    $this->rpcUnloadResponse->unload($rpcResponse, $rpcRequest);
+    return;
   }
-  */
 }

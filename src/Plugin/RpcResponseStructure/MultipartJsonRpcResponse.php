@@ -43,7 +43,7 @@ class MultipartJsonRpcResponse {
    * @param  \Oploshka\Rpc\RpcResponseOld $RpcResponse
    * @return array
    */
-  public function encode(iRpcResponse $rpcResponse, ?iRpcRequest $rpcRequest){
+  public function encode(iRpcResponse $rpcResponse, ?iRpcRequest $rpcRequest = null){
 
     return [
       'specification'         => 'multipart-json-rpc',

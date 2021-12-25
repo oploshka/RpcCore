@@ -9,6 +9,7 @@ use Oploshka\RpcAbstract\rpcMethod;
 // Exception
 use Oploshka\RpcException\RpcException;
 use Oploshka\RpcException\RpcMethodEndException;
+
 // Interface
 use Oploshka\RpcContract\iRpcMethod;
 use Oploshka\RpcContract\iRpcMethodRequest;
@@ -37,9 +38,11 @@ class RpcCore {
   // public function setRpcMethodStorage($obj)     { return $this->rpcMethodStorage = $obj; }
   
   
-  public function __construct(iRpcMethodStorage $rpcMethodStorage) {
-    $this->reform               = new ReformDebug();
-    $this->rpcMethodStorage     = $rpcMethodStorage;
+  public function __construct(iRpcMethodStorage $rpcMethodStorage, iRpcLoadRequest $rpcLoadRequest, iRpcUnloadResponse $rpcUnloadResponse) {
+    $this->reform             = new ReformDebug();
+    $this->rpcMethodStorage   = $rpcMethodStorage;
+    $this->rpcLoadRequest     = $rpcLoadRequest;
+    $this->rpcUnloadResponse  = $rpcUnloadResponse;
   }
   
   
@@ -52,9 +55,11 @@ class RpcCore {
     try {
       // получаем данные из запроса
       $rpcRequest = $this->rpcLoadRequest->load();
+    } catch (RpcException $e) {
+      throw $e;
     } catch (\Throwable $e) {
       // TODO: fix $e->getMessage() or add function create RpcException
-      throw new RpcException('ERROR_REQUEST_LOAD');
+      throw new RpcException('ERROR_REQUEST_LOAD', [], $e->getMessage());
     }
     return $rpcRequest;
   }
@@ -155,6 +160,8 @@ class RpcCore {
     //   // Ошибка при валидации
     //   $rpcResponse = new RpcResponse();
     //   $rpcResponse->setErrorCode($e->getMessage());
+    } catch (RpcException $e) {
+      throw $e;
     } catch (\Throwable $e ) {
       // Прочие ошибки
       $rpcResponse = new RpcResponse();
@@ -165,6 +172,7 @@ class RpcCore {
           'rpcMethodData' => $rpcMethodData,
           'code' => $e->getCode(),
           'line' => $e->getLine(),
+          'trace' => $e->getTrace(),
       ]);
     }
   
