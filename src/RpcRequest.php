@@ -2,13 +2,15 @@
 
 namespace Oploshka\Rpc;
 
-class RpcRequest {
+use Oploshka\RpcContract\iRpcRequest;
+
+class RpcRequest implements iRpcRequest {
   
   private $requestId  = null;
-  private $methodName = '';
-  private $data       = [];
-  private $language   = 'en';
-  private $version    = '0.1.0';
+  private string $methodName = '';
+  private array  $data       = [];
+  private string $language   = 'en';
+  private string $version    = '0.1.0';
   
   public function __construct($arr) {
   
@@ -29,16 +31,16 @@ class RpcRequest {
   public function getRequestId() {
     return $this->requestId;
   }
-  public function getMethodName() {
+  public function getMethodName() :string {
     return $this->methodName;
   }
-  public function getData() {
+  public function getData() :array {
     return $this->data;
   }
-  public function getLanguage() {
+  public function getLanguage() :string {
     return $this->language;
   }
-  public function getVersion() {
+  public function getVersion() :string {
     return $this->version;
   }
 

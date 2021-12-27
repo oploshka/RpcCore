@@ -2,114 +2,189 @@
 
 namespace Oploshka\Rpc;
 
+use Oploshka\Reform\Reform;
 use Oploshka\Reform\ReformDebug;
+use Oploshka\Reform\ReformInterface;
+use Oploshka\RpcAbstract\rpcMethod;
+// Exception
+use Oploshka\RpcException\RpcException;
+use Oploshka\RpcException\RpcMethodEndException;
+
+// Interface
+use Oploshka\RpcContract\iRpcMethod;
+use Oploshka\RpcContract\iRpcMethodRequest;
+use Oploshka\RpcContract\iRpcMethodStorage;
+use Oploshka\RpcContract\iRpcLoadRequest;
+use Oploshka\RpcContract\iRpcRequest;
+use Oploshka\RpcContract\iRpcResponse;
+use Oploshka\RpcContract\iRpcUnloadResponse;
+
+// use Oploshka\RpcException\ReformException; // TODO: fix
 
 class RpcCore {
   
-  // валидация данных
-  /** @var \Oploshka\Reform\Reform  */
-  protected $Reform;
-  // логер
-  protected $Logger;
-  //
-  /** @var \Oploshka\Rpc\RpcMethodStorage  */
-  protected $RpcMethodStorage;
-  // обработка данных запроса/ответа
-  /** @var \Oploshka\RpcRequestLoad\Post_MultipartFormData_Field  */
-  protected $RpcRequestLoad;
-  /** @var \Oploshka\RpcFormatter\Json  */
-  protected $RpcRequestFormatter;
-  /** @var \Oploshka\RpcStructure\MultipartJsonRpc_v0_1  */
-  protected $RpcRequestStructure;
-  /** @var \Oploshka\RpcFormatter\Json  */
-  protected $RpcResponseFormatter;
-  /** @var \Oploshka\RpcStructure\MultipartJsonRpc_v0_1  */
-  protected $RpcResponseStructure;
+  protected ReformInterface     $reform;              // валидация данных
+  protected iRpcMethodStorage   $rpcMethodStorage;    // хранилище методов
+  protected iRpcLoadRequest     $rpcLoadRequest;      // обработка данных запроса
+  protected iRpcUnloadResponse  $rpcUnloadResponse;   // обработка данных ответа
   
-  // getters
-  public function getReform()               { return $this->Reform;               }
-  public function getRpcMethodStorage()     { return $this->RpcMethodStorage;     }
-  //
-  public function getRpcRequestLoad()       { return $this->RpcRequestLoad;       }
-  public function getRpcRequestFormatter()  { return $this->RpcRequestFormatter;  }
-  public function getRpcRequestStructure()  { return $this->RpcRequestStructure;  }
-  public function getRpcResponseFormatter() { return $this->RpcResponseFormatter; }
-  public function getRpcResponseStructure() { return $this->RpcResponseStructure; }
+  // // getters
+  // public function getReform()               { return $this->reform;               }
+  // public function getRpcMethodStorage()     { return $this->rpcMethodStorage;     }
+  // public function getRpcRequestLoad()       { return $this->rpcRequestLoad;       }
   
-  // setters TODO: fix
-  public function setReform($obj)               { return $this->Reform           = $obj; }
-  public function setRpcMethodStorage($obj)     { return $this->RpcMethodStorage = $obj; }
-  //
-  public function setRpcRequestLoad($obj)       { $this->RpcRequestLoad       = $obj; }
-  public function setRpcRequestFormatter($obj)  { $this->RpcRequestFormatter  = $obj; }
-  public function setRpcRequestStructure($obj)  { $this->RpcRequestStructure  = $obj; }
-  public function setRpcResponseFormatter($obj) { $this->RpcResponseFormatter = $obj; }
-  public function setRpcResponseStructure($obj) { $this->RpcResponseStructure = $obj; }
-
-  /**
-   * Core constructor.
-   * @param $obj array
-   */
-  public function __construct($obj = []) {
-    $this->Reform               = $obj['Reform']                ?? new ReformDebug();
-    $this->RpcMethodStorage     = $obj['RpcMethodStorage']      ?? new RpcMethodStorage();
-    // обработка данных запроса/ответа
-    $this->RpcRequestLoad       = $obj['RpcRequestLoad']        ?? new \Oploshka\RpcRequestLoad\Post_MultipartFormData_Field();
-    $this->RpcRequestFormatter  = $obj['RpcRequestFormatter' ]  ?? new \Oploshka\RpcFormatter\Json();
-    $this->RpcRequestStructure  = $obj['RpcRequestStructure' ]  ?? new \Oploshka\RpcStructure\MultipartJsonRpcRequest();
-    $this->RpcResponseFormatter = $obj['RpcResponseFormatter']  ?? new \Oploshka\RpcFormatter\Json();
-    $this->RpcResponseStructure = $obj['RpcResponseStructure']  ?? new \Oploshka\RpcStructure\MultipartJsonRpcResponse();
-    // TODO: логер
-    // $this->Logger                       = $obj['Logger']        ?? new Logger();
+  // // setters
+  // public function setReform($obj)               { return $this->reform           = $obj; }
+  // public function setRpcMethodStorage($obj)     { return $this->rpcMethodStorage = $obj; }
+  
+  
+  public function __construct(iRpcMethodStorage $rpcMethodStorage, iRpcLoadRequest $rpcLoadRequest, iRpcUnloadResponse $rpcUnloadResponse) {
+    $this->reform             = new ReformDebug();
+    $this->rpcMethodStorage   = $rpcMethodStorage;
+    $this->rpcLoadRequest     = $rpcLoadRequest;
+    $this->rpcUnloadResponse  = $rpcUnloadResponse;
   }
+  
   
   /**
-   * Header control
+   * Загружаем данные из запроса. Все возможные ошибки конвертируем к единому исключению
+   * @return iRpcRequest
+   * @throws RpcException
    */
-  private $headerSettings = [
-    'Access-Control-Allow-Origin' => '*',
-  ];
-  public function setHeaderSettings($settings) {
-    $this->headerSettings = $settings;
-  }
-  public function getHeaderSettings() {
-    return $this->headerSettings;
-  }
-  public function applyHeaderSettings() {
-    if ($this->headerSettings !== [] && headers_sent()) {
-      return false;
+  public function rpcRequestLoad() :iRpcRequest {
+    try {
+      // получаем данные из запроса
+      $rpcRequest = $this->rpcLoadRequest->load();
+    } catch (RpcException $e) {
+      throw $e;
+    } catch (\Throwable $e) {
+      // TODO: fix $e->getMessage() or add function create RpcException
+      throw new RpcException('ERROR_REQUEST_LOAD', [], $e->getMessage());
     }
-    foreach ($this->headerSettings as $k => $v){
-      header("{$k}: {$v}");
-    }
-    return true;
+    return $rpcRequest;
   }
   
+  
   /**
-   * Php ini control
+   * @return string Rpc method class name
+   * @throws RpcException
    */
-  private $phpSettings = [
-    'error_reporting'         => E_ALL,
-    'display_errors'          => 1,
-    'display_startup_errors'  => 1,
-    'date.timezone'           => 'UTC',
-  ];
-  public function setPhpSettings($settings) {
-    $this->phpSettings = $settings;
+  public function getRpcMethodClassName(string $methodName){
+    // get method info
+    $methodInfo = $this->rpcMethodStorage->getMethodInfo($methodName);
+    if(!$methodInfo) {
+      throw new RpcException('ERROR_NO_METHOD');
+    }
+    // method class create
+    $methodClassName = $methodInfo['class'];
+    //
+    $interfaces = class_implements( $methodClassName );
+    if ( !isset( $interfaces['Oploshka\RpcContract\iRpcMethod'] ) ) {
+      throw new RpcException('ERROR_NOT_INSTANCEOF_INTERFACE');
+    }
+  
+    return $methodClassName;
   }
-  public function getPhpSettings() {
-    return $this->headerSettings;
-  }
-  public function applyPhpSettings() {
-    $log = [];
-    foreach ($this->phpSettings as $k => $v){
-      try{
-        ini_set($k, $v);
-      } catch (\Exception $e){
-        $log[] = $e->getMessage();
+  
+  
+  /**
+   * @param string $methodName
+   * @param array $methodData
+   * @throws \ReflectionException TODO: fix ReflectionException -> RpcException
+   * @throws RpcException
+   */
+  public function createRpcMethodClass(string $rpcMethodName, array $rpcMethodData) :iRpcMethod {
+    $rpcMethodClassName = $this->getRpcMethodClassName($rpcMethodName);
+    
+    
+    $reflectionPropertyData = new \ReflectionProperty($rpcMethodClassName, 'Data');   // Получаем объект ReflectionProperty
+    $DataClassName          = $reflectionPropertyData->getType()->getName();      // Получаем имя класса
+  
+  
+    // TODO: validate update
+    //   - проверить работу валидационной схемы
+    //   - подумать о переносе валидации в RpcMethod.php (за/против)
+    //   - обновить схему валидации
+    // получаем схему входных данных
+    $rpcMethodDataSchema = $DataClassName::schema();
+    $data = $this->reform->item($rpcMethodData, ['type' => 'array', 'validate' => $rpcMethodDataSchema] );
+    // TODO: перенести эту логику в Reform
+    if($data === null) {
+      $field = [];
+      $errorObjList = $this->reform->getError();
+      foreach ($errorObjList as $errorObj){
+        $field[] = $errorObj['data'];
       }
+      throw new RpcException('ERROR_NOT_VALIDATE_DATA', ['field' => $field]);
     }
-    return $log === [] ? true : $log;
+    
+    
+    /**
+     * @var $rpcMethodDataClass iRpcMethodRequest
+     */
+    $rpcMethodDataClass        = new $DataClassName($data);
+    /**
+     * @var $rpcMethodClass iRpcMethod
+     */
+    $rpcMethodClass            = new $rpcMethodClassName();
+    $rpcMethodClass->setRpcMethodDataObj($rpcMethodDataClass);
+  
+    // TODO: add validate
+    // TODO: add DI
+    
+    return $rpcMethodClass;
+  }
+  
+  
+  /**
+   * Запускаем метод по имени
+   * Все ошибки должны быть преобразованы в RpcResponse
+   *
+   * @param string $rpcMethodName
+   * @param array $rpcMethodData
+   * @return iRpcResponse
+   */
+  public final function runRpcMethod(string $rpcMethodName, array $rpcMethodData) :iRpcResponse {
+    ob_start();
+    // ErrorHandler::add();
+    $rpcResponse = null;
+    try {
+      $rpcMethod = $this->createRpcMethodClass($rpcMethodName, $rpcMethodData);
+      $rpcMethod->run();
+      $rpcResponse = $rpcMethod->getRpcMethodResponseObj();
+    } catch (\Oploshka\RpcException\RpcMethodEndException $e) {
+      // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
+      $rpcResponse = $rpcMethod->getRpcMethodResponseObj(); // WARNING - $rpcMethod может не быть...
+    } catch (RpcException $e) {
+      $rpcResponse = new RpcResponse();
+      $rpcResponse->setErrorCode($e->getStrCode());
+      $rpcResponse->setErrorMessage($e->getMessage());
+      $rpcResponse->setErrorData($e->getData());
+    } catch (\Throwable $e ) {
+      // Прочие ошибки
+      $rpcResponse = new RpcResponse();
+      $rpcResponse->setErrorCode('ERROR_METHOD_RUN');
+      $rpcResponse->setErrorMessage($e->getMessage());
+      $rpcResponse->setErrorData([
+          'rpcMethodName' => $rpcMethodName,
+          'rpcMethodData' => $rpcMethodData,
+          'code' => $e->getCode(),
+          'line' => $e->getLine(),
+          'trace' => $e->getTrace(),
+      ]);
+    }
+  
+    $echo = ob_get_contents();
+  
+    // TODO: fix
+    // if($echo !== ''){
+    //   $this->Logger->warning('echo', $echo );
+    // }
+  +
+    // ErrorHandler::remove();
+    ob_end_clean();
+    
+    return $rpcResponse;
   }
   
 }

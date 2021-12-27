@@ -2,82 +2,63 @@
 
 namespace Oploshka\Rpc;
 
-class RpcResponse implements \Oploshka\RpcInterface\Response {
+use Oploshka\RpcContract\iRpcResponse;
+
+class RpcResponse implements iRpcResponse {
   
-  /** @var RpcRequest $RpcRequest  */
-  private $RpcRequest;
-  /** @var Error  */
-  private $Error;
-  /** @var array */
-  private $data = [];
+  private RpcError  $Error;
+  private array     $data;
   
-  public function __construct($arr = []) {
-    $this->RpcRequest = $arr['RpcRequest'] ?? new RpcRequest(['methodName' => 'UNDEFINED']);
-    $this->Error      = new Error();
+  public function __construct() {
+    $this->Error      = new RpcError();
+    $this->data       = [];
   }
+  
   
   // getters
-  public function getRpcRequest(){
-    return $this->RpcRequest;
-  }
-  /** @return array */
-  public function getData(){
+  public function getData() :array {
     return $this->data;
   }
-  /**  @return Error */
-  public function getError(){
+  public function getError() :RpcError {
     return $this->Error;
   }
-  /**  @return string */
-  public function getErrorCode(){
+  public function getErrorCode() :string{
     return $this->Error->getCode();
   }
-  /**  @return string */
-  public function getErrorMessage(){
+  public function getErrorMessage() :string{
     return $this->Error->getMessage();
   }
-  /**  @return array */
-  public function getErrorData(){
+  public function getErrorData() :array{
     return $this->Error->getData();
   }
   
+  
   // setters
-  /**
-   * @param string $key
-   * @param mixed $value
-   * @return RpcResponse
-   */
-  public function setData($key, $value){
+  public function setData(string $key, $value): RpcResponse {
     $this->data[$key] = $value;
     return $this;
   }
-  
-  /**
-   * @param Error $error
-   * @return RpcResponse
-   */
-  public function setError($error): RpcResponse {
+  //
+  public final function setError(RpcError $error): RpcResponse {
     $this->Error = $error;
     return $this;
   }
-  public function setErrorCode($code){
+  public final function setErrorCode(string $code): RpcResponse {
     $this->Error->setCode($code);
     return $this;
   }
-  public function setErrorMessage($message){
+  public final function setErrorMessage(string $message): RpcResponse {
     $this->Error->setMessage($message);
     return $this;
   }
-  public function setErrorData($data){
+  public final function setErrorData(array $data): RpcResponse {
     $this->Error->setData($data);
     return $this;
   }
-  
-  /**
-   * @param Error $error
-   */
-  public function error($error = null) {
-    $error && $this->error = $error;
-    throw new \Oploshka\RpcException\MethodEndException('');
+  //
+  public final function error(RpcError $error) {
+    $this->setError($error);
+    throw new \Oploshka\RpcException\RpcMethodEndException('');
   }
 }
+

@@ -1,0 +1,15 @@
+textarea.filead{
+  float: left;
+  width: 40%;
+  margin-right: 10%;
+  height: 300px;
+  padding: 10px;
+}
+
+p.filead{
+  width: 25%;
+  float: left;
+}
+input[type=submit]{
+  width: 100%;
+}

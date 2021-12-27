@@ -1,0 +1,27 @@
+{
+  "name": "oploshka/rpc-run-example",
+  "description": "",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Andrey Tyurin",
+      "email": "ectb08@mail.ru"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0",
+    "psr/log": "^1.1",
+    "ext-json": "*",
+  
+    "oploshka/reform": "^0.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Oploshka\\Rpc\\"           : "rpc-src/",
+      "Oploshka\\RpcContract\\"   : "rpc-src/Contract",
+      "Oploshka\\RpcException\\"  : "rpc-src/Exception",
+  
+      "Oploshka\\RpcExample\\"    : "rpc-example"
+    }
+  }
+}
