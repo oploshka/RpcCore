@@ -144,7 +144,7 @@ class RpcCore {
    * @param array $rpcMethodData
    * @return iRpcResponse
    */
-  protected final function runRpcMethod(string $rpcMethodName, array $rpcMethodData) :iRpcResponse {
+  public final function runRpcMethod(string $rpcMethodName, array $rpcMethodData) :iRpcResponse {
     ob_start();
     // ErrorHandler::add();
     $rpcResponse = null;
@@ -155,13 +155,11 @@ class RpcCore {
     } catch (\Oploshka\RpcException\RpcMethodEndException $e) {
       // вызвано $Response->error() - завершение метода, обработка ошибок не нужна
       $rpcResponse = $rpcMethod->getRpcMethodResponseObj(); // WARNING - $rpcMethod может не быть...
-    // TODO: fix validation error
-    // } catch (ReformException $e) {
-    //   // Ошибка при валидации
-    //   $rpcResponse = new RpcResponse();
-    //   $rpcResponse->setErrorCode($e->getMessage());
     } catch (RpcException $e) {
-      throw $e;
+      $rpcResponse = new RpcResponse();
+      $rpcResponse->setErrorCode($e->getStrCode());
+      $rpcResponse->setErrorMessage($e->getMessage());
+      $rpcResponse->setErrorData($e->getData());
     } catch (\Throwable $e ) {
       // Прочие ошибки
       $rpcResponse = new RpcResponse();
@@ -182,7 +180,7 @@ class RpcCore {
     // if($echo !== ''){
     //   $this->Logger->warning('echo', $echo );
     // }
-  
+  +
     // ErrorHandler::remove();
     ob_end_clean();
     

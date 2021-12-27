@@ -3,6 +3,7 @@
 namespace Oploshka\RpcExample\Enum;
 
 interface MethodGroup {
-  const BASE = 'Base';
-  const USER = 'User';
+  const ERROR = 'Error';
+  //
+  const SIMPLE = 'Simple';
 }

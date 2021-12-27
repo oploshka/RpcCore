@@ -1,44 +1,34 @@
 <?php
 
-namespace Oploshka\Rpc;
+namespace Oploshka\Rpc\Helper;
 
-use Oploshka\RpcException\ReformException;
-use Oploshka\RpcContract\iRpcMethodStorage;
+use Oploshka\Rpc\Method\RpcMethodStorage;
+use Oploshka\Rpc\Rpc;
 
 class RpcAutoDoc {
   
-  /**
-   * @param iRpcMethodStorage $MethodStorage
-   * @return array
-   */
-  public function docs($MethodStorage) {
-    // TODO: fix
-    $Rpc = new Rpc();
-    $Rpc->setRpcMethodStorage($MethodStorage);
-    
+  public function docs(Rpc $rpc, RpcMethodStorage $methodStorage) :string {
     $docs = '';
-    $methodList = [ 'UserAuth', 'UserRegistration' ]; // TODO: $MethodStorage->getMethodList();
+    $methodNameList = $methodStorage->getMethodNameList();
   
     
-    foreach ($methodList as $methodName) {
-      $MethodClassName = $Rpc->getMethodClassNameForMethodName($methodName);
-      
-      $MethodClass = new $MethodClassName( [
-        'response'  => false,
-        'data'      => false,
-        'logger'    => false,
-      ] );
+    foreach ($methodNameList as $methodName) {
+      $rpcMethodClassName = $rpc->getRpcMethodClassName($methodName);
+      $reflectionPropertyData = new \ReflectionProperty($rpcMethodClassName, 'Data');   // Получаем объект ReflectionProperty
+      $DataClassName          = $reflectionPropertyData->getType()->getName();      // Получаем имя класса
   
-      $docs .= $this->render($methodName, $MethodClass);
+  
+      $description        = $rpcMethodClassName::description();
+      $requestSchema      = $DataClassName::schema();
+      $responseSchema     = []; //$MethodClass::responseSchema();
+      
+      $docs .= $this->render($methodName, $description, $requestSchema, $responseSchema);
     }
     
     return $docs;
   }
   
-  public function render($methodName, $MethodClass){
-    $description        = $MethodClass::description();
-    $requestSchema      = $MethodClass::requestShema();
-    $responseSchema     = $MethodClass::responseSchema();
+  public function render($methodName, $description, $requestSchema, $responseSchema){
     
     return <<<HTML
 <br><br>
@@ -50,10 +40,10 @@ class RpcAutoDoc {
   </tr>
   <tr>
     <td style="width: 50%; border: 1px solid black; padding: 10px; text-align: left; vertical-align: top; font-family: Menlo, Monaco, Consolas; font-size: 13px; word-break: break-all;  word-wrap: break-word;">
-      {$this->render($requestSchema)}
+      {$this->renderSchema($requestSchema)}
     </td>
     <td style="width: 50%; border: 1px solid black; padding: 10px; text-align: left; vertical-align: top; font-family: Menlo, Monaco, Consolas; font-size: 13px; word-break: break-all;  word-wrap: break-word;">
-      {$this->render($responseSchema)}
+      {$this->renderSchema($responseSchema)}
     </td>
   <tr>
     <td colspan="2" style="width:100%; border: 1px solid black; padding: 10px; vertical-align: top;">

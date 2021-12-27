@@ -6,6 +6,7 @@ $route = trim($_SERVER['REQUEST_URI'] ?? 'index', " \n\r\t\v\0/");
 
 $page = [
   'form' => true,
+  'docs' => true,
   'api'  => true,
   'home' => true,
 ];

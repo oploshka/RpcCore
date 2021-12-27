@@ -30,4 +30,14 @@ class RpcMethodStorage implements \Oploshka\RpcContract\iRpcMethodStorage {
     }
     return $this->methodList[$methodName];
   }
+  
+  public function getMethodNameList() :array {
+    $methodNameList = [];
+    foreach($this->methodList as $k => $v) {
+      $methodNameList[] = $k;
+    }
+    return $methodNameList;
+  }
+  
+  
 }

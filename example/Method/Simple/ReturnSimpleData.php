@@ -13,12 +13,12 @@ class ReturnSimpleData extends \Oploshka\Rpc\Method\RpcMethod {
   protected ?ReturnSimpleDataRequest $Data = null;
   
   public function run() {
-    $this->Response->setData('test1::string', 'test string');
-    $this->Response->setData('test1::int', 1);
-    $this->Response->setData('test1', 'testLog');
-    $this->Response->setData('methodName', 'MethodTest2');
-    $this->Response->setData('test1::string', 'test string');
-    $this->Response->setData('test1::int', 1);
+    $this->setData('test1::string', 'test string');
+    $this->setData('test1::int', 1);
+    $this->setData('test1', 'testLog');
+    $this->setData('methodName', 'MethodTest2');
+    $this->setData('test1::string', 'test string');
+    $this->setData('test1::int', 1);
     
     $this->setErrorCode(MethodError::ERROR_NO);
   }
